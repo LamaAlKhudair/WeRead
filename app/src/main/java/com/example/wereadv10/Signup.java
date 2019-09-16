@@ -3,8 +3,10 @@ package com.example.wereadv10;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -32,7 +34,24 @@ private String TAG = Signup.class.getSimpleName();
         password = findViewById(R.id.singup_passwordET);
         confirmPassword = findViewById(R.id.singup_confirmPasswordET);
         signupBtn = findViewById(R.id.singup_registerBtn);
-        mAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
+        signupBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createUserAccount(email.getText().toString(),password.getText().toString());
+            }
+        });
+
+
+    }//end onCreate()
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        //updateUI(currentUser);
+    }//end onStart()
+    public void createUserAccount(String email,String password){
+        mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -40,7 +59,9 @@ private String TAG = Signup.class.getSimpleName();
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                           // updateUI(user);
+                            Intent intent = new Intent(Signup.this,LoginActivity.class);
+                            startActivity(intent);
+                            finish();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -52,13 +73,5 @@ private String TAG = Signup.class.getSimpleName();
                         // ...
                     }
                 });
-
-    }//end onCreate()
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        //updateUI(currentUser);
-    }//end onStart()
+    }
 }
