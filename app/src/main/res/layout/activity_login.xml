@@ -65,7 +65,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
                 android:text="forgot password"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="20sp" />
 
             <TextView
@@ -75,7 +75,7 @@
                 android:layout_gravity="start"
                 android:gravity="end"
                 android:text="create account"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="20sp" />
         </LinearLayout>
 
