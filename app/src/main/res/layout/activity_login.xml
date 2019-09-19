@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".LoginActivity"
+    android:background="@color/white">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,44 +14,76 @@
         android:layout_weight="10"
         android:orientation="vertical">
 
+        <ImageView
+            android:layout_width="240dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="48dp"
+            android:layout_marginBottom="20dp"
+            android:padding="16dp"
+            app:srcCompat="@drawable/logoo"/>
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp">
+            android:layout_marginTop="10dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/login_emailET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:hint="email"
+                android:hint="Email"
                 android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/login_passwordET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:hint="password"
+                android:layout_marginTop="20dp"
+                android:hint="Password"
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <CheckBox
+            android:id="@+id/remember"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Remember me"
+            android:padding="8dp"/>
 
         <Button
             android:id="@+id/login_loginBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:background="@color/colorPrimary"
-            android:text="login"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/loging_rounded_button"
+            android:text="Login"
+            android:textAllCaps="false"
             android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/login_createAccountTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/signup_rounded_button"
+            android:text="Create account"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:textAllCaps="false"
             android:textSize="20sp" />
+
 
         <LinearLayout
 
@@ -61,22 +94,17 @@
 
             <TextView
                 android:id="@+id/login_forgotPasswordTV"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:text="forgot password"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/login_createAccountTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:gravity="end"
-                android:text="create account"
-                android:textColor="@color/colorPrimaryDark"
+                android:text="Forgot password?"
+                android:textStyle="italic"
+                android:textAllCaps="false"
+                android:clickable="true"
+                android:textColor="@color/black"
                 android:textSize="20sp" />
+
         </LinearLayout>
 
     </LinearLayout>
