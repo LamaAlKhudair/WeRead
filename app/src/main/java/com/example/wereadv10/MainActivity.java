@@ -45,14 +45,17 @@ public class MainActivity extends AppCompatActivity {
         catHere = findViewById(R.id.catHere);
         bookHere=findViewById(R.id.bookHere);
 
-        getCategories();
+        //getCategories();
         getCat = findViewById(R.id.getCat);
 
          //getBookData();
+        //getClubs();
 
     }
 
     private void getCategories() {
+        // this function retrive all the categories in the database
+        // and save them in categoies list
         dbSetUp.db.collection("categories")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -71,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
     private void getBooks() {
+        // this function retrive all the books in the system and
+        // save it in books list
         dbSetUp.db.collection("books")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -87,6 +92,25 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+    }
+    private void getClubs(){
+        // this function retrive all the clubs in the system and
+        // save them in clubs List
+        dbSetUp.db.collection("clubs")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<String> clubs = new ArrayList<String>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                clubs.add(document.getData().toString());
+                            }
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
     }
 
 }
