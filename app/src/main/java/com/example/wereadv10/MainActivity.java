@@ -25,20 +25,21 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity {
     private Button getCat;
-    private TextView catHere;
-    private FirebaseAuth mAuth;
-    FirebaseFirestore db ;
+    private TextView catHere, bookHere;
+    private dbSetUp dbSetUp;
     private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -48,28 +49,53 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-        db = FirebaseFirestore.getInstance();
-        getCat = findViewById(R.id.getCat);
+       dbSetUp = new dbSetUp();
+
         catHere = findViewById(R.id.catHere);
-        //getCat.setOnClickListener(this);
+        bookHere=findViewById(R.id.bookHere);
+
+        getCategoryData();
+        getCat = findViewById(R.id.getCat);
+
+         //getBookData();
 
     }
 
     private void getCategoryData() {
-        db.collection("categories")
+        dbSetUp.db.collection("categories")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            List<String> categoies = new ArrayList<String>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                categoies.add(document.getData().get("category_name").toString());
+
                             }
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
                         }
                     }
                 });
+    }
+    private void getBookData() {
+        dbSetUp.db.collection("books")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<String> books = new ArrayList<String>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                books.add(document.getData().toString());
+                            }
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+
     }
 
 }
