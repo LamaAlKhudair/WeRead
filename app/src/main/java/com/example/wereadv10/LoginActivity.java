@@ -17,11 +17,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText emailET, passwordET;
-    private TextView createAccountTV;
+    private TextView createAccountTV, forgetPasswordTV;
     private Button loginBtn;
     private FirebaseAuth mAuth;
     private String TAG = LoginActivity.class.getSimpleName();
@@ -35,6 +38,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         passwordET = findViewById(R.id.login_passwordET);
         createAccountTV = findViewById(R.id.login_createAccountTV);
         createAccountTV.setOnClickListener(this);
+        forgetPasswordTV = findViewById(R.id.login_forgotPasswordTV);
+        forgetPasswordTV.setOnClickListener(this);
         loginBtn = findViewById(R.id.login_loginBtn);
         loginBtn.setOnClickListener(this);
         mAuth = FirebaseAuth.getInstance();
@@ -54,14 +59,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View view) {
+        Intent intent;
         switch (view.getId()) {
             case R.id.login_loginBtn:
                 loginUser(emailET.getText().toString(), passwordET.getText().toString());
                 break;
             case R.id.login_createAccountTV:
-                Intent intent = new Intent(LoginActivity.this, Signup.class);
+                 intent = new Intent(LoginActivity.this, Signup.class);
                 startActivity(intent);
                 break;
+            case R.id.login_forgotPasswordTV:
+                intent= new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+                startActivity(intent);
         }//end switch
     }
 
@@ -77,10 +86,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             startActivity(intent);
                             finish();
                         } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            if(task.getException() instanceof FirebaseAuthInvalidUserException) {
+                                //there is'n user with this Email
+                                Toast.makeText(getApplicationContext(), "the email or password is wrong",
+                                        Toast.LENGTH_LONG).show();
+                            } else if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                                //the password is wrong
+                                Toast.makeText(getApplicationContext(), "the email or password is wrong",
+                                        Toast.LENGTH_LONG).show();
+                            }else {
+                                // If sign in fails, display a message to the user.
+                                Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         }
 
                         // ...
