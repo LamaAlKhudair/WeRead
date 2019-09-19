@@ -20,7 +20,7 @@
             android:text="Sign up"
             android:textStyle="bold"
             android:textSize="55sp"
-            android:textColor="@color/colorPrimary"/>
+            android:textColor="@color/colorPrimaryDark"/>
 
 
 
@@ -129,7 +129,7 @@
                 android:gravity="center"
                 android:text="Login"
                 android:textAllCaps="false"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
         </LinearLayout>
