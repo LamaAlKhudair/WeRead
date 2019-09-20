@@ -22,7 +22,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity" />
-        <activity android:name=".SignUp" />
+
+        <activity android:name=".ViewBooks" />
+
     </application>
 
 </manifest>

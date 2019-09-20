@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAccent"
+    >
+
+
+    <ImageView
+        android:id="@+id/bookCover"
+        android:layout_width="194dp"
+        android:layout_height="233dp"
+        android:layout_gravity="left"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="100dp"
+        app:srcCompat="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/bookName"
+        android:layout_width="159dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="250dp"
+        android:layout_marginTop="-200dp"
+        android:textStyle="bold"
+        android:text="bookName"
+        android:textColor="@color/colorPrimaryDark" />
+    <TextView
+        android:id="@+id/temp"
+        android:layout_width="159dp"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:layout_marginLeft="250dp"
+        android:layout_marginTop="20dp"
+        android:text="rate here"
+        android:textColor="@color/colorPrimaryDark" />
+
+    <TextView
+        android:id="@+id/addToShelf"
+        android:layout_width="155dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="250dp"
+        android:textStyle="bold"
+        android:layout_marginTop="30dp"
+        android:text="+add"
+        android:clickable="true"
+        android:textColor="@color/colorPrimaryDark" />
+<!--todo onclick here-->
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="376dp"
+        android:layout_marginTop="110dp">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </androidx.viewpager.widget.ViewPager>
+
+
+</LinearLayout>
