@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         loginBtn = findViewById(R.id.login_loginBtn);
         loginBtn.setOnClickListener(this);
         mAuth = FirebaseAuth.getInstance();
-
+loginBtn.setEnabled(false);
         checkUserState();
 
     }
@@ -62,6 +62,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Intent intent;
         switch (view.getId()) {
             case R.id.login_loginBtn:
+                if (emailET.getText().toString().equals("")|| passwordET.getText().toString().equals("")){
+                    Toast.makeText(getApplicationContext(), "the email or password is wrong",
+                            Toast.LENGTH_LONG).show();
+                }
                 loginUser(emailET.getText().toString(), passwordET.getText().toString());
                 break;
             case R.id.login_createAccountTV:
@@ -75,6 +79,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void loginUser(String email, String password) {
+
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
