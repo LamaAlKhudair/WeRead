@@ -5,4 +5,7 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="title_explore">Explore</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_clubs">Clubs</string>
 </resources>

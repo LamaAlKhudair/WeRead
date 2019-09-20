@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         loginBtn = findViewById(R.id.login_loginBtn);
         loginBtn.setOnClickListener(this);
         mAuth = FirebaseAuth.getInstance();
-loginBtn.setEnabled(false);
+//loginBtn.setEnabled(false);
         checkUserState();
 
     }
@@ -51,7 +51,7 @@ loginBtn.setEnabled(false);
     private void checkUserState() {
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() != null) {
-            Intent intent = new Intent(LoginActivity.this, TestPageActivity.class);
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
         }
