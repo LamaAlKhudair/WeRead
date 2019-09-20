@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -47,9 +49,9 @@ public class MainActivity extends AppCompatActivity {
 
         //getCategories();
         getCat = findViewById(R.id.getCat);
-
          //getBookData();
         //getClubs();
+        getOneBook("Grant");
 
     }
 
@@ -93,6 +95,41 @@ public class MainActivity extends AppCompatActivity {
                 });
 
     }
+    private void getOneBook(String bookName) {
+        // this function retrive one book based on BookName == book_title
+        // and print it.
+
+        dbSetUp.db.collection("books")
+                .whereEqualTo("book_title", bookName)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                System.out.println(document.getData().toString());
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+    }
+    private void findCat(String documentReference){
+        /*dbSetUp.db.document("categories/\("+documentReference+")")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult()) {
+                                System.out.println(document.getData());
+                            }
+                        }
+                    }
+                });*/
+    }
     private void getClubs(){
         // this function retrive all the clubs in the system and
         // save them in clubs List
@@ -105,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
                             List<String> clubs = new ArrayList<String>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 clubs.add(document.getData().toString());
+                                System.out.println(document.getData().toString());
                             }
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
@@ -112,5 +150,4 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
-
 }
