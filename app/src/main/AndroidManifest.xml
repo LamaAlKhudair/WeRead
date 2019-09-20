@@ -24,6 +24,7 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".Signup" />
         <activity android:name=".TestPageActivity" />
+        <activity android:name=".ViewBooks$ViewBooks" />
     </application>
 
 </manifest>
