@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -51,10 +52,26 @@ public class MainActivity extends AppCompatActivity {
         getCat = findViewById(R.id.getCat);
          //getBookData();
         //getClubs();
-        getOneBook("Grant");
+        //getOneBook("Grant");
+        //getFiveBooks();
+    }
+    private  void getFiveBooks(){
+        CollectionReference bookRef = dbSetUp.db.collection("books");
+        bookRef.limit(5).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                System.out.println(document.getData().toString());
+                            }
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
 
     }
-
     private void getCategories() {
         // this function retrive all the categories in the database
         // and save them in categoies list
@@ -146,6 +163,26 @@ public class MainActivity extends AppCompatActivity {
                             }
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+    }
+    private void getBooksBasedOnCategory(String book_category){
+        // book_category
+
+        dbSetUp.db.collection("books")
+                .whereEqualTo("book_category ", "/categories/Medicine")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                System.out.println(document.getData());
+                                System.out.println("LAMA");
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
