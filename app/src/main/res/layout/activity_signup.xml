@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,36 +12,32 @@
         android:layout_margin="20dp"
         android:gravity="center"
         android:orientation="vertical">
-        <TextView
-            android:id="@+id/sign_up_pageSubject"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="50dp"
-            android:text="Sign up"
-            android:textStyle="bold"
-            android:textSize="55sp"
-            android:textColor="@color/colorPrimaryDark"/>
+
 
 
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/singup_nameInputLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="30dp">
+            android:layout_marginTop="30dp"
+            app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/singup_nameET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:hint="Name" />
+                android:hint="Name"
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/singup_emailInputLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/singup_emailET"
@@ -52,10 +49,14 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/singup_passwordInputLayout"
+
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
-            app:passwordToggleEnabled="true">
+            app:passwordToggleEnabled="true"
+            app:errorEnabled="true"
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/singup_passwordET"
@@ -67,11 +68,15 @@
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
+
+
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/singup_confirmPasswordInputLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
-            app:passwordToggleEnabled="true">
+            app:passwordToggleEnabled="true"
+            app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/singup_confirmPasswordET"
@@ -82,15 +87,7 @@
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="9dp"
-            android:text="Agree on terms and conditions"
-            android:textStyle="bold"
-            android:layout_gravity="start"
-            android:gravity="end"
-            android:padding="8dp"/>
+
 
         <Button
             android:id="@+id/singup_registerBtn"
@@ -102,7 +99,8 @@
             android:textColor="@android:color/white"
             android:textStyle="bold"
             android:textAllCaps="false"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:enabled="false"/>
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -121,7 +119,7 @@
                 android:textSize="15sp" />
 
             <TextView
-                android:id="@+id/logIN"
+                android:id="@+id/singup_logIn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

@@ -24,9 +24,11 @@
             app:srcCompat="@drawable/logoo"/>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/login_emailIL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/login_emailET"
@@ -52,24 +54,19 @@
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <CheckBox
-            android:id="@+id/remember"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Remember me"
-            android:padding="8dp"/>
+
 
         <Button
             android:id="@+id/login_loginBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="54dp"
             android:background="@drawable/loging_rounded_button"
             android:text="Login"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="20sp"
+            android:enabled="false"
             android:textStyle="bold" />
 
         <Button

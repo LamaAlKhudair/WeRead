@@ -21,12 +21,19 @@ Button restPasswordBtn;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
+        initToolBar();
 
         mAuth = FirebaseAuth.getInstance();
         emailEt = findViewById(R.id.forgotPassword_emailET);
         restPasswordBtn = findViewById(R.id.forgotPassword_restPassBtn);
         restPasswordBtn.setOnClickListener(this);
     }
+
+    private void initToolBar() {
+        setTitle("Forgot Password");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }//end initToolBar()
 
     @Override
     public void onClick(View view) {
@@ -56,4 +63,9 @@ Button restPasswordBtn;
 
         }
     }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }//end onSupportNavigateUp
 }
