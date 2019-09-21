@@ -1,16 +1,21 @@
 package com.example.wereadv10;
 
+import com.google.firebase.firestore.DocumentReference;
+
 public class Book {
 
     private long ID;
     private String author;
-    private String book_category;
+    private DocumentReference book_category;
     private String book_title;
     private String summary;
     private int cover;
 
 
-    public Book(String author, String book_category, String book_title, String summary) {
+    public Book() {
+    }
+
+    public Book(String author, DocumentReference book_category, String book_title, String summary) {
         this.author = author;
         this.book_category = book_category;
         this.book_title = book_title;
@@ -27,7 +32,7 @@ public class Book {
         return author;
     }
 
-    public String getBook_category() {
+    public DocumentReference getBook_category() {
         return book_category;
     }
 
@@ -52,7 +57,7 @@ public class Book {
         this.author = author;
     }
 
-    public void setBook_category(String book_category) {
+    public void setBook_category(DocumentReference book_category) {
         this.book_category = book_category;
     }
 
