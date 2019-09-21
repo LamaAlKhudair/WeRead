@@ -18,14 +18,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ViewBooks extends AppCompatActivity {
         private RecyclerView recyclerView;
         private BooksAdapter adapter;
         private static final String TAG = "ViewBooks";
-        private dbSetUp dbSetUp;
-        private List<Book> bookList;
+        private dbSetUp dbSetUp = new dbSetUp();
+        private List<Book> bookList = new ArrayList<>();
 
 
 
