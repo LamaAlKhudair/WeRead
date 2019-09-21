@@ -38,6 +38,4 @@ public class BookInfoFragment extends Fragment {
 
 
 
-
-
 }
