@@ -19,7 +19,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
     private List<Book> booksList;
     private static final String TAG = "BooksAdapter";
     private dbSetUp dbSetUp;
-    private List<Book> bookList;
+//    private List<Book> bookList;
     OnItemClickListener mItemClickListener;
 
 
@@ -65,8 +65,16 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
     public BooksAdapter(Context mContext, List<Book> l) {
         this.mContext = mContext;
         this.booksList = l;
+        System.out.println("ftom adapter:"+l.isEmpty());
     }
+    public void updateReceiptsList(List<Book> newlist) {
+        booksList.clear(); // when u delete this line (بياض لا نهائي في الانترفيس )
+        System.out.println("From updateReceiptsList"+booksList.isEmpty());
+        booksList.addAll(newlist);
+        System.out.println("From updateReceiptsList2"+booksList.isEmpty());
+        this.notifyDataSetChanged();
 
+    }
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -75,8 +83,11 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
         return new MyViewHolder(itemView);
     }
 
-
-
+   /* public void setBooksList(List<Book> booksList) {
+        this.booksList = booksList;
+        System.out.println("from adapter "+booksList.isEmpty());
+    }
+*/
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         Book book = booksList.get(position);

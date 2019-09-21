@@ -31,8 +31,7 @@ public class ViewBooks extends AppCompatActivity {
     private BooksAdapter adapter;
     private static final String TAG = "ViewBooks";
     private dbSetUp dbSetUp = new dbSetUp();
-    private List<Book> bookList = new ArrayList<Book>();
-//    private FirestoreRecyclerAdapter<Book, BookViewHolder> adapter;
+    private List<Book> bookList ;
 
 
 
@@ -41,17 +40,20 @@ public class ViewBooks extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.viewbooks);
+        bookList = new ArrayList<Book>();
+        adapter = new BooksAdapter(this, bookList) ;//should pass a book list to the adapter
+
         recyclerView = (RecyclerView) findViewById(R.id.viewBooksRec);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
+        recyclerView.setAdapter(adapter);
         //sol. 1
 
-        List<Book> books = getBooks();
-        adapter = new BooksAdapter(this, bookList); //should pass a book list to the adapter
-        recyclerView.setAdapter(adapter);
+
+        getBooks();
+
         //sol. 2
 
 //        Query query =dbSetUp.db.collection("books")
@@ -88,7 +90,7 @@ public class ViewBooks extends AppCompatActivity {
 
     //sol. 1
 
-    private List<Book> getBooks() {
+    private void getBooks() {
         dbSetUp.db.collection("books")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -96,7 +98,6 @@ public class ViewBooks extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                //Category category = new Category(document.get("book_category"));
                                 String book_title = document.get("book_title").toString();
                                  String summary = document.get("summary").toString();
                                  String author = document.get("author").toString();
@@ -124,13 +125,18 @@ public class ViewBooks extends AppCompatActivity {
                                                     }
                                                 });
                                 bookList.add(book);
+
                             }
+                            System.out.println("bookList is empty fromm inside!!!"+bookList.isEmpty());
+                            adapter.updateReceiptsList(bookList);
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
                         }
                     }
                 });
-        return bookList;
+
+
+        System.out.println("bookList is empty??"+bookList.isEmpty());
     }
 
 
