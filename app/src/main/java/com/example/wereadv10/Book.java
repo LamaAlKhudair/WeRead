@@ -15,7 +15,7 @@ public class Book {
     public Book() {
     }
 
-    public Book(String author, DocumentReference book_category, String book_title, String summary) {
+    public Book(String author, DocumentReference book_category ,String book_title, String summary) {
         this.author = author;
         this.book_category = book_category;
         this.book_title = book_title;
