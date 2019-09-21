@@ -94,6 +94,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+        <TextView
+            android:id="@+id/ShowMore"
+            android:layout_width="119dp"
+            android:layout_height="33dp"
+            android:layout_marginLeft="320dp"
+            android:layout_marginTop="-40dp"
+            android:clickable="true"
+            android:text="Show More" />
+
+
+
+
+
     <TextView
         android:id="@+id/catHere"
         android:layout_width="wrap_content"

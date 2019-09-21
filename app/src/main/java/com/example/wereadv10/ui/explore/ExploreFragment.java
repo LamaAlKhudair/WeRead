@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.wereadv10.ForgotPasswordActivity;
 import com.example.wereadv10.R;
+import com.example.wereadv10.ViewBooks;
 import com.example.wereadv10.dbSetUp;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -29,7 +30,7 @@ public class ExploreFragment extends Fragment {
     private Button getCat;
     private TextView catHere, bookHere;
     private com.example.wereadv10.dbSetUp dbSetUp;
-    TextView test ;
+    TextView test ,more;
     private static final String TAG = "ExploreFragment";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -51,7 +52,14 @@ public class ExploreFragment extends Fragment {
 
         catHere = root.findViewById(R.id.catHere);
         bookHere=root.findViewById(R.id.bookHere);
-
+        more = root.findViewById(R.id.ShowMore);
+        more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(), ViewBooks.class);
+                startActivity(i);
+            }
+        });
         //getCategories();
         getCat = root.findViewById(R.id.getCat);
         return root;

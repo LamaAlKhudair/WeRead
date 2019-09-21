@@ -31,7 +31,8 @@ public class ViewBooks extends AppCompatActivity {
     private BooksAdapter adapter;
     private static final String TAG = "ViewBooks";
     private dbSetUp dbSetUp = new dbSetUp();
-    private List<Book> bookList ;
+    private List<Book> bookList = new ArrayList<>()  ;
+    private Book book = new Book();
 
 
 
@@ -40,19 +41,19 @@ public class ViewBooks extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.viewbooks);
-        bookList = new ArrayList<Book>();
-        adapter = new BooksAdapter(this, bookList) ;//should pass a book list to the adapter
-
+        List<Book> books = getBooks();
+        adapter = new BooksAdapter(this,books) ;//should pass a book list to the adapter
         recyclerView = (RecyclerView) findViewById(R.id.viewBooksRec);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
         //sol. 1
 
 
-        getBooks();
+
 
         //sol. 2
 
@@ -90,18 +91,18 @@ public class ViewBooks extends AppCompatActivity {
 
     //sol. 1
 
-    private void getBooks() {
+    private List<Book> getBooks() {
         dbSetUp.db.collection("books")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 String book_title = document.get("book_title").toString();
                                  String summary = document.get("summary").toString();
                                  String author = document.get("author").toString();
-                                final Book book = new Book();
                                 book.setBook_title(book_title);
                                 book.setSummary(summary);
                                 book.setAuthor(author);
@@ -127,16 +128,16 @@ public class ViewBooks extends AppCompatActivity {
                                 bookList.add(book);
 
                             }
-                            System.out.println("bookList is empty fromm inside!!!"+bookList.isEmpty());
-                            adapter.updateReceiptsList(bookList);
+//                            System.out.println("bookList is empty fromm inside!!!"+bookList.isEmpty());
+//                            adapter.updateBooksList(bookList);
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
                         }
                     }
                 });
 
-
-        System.out.println("bookList is empty??"+bookList.isEmpty());
+               return bookList;
+//        System.out.println("bookList is empty??"+bookList.isEmpty());
     }
 
 
