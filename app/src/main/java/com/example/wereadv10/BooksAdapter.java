@@ -42,7 +42,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
             intent.putExtra("TITLE", booksList.get(getAdapterPosition()).getBook_title());
                     intent.putExtra("COVER", booksList.get(getAdapterPosition()).getCover());
                     intent.putExtra("AUTHOR", booksList.get(getAdapterPosition()).getAuthor());
-                    DocumentReference cat=booksList.get(getAdapterPosition()).getBook_category();
+                    Category cat=booksList.get(getAdapterPosition()).getBook_category();
                     intent.putExtra("CATEGORY", cat.toString());
 
             mContext.startActivity(intent);

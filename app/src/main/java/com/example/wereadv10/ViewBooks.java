@@ -15,10 +15,13 @@ import android.view.View;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Source;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +31,7 @@ public class ViewBooks extends AppCompatActivity {
     private BooksAdapter adapter;
     private static final String TAG = "ViewBooks";
     private dbSetUp dbSetUp = new dbSetUp();
-    private List<Book> bookList = new ArrayList<>();
+    private List<Book> bookList = new ArrayList<Book>();
 //    private FirestoreRecyclerAdapter<Book, BookViewHolder> adapter;
 
 
@@ -47,7 +50,7 @@ public class ViewBooks extends AppCompatActivity {
         //sol. 1
 
         List<Book> books = getBooks();
-        adapter = new BooksAdapter(this, books); //should pass a book list to the adapter
+        adapter = new BooksAdapter(this, bookList); //should pass a book list to the adapter
         recyclerView.setAdapter(adapter);
         //sol. 2
 
@@ -93,7 +96,34 @@ public class ViewBooks extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                bookList.add(document.toObject(Book.class));
+                                //Category category = new Category(document.get("book_category"));
+                                String book_title = document.get("book_title").toString();
+                                 String summary = document.get("summary").toString();
+                                 String author = document.get("author").toString();
+                                final Book book = new Book();
+                                book.setBook_title(book_title);
+                                book.setSummary(summary);
+                                book.setAuthor(author);
+                                DocumentReference doc = document.getDocumentReference("book_category");
+                                String path = doc.getPath();
+                                String col = path.substring(0, path.indexOf("/"));
+                                String doc3 = path.substring(path.indexOf("/")+1);
+                                        dbSetUp.db.collection(col).whereEqualTo("category_name", doc3)
+                                                .get()
+                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                        if (task.isSuccessful()) {
+                                                            for (QueryDocumentSnapshot document2 : task.getResult()) {
+                                                                Category book_cat = document2.toObject(Category.class);
+                                                                book.setBook_category(book_cat);
+                                                            }
+                                                        } else {
+                                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                                        }
+                                                    }
+                                                });
+                                bookList.add(book);
                             }
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());

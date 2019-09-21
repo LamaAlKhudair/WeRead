@@ -6,7 +6,7 @@ public class Book {
 
     private long ID;
     private String author;
-    private DocumentReference book_category;
+    private Category book_category;
     private String book_title;
     private String summary;
     private int cover;
@@ -15,7 +15,7 @@ public class Book {
     public Book() {
     }
 
-    public Book(String author, DocumentReference book_category, String book_title, String summary) {
+    public Book(String author, Category book_category, String book_title, String summary) {
         this.author = author;
         this.book_category = book_category;
         this.book_title = book_title;
@@ -32,7 +32,7 @@ public class Book {
         return author;
     }
 
-    public DocumentReference getBook_category() {
+    public Category getBook_category() {
         return book_category;
     }
 
@@ -57,7 +57,7 @@ public class Book {
         this.author = author;
     }
 
-    public void setBook_category(DocumentReference book_category) {
+    public void setBook_category(Category book_category) {
         this.book_category = book_category;
     }
 
