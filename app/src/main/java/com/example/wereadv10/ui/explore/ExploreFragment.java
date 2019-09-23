@@ -47,7 +47,8 @@ public class ExploreFragment extends Fragment {
     private static final String TAG = "ExploreFragment";
     private ExploreBooksAdapter book_adapter;
     TextView more;
-    
+    private List<Book> FiveBooks = new ArrayList<Book>();
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -55,13 +56,16 @@ public class ExploreFragment extends Fragment {
         recyclerView = (RecyclerView) root.findViewById(R.id.rvHorizontal);
 
         dbSetUp = new dbSetUp();
-        book_adapter = new ExploreBooksAdapter(getParentFragment().getContext(),getFiveBooks());
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getParentFragment().getContext(), 1);
+
+        FiveBooks = getFiveBooks();
+        book_adapter = new ExploreBooksAdapter(getParentFragment().getContext(),FiveBooks);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getParentFragment().getContext(), 2);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new ExploreFragment.GridSpacingItemDecoration(2, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(book_adapter);
         book_adapter.notifyDataSetChanged();
+
 
         more = root.findViewById(R.id.show_books);
         more.setOnClickListener(new View.OnClickListener() {
@@ -71,10 +75,10 @@ public class ExploreFragment extends Fragment {
                 startActivity(i);
             }
         });
+
         return root;
     }
     private  List<Book> getFiveBooks(){
-        final List<Book> FiveBooks = new ArrayList<Book>();
         CollectionReference bookRef = dbSetUp.db.collection("books");
         bookRef.limit(5).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -118,8 +122,12 @@ public class ExploreFragment extends Fragment {
                                                 } else {
                                                     Log.d(TAG, "Error getting documents: ", task.getException());
                                                 }
+
                                                 FiveBooks.add(book);
+                                                System.out.println("ISSS EMPTY"+FiveBooks.isEmpty());
+
                                             }
+
                                         });
                             }
 
