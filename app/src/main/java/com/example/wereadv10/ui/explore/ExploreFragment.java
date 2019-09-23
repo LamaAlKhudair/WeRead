@@ -14,7 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.wereadv10.Book;
+import com.example.wereadv10.BooksAdapter;
 import com.example.wereadv10.Category;
+import com.example.wereadv10.ExploreBooksAdapter;
 import com.example.wereadv10.ForgotPasswordActivity;
 import com.example.wereadv10.R;
 import com.example.wereadv10.ViewBooks;
@@ -37,6 +39,7 @@ public class ExploreFragment extends Fragment {
     private com.example.wereadv10.dbSetUp dbSetUp;
     TextView test ,more;
     private static final String TAG = "ExploreFragment";
+    private ExploreBooksAdapter book_adapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -44,19 +47,10 @@ public class ExploreFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_explore, container, false);
 
-
-        test = root.findViewById(R.id.textView_books);
-        test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), ForgotPasswordActivity.class);
-                startActivity(intent);
-            }
-        });
         dbSetUp = new dbSetUp();
+        book_adapter = new ExploreBooksAdapter(this,getFiveBooks();
 
-
-        more = root.findViewById(R.id.ShowMore);
+        more = root.findViewById(R.id.show_books);
         more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,7 +58,6 @@ public class ExploreFragment extends Fragment {
                 startActivity(i);
             }
         });
-        //getCategories();
         return root;
     }
     private  void getFiveBooks(){
