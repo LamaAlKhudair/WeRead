@@ -1,3 +1,5 @@
+package com.example.wereadv10;
+
 public class Club {
 private String club_name;
 
