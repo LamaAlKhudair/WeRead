@@ -50,10 +50,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-         //getBookData();
-        //getClubs();
-        //getOneBook("Grant");
-        //getFiveBooks();
+
     }
 
     private void initToolBar() {
