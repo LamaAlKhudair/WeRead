@@ -46,7 +46,8 @@ public class ExploreFragment extends Fragment {
     private com.example.wereadv10.dbSetUp dbSetUp;
     private static final String TAG = "ExploreFragment";
     private ExploreBooksAdapter book_adapter;
-
+    TextView more;
+    
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -130,135 +131,6 @@ public class ExploreFragment extends Fragment {
             return FiveBooks;
     }
 
-
-    // No need in Home Page
-    /*private void getCategories() {
-        // this function retrive all the categories in the database
-        // and save them in categoies list
-        dbSetUp.db.collection("categories")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document2 : task.getResult()) {
-                                Category book_cat = document2.toObject(Category.class);
-                            }
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                });
-    }
-    }*/
-
-
-   /*
-    // No need in Home Page
-    private void getBooks() {
-        // this function retrive all the books in the system and
-        // save it in books list
-        dbSetUp.db.collection("books")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                final Book book = new Book();
-                                String book_title = document.get("book_title").toString();
-                                String summary = document.get("summary").toString();
-                                String author = document.get("author").toString();
-                                String bookCover = document.get("book_cover").toString();
-
-                                dbSetUp.storageRef.child("books_covers/"+bookCover).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                        // Got the download URL for 'users/me/profile.png'
-                                        book.setCover(uri.toString());
-                                        //System.out.println("Uriiiii"+uri.toString());
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception exception) {
-                                        // Handle any errors
-                                    }
-                                });
-                                book.setBook_title(book_title);
-                                book.setSummary(summary);
-                                book.setAuthor(author);
-                                DocumentReference doc = document.getDocumentReference("book_category");
-                                String path = doc.getPath();
-                                String col = path.substring(0, path.indexOf("/"));
-                                String doc3 = path.substring(path.indexOf("/")+1);
-                                dbSetUp.db.collection(col).whereEqualTo("category_name", doc3)
-                                        .get()
-                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                if (task.isSuccessful()) {
-                                                    for (QueryDocumentSnapshot document2 : task.getResult()) {
-                                                        Category book_cat = document2.toObject(Category.class);
-                                                        book.setBook_category(book_cat);
-                                                    }
-                                                } else {
-                                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                                }
-                                               // bookList.add(book);
-                                            }
-                                        });
-                            }
-//                            System.out.println("bookList is empty fromm inside!!!"+bookList.isEmpty());
-//                            adapter.updateBooksList(bookList);
-                        } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
-                        }
-                    }
-                });
-    }
-    */
-
-
-
-   /*
-   // No need in Home Page
-
-    private void getOneBook(String bookName) {
-        // this function retrive one book based on BookName == book_title
-        // and print it.
-
-        dbSetUp.db.collection("books")
-                .whereEqualTo("book_title", bookName)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                System.out.println(document.getData().toString());
-                            }
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-
-    }
-
-    private void findCat(String documentReference){
-        /*dbSetUp.db.document("categories/\("+documentReference+")")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (DocumentSnapshot document : task.getResult()) {
-                                System.out.println(document.getData());
-                            }
-                        }
-                    }
-                });
-    }*/
 
     private void getClubs(){
         // this function retrive all the clubs in the system and
