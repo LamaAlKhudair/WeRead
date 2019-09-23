@@ -138,7 +138,7 @@ public class ViewBooks extends AppCompatActivity {
                                     public void onSuccess(Uri uri) {
                                         // Got the download URL for 'users/me/profile.png'
                                         book.setCover(uri.toString());
-                                        System.out.println("Uriiiii"+uri.toString());
+                                        //System.out.println("Uriiiii"+uri.toString());
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                                     @Override
