@@ -2,37 +2,40 @@ package com.example.wereadv10;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.SearchView;
+import android.widget.TextView;
+
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.Source;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class ViewBooks extends AppCompatActivity {
     private RecyclerView recyclerView;
     private BooksAdapter adapter;
+    private   List<Book> bookList;
     private static final String TAG = "ViewBooks";
     private dbSetUp dbSetUp = new dbSetUp();
-    private List<Book> bookList = new ArrayList<>()  ;
-    private Book book = new Book();
+//    private FirestoreRecyclerAdapter<Book, BookViewHolder> adapter;
 
 
 
@@ -41,21 +44,24 @@ public class ViewBooks extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.viewbooks);
-        List<Book> books = getBooks();
-        adapter = new BooksAdapter(this,books) ;//should pass a book list to the adapter
+        SearchView searchView = findViewById(R.id.search_view);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         recyclerView = (RecyclerView) findViewById(R.id.viewBooksRec);
+//        List<Book> books = getBooks();
+        adapter = new BooksAdapter(this,getBooks()) ;//should pass a book list to the adapter
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-        //sol. 1
-
 
 
 
         //sol. 2
+        //هنا يطلع ايرور غريب (  book class not found ( line 71
 
 //        Query query =dbSetUp.db.collection("books")
 //                .orderBy("book_title", Query.Direction.ASCENDING) ;
@@ -80,6 +86,7 @@ public class ViewBooks extends AppCompatActivity {
 //        };
 //
 //        recyclerView.setAdapter(adapter);
+//        adapter.notifyDataSetChanged();
 
     }//End onCreate()
 
@@ -92,9 +99,11 @@ public class ViewBooks extends AppCompatActivity {
     //sol. 1
 
     private List<Book> getBooks() {
+
         dbSetUp.db.collection("books")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    Book book = new Book();
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
@@ -123,10 +132,9 @@ public class ViewBooks extends AppCompatActivity {
                                                         } else {
                                                             Log.d(TAG, "Error getting documents: ", task.getException());
                                                         }
+                                                        bookList.add(book);
                                                     }
                                                 });
-                                bookList.add(book);
-
                             }
 //                            System.out.println("bookList is empty fromm inside!!!"+bookList.isEmpty());
 //                            adapter.updateBooksList(bookList);
@@ -216,5 +224,12 @@ public class ViewBooks extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onBackPressed() {
+            super.onBackPressed();
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
+        finish();
+    }
 }
 

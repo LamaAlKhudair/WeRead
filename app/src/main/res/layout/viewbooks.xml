@@ -7,12 +7,66 @@
     android:layout_height="match_parent">
 
 
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-60dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="120dp"
+            android:background="@drawable/oval"
+            android:baselineAligned="false"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="120dp"
+            android:background="@drawable/oval"
+            android:baselineAligned="false"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/viewBooksRec"
         android:layout_width="match_parent"
-        android:layout_height="369dp"
-        android:layout_marginTop="200dp"
+        android:layout_height="575dp"
+        android:layout_marginTop="150dp"
         android:clipToPadding="false"
         android:scrollbars="vertical" />
+
+
+    <SearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:background="#ececec"
+         />
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
