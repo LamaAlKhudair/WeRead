@@ -254,7 +254,7 @@ public class ExploreFragment extends Fragment {
                     }
                 });
     }*/
-   
+
     private void getClubs(){
         // this function retrive all the clubs in the system and
         // save them in clubs List
