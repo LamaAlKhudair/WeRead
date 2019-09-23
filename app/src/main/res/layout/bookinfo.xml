@@ -48,13 +48,13 @@
 <!--todo onclick here-->
 
     <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPager"
+        android:id="@+id/profile_viewPager"
         android:layout_width="match_parent"
         android:layout_height="376dp"
         android:layout_marginTop="110dp">
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab_layout"
+            android:id="@+id/profile_tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

@@ -6,6 +6,6 @@
     <color name="colorPrimary">#AE6377</color>
     <color name="colorPrimaryDark">#5E2531</color>
     <color name="colorAccent">#635B61</color>
-
+<color name="profileBackground">#dfc1c9</color>
 
 </resources>
