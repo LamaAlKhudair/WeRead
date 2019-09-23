@@ -27,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -119,13 +120,32 @@ public class SignUp extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
-
-                            // Create a new user with a first and last name
+                            FirebaseUser userf = mAuth.getCurrentUser();
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
+                            userf.updateProfile(profileUpdates)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Log.d(TAG, "User profile updated.");
+                                            }
+                                        }
+                                    });
+                            userf.updateEmail(email)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Log.d(TAG, "User email address updated.");
+                                            }
+                                        }
+                                    });
+                           // Create a new user with a first and last name
                             Map<String, Object> user = new HashMap<>();
                             user.put("email", email);
                             user.put("name", name);
 
-// Add a new document with a generated ID
+                        // Add a new document with a generated ID
                             db.collection("users")
                                     .add(user)
                                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -179,9 +199,7 @@ public class SignUp extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // email sent
                             showDialog("Successfully create account, we have send to your email verification link to active your account. ");
-                        }
-                        else
-                        {
+                        } else {
                             // email not sent, so display message and restart the activity or do whatever you wish to do
                             Log.d(TAG, "there is problem the email doesn't send: ");
 
@@ -189,6 +207,7 @@ public class SignUp extends AppCompatActivity {
                     }
                 });
     }
+
     public void showDialog(String msg) {
         androidx.appcompat.app.AlertDialog.Builder alertDialog = new AlertDialog.Builder(SignUp.this);
         alertDialog.setMessage(msg);
@@ -203,11 +222,13 @@ public class SignUp extends AppCompatActivity {
         });
         alertDialog.show();
     }//end showDialog()
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }//end onSupportNavigateUp
+
     private void initToolBar() {
         setTitle("Create Account");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
