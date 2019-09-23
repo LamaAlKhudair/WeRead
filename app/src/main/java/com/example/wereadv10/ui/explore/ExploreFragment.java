@@ -1,17 +1,24 @@
 package com.example.wereadv10.ui.explore;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wereadv10.Book;
 import com.example.wereadv10.BooksAdapter;
@@ -35,20 +42,25 @@ import java.util.List;
 
 
 public class ExploreFragment extends Fragment {
-
+    private RecyclerView recyclerView;
     private com.example.wereadv10.dbSetUp dbSetUp;
-    TextView test ,more;
     private static final String TAG = "ExploreFragment";
     private ExploreBooksAdapter book_adapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-
         View root = inflater.inflate(R.layout.fragment_explore, container, false);
+        recyclerView = (RecyclerView) root.findViewById(R.id.rvHorizontal);
 
         dbSetUp = new dbSetUp();
-        book_adapter = new ExploreBooksAdapter(this,getFiveBooks();
+        book_adapter = new ExploreBooksAdapter(getParentFragment().getContext(),getFiveBooks());
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getParentFragment().getContext(), 1);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.addItemDecoration(new ExploreFragment.GridSpacingItemDecoration(2, dpToPx(10), true));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(book_adapter);
+        book_adapter.notifyDataSetChanged();
 
         more = root.findViewById(R.id.show_books);
         more.setOnClickListener(new View.OnClickListener() {
@@ -60,7 +72,7 @@ public class ExploreFragment extends Fragment {
         });
         return root;
     }
-    private  void getFiveBooks(){
+    private  List<Book> getFiveBooks(){
         final List<Book> FiveBooks = new ArrayList<Book>();
         CollectionReference bookRef = dbSetUp.db.collection("books");
         bookRef.limit(5).get()
@@ -115,7 +127,7 @@ public class ExploreFragment extends Fragment {
                         }
                     }
                 });
-
+            return FiveBooks;
     }
 
 
@@ -268,6 +280,47 @@ public class ExploreFragment extends Fragment {
                     }
                 });
     }
+    public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
+
+        private int spanCount;
+        private int spacing;
+        private boolean includeEdge;
+
+        public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
+            this.spanCount = spanCount;
+            this.spacing = spacing;
+            this.includeEdge = includeEdge;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            int position = parent.getChildAdapterPosition(view); // item position
+            int column = position % spanCount; // item column
+
+            if (includeEdge) {
+                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
+                outRect.right = (column + 1) * spacing / spanCount; // (column + 1) * ((1f / spanCount) * spacing)
+
+                if (position < spanCount) { // top edge
+                    outRect.top = spacing;
+                }
+                outRect.bottom = spacing; // item bottom
+            } else {
+                outRect.left = column * spacing / spanCount; // column * ((1f / spanCount) * spacing)
+                outRect.right = spacing - (column + 1) * spacing / spanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
+                if (position >= spanCount) {
+                    outRect.top = spacing; // item top
+                }
+            }
+        }
+
+    }
+
+    private int dpToPx(int dp) {
+        Resources r = getResources();
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
+    }
+
     private void getBooksBasedOnCategory(String book_category){
         // book_category
 
