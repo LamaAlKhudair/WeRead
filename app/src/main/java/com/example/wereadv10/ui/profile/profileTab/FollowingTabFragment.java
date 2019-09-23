@@ -13,9 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wereadv10.R;
-import com.example.wereadv10.SignUp;
 import com.example.wereadv10.dbSetUp;
-import com.example.wereadv10.ui.profile.profileTab.adapter.MyAdapter;
+import com.example.wereadv10.ui.profile.profileTab.adapter.FollowingAdapter;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
@@ -27,7 +26,7 @@ import java.util.List;
 public class FollowingTabFragment extends Fragment {
     private List<User> listData;
     private RecyclerView rv;
-    private MyAdapter adapter;
+    private FollowingAdapter adapter;
     private com.example.wereadv10.dbSetUp dbSetUp = new dbSetUp();
     @Nullable
     @Override
@@ -49,7 +48,7 @@ public class FollowingTabFragment extends Fragment {
                 // Convert query snapshot to a list of chats
 
                 List<User> users = queryDocumentSnapshots.toObjects(User.class);
-                adapter=new MyAdapter(users);
+                adapter=new FollowingAdapter(getContext(),users);
                 rv.setAdapter(adapter);
                 Toast.makeText(getContext(), "yesss",
                         Toast.LENGTH_LONG).show();

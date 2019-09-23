@@ -9,15 +9,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.wereadv10.R;
 import com.example.wereadv10.ui.profile.profileTab.User;
 
 import java.util.List;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
+public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.ViewHolder>{
 private List<User>listData;
 private     Context context;
-    public MyAdapter(Context context, List<User> listData) {
+    public FollowingAdapter(Context context, List<User> listData) {
 this.context = context;
     this.listData = listData;
         }
@@ -33,8 +34,10 @@ public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         User ld=listData.get(position);
         holder.txtname.setText(ld.getName());
-        holder.txtemail.setText(ld.getEmail());
-        }
+
+  //  Glide.with(context).load(video.getThumbnail()).into(holder.thumbnail);
+
+}
 
 @Override
 public int getItemCount() {
@@ -42,11 +45,10 @@ public int getItemCount() {
         }
 
 public class ViewHolder extends RecyclerView.ViewHolder{
-    private TextView txtname, txtemail;
+    private TextView txtname;
     public ViewHolder(View itemView) {
         super(itemView);
         txtname=(TextView)itemView.findViewById(R.id.following_name);
-        txtemail =(TextView)itemView.findViewById(R.id.following_email);
     }
 }
 }
