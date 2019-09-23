@@ -18,7 +18,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
     private Context mContext;
     private List<Book> booksList = new ArrayList<>();
     private static final String TAG = "BooksAdapter";
-    private dbSetUp dbSetUp;
+    private dbSetUp dbSetUp = new dbSetUp();
     OnItemClickListener mItemClickListener;
 
 
@@ -38,9 +38,10 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
         }
         @Override
         public void onClick(View view) {
+
             Intent intent = new Intent(view.getContext(), BookInfoFragment.class);
             intent.putExtra("TITLE", booksList.get(getAdapterPosition()).getBook_title());
-                    intent.putExtra("COVER", booksList.get(getAdapterPosition()).getCover());
+                  //  intent.putExtra("COVER", booksList.get(getAdapterPosition()).getCover());
                     intent.putExtra("AUTHOR", booksList.get(getAdapterPosition()).getAuthor());
                     Category cat=booksList.get(getAdapterPosition()).getBook_category();
                     intent.putExtra("CATEGORY", cat.toString());
@@ -63,9 +64,11 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
     }
 
     public BooksAdapter(Context mContext, List<Book> l) {
+        //System.out.println("ftom adapter:"+l.isEmpty());
+
         this.mContext = mContext;
         this.booksList = l;
-//        System.out.println("ftom adapter:"+l.isEmpty());
+       // System.out.println("ftom adapter:"+booksList.isEmpty());
     }
 
     @Override
@@ -89,8 +92,6 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
 
     @Override
     public int getItemCount() {
-        // يطلع نل اكسبشن اضطريت اسوي اف ايلس عشان يروح
-        // ملاحظه: ريوف مايطلع عندها اكسبشن هنا :)!!
         if (booksList!=null)
             return booksList.size();
         else return 0;

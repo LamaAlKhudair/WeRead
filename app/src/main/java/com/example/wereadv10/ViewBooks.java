@@ -8,13 +8,26 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import android.net.Uri;
+
+
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -26,6 +39,10 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +67,8 @@ public class ViewBooks extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.viewBooksRec);
 //        List<Book> books = getBooks();
+        bookList = new ArrayList<Book>();
+
         adapter = new BooksAdapter(this,getBooks()) ;//should pass a book list to the adapter
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -103,15 +122,47 @@ public class ViewBooks extends AppCompatActivity {
         dbSetUp.db.collection("books")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    Book book = new Book();
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
 
                             for (QueryDocumentSnapshot document : task.getResult()) {
+                                final Book book = new Book();
                                 String book_title = document.get("book_title").toString();
                                  String summary = document.get("summary").toString();
                                  String author = document.get("author").toString();
+                                 String bookCover = document.get("book_cover").toString();
+
+                                dbSetUp.storageRef.child("books_covers/"+bookCover).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        // Got the download URL for 'users/me/profile.png'
+                                        book.setCover(uri.toString());
+                                        System.out.println("Uriiiii"+uri.toString());
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception exception) {
+                                        // Handle any errors
+                                    }
+                                });
+                                      /*
+                                      // To byte
+                                      dbSetUp.storageRef.child("books_covers/"+bookCover).getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                             @Override
+                                             public void onSuccess(byte[] bytes) {
+                                                 // Use the bytes to display the image
+                                                 System.out.println("byyyyye"+bytes);
+                                             }
+                                         }).addOnFailureListener(new OnFailureListener() {
+                                             @Override
+                                             public void onFailure(@NonNull Exception exception) {
+                                                 // Handle any errors
+                                             }
+                                         });*/
+
+
+
                                 book.setBook_title(book_title);
                                 book.setSummary(summary);
                                 book.setAuthor(author);
@@ -215,14 +266,15 @@ public class ViewBooks extends AppCompatActivity {
                 }
             }
         }
+
     }
+
 
 
     private int dpToPx(int dp) {
         Resources r = getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
-
 
     @Override
     public void onBackPressed() {
@@ -231,5 +283,8 @@ public class ViewBooks extends AppCompatActivity {
         startActivity(i);
         finish();
     }
+
+
 }
+
 

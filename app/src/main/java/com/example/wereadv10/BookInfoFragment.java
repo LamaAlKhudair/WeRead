@@ -20,6 +20,7 @@ public class BookInfoFragment extends Fragment {
         getExtras();
         bookTitle=view.findViewById(R.id.bookName);
         add=view.findViewById(R.id.addToShelf);
+
         return view;
     }
 
@@ -28,8 +29,12 @@ public class BookInfoFragment extends Fragment {
     private void getExtras() {
         Bundle bundle = getArguments();
         if (bundle != null) {
+       // System.out.println("From fraq"+bundle.getString("Title"));
+
+
             bookTitle.setText(bundle.getString("TITLE"));
-           //todo
+        }else{
+           // System.out.println("bandel is null!!!!!");
         }
     }
 

@@ -1,5 +1,7 @@
 package com.example.wereadv10;
 
+import android.graphics.Bitmap;
+
 import com.google.firebase.firestore.DocumentReference;
 
 public class Book {
@@ -9,7 +11,7 @@ public class Book {
     private Category book_category;
     private String book_title;
     private String summary;
-    private int cover;
+    private String cover;
 
 
     public Book() {
@@ -45,7 +47,7 @@ public class Book {
         return summary;
     }
 
-    public int getCover() {
+    public String getCover() {
         return cover;
     }
 
@@ -70,7 +72,7 @@ public class Book {
         this.summary = summary;
     }
 
-    public void setCover(int cover) {
+    public void setCover(String cover) {
         this.cover = cover;
     }
 }
