@@ -56,18 +56,10 @@ public class ExploreFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_explore, container, false);
 
         recyclerView = (RecyclerView) root.findViewById(R.id.rvHorizontal);
-        recyclerView.setLayoutManager ( new LinearLayoutManager(this.getContext()));
 
         dbSetUp = new dbSetUp();
-        FiveBooks = getFiveBooks();
+         getFiveBooks();
 
-        book_adapter = new ExploreBooksAdapter(getParentFragment().getContext(), FiveBooks);
-
-       // recyclerView.addItemDecoration(new ExploreFragment.GridSpacingItemDecoration(2, dpToPx(10), true));
-
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(book_adapter);
-        book_adapter.notifyDataSetChanged();
 
 
         more = root.findViewById(R.id.show_books);
@@ -90,6 +82,11 @@ public class ExploreFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            book_adapter = new ExploreBooksAdapter(getParentFragment().getContext(), FiveBooks);
+                            recyclerView.setLayoutManager ( new LinearLayoutManager(ExploreFragment.this.getContext()));
+                            recyclerView.setItemAnimator(new DefaultItemAnimator());
+                            recyclerView.setAdapter(book_adapter);
+
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 final Book book = new Book();
                                 String book_title = document.get("book_title").toString();
@@ -129,6 +126,8 @@ public class ExploreFragment extends Fragment {
                                                 }
 
                                                 FiveBooks.add(book);
+                                                book_adapter.notifyDataSetChanged();
+
                                                 System.out.println("ISSS EMPTY"+FiveBooks.isEmpty());
 
                                             }
