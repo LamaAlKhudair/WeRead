@@ -21,7 +21,7 @@ public class ExploreBooksAdapter extends RecyclerView.Adapter<ExploreBooksAdapte
     private List<Book> booksList = new ArrayList<>();
     private static final String TAG = "ExploreBooksAdapter";
     private dbSetUp dbSetUp = new dbSetUp();
-    ExploreBooksAdapter.OnItemClickListener mItemClickListener;
+    OnItemClickListener mItemClickListener;
 
 
 
@@ -42,37 +42,42 @@ public class ExploreBooksAdapter extends RecyclerView.Adapter<ExploreBooksAdapte
         public void onClick(View view) {
 
             Intent intent = new Intent(view.getContext(), BookInfoFragment.class);
-            intent.putExtra("COVER", booksList.get(getAdapterPosition()).getCover());
+            intent.putExtra("TITLE", booksList.get(getAdapterPosition()).getBook_title());
+            //  intent.putExtra("COVER", booksList.get(getAdapterPosition()).getCover());
+            intent.putExtra("AUTHOR", booksList.get(getAdapterPosition()).getAuthor());
+            Category cat=booksList.get(getAdapterPosition()).getBook_category();
+            intent.putExtra("CATEGORY", cat.toString());
+
             mContext.startActivity(intent);
         }
 
-
     }//End MyViewHolder Class
+
     public interface OnItemClickListener{
         public void onItemClick(View view, int Position);
     }
 
-    public void SetOnItemClickListner(final ExploreBooksAdapter.OnItemClickListener mItemClickListener){
+    public void SetOnItemClickListner(final OnItemClickListener mItemClickListener){
         this.mItemClickListener = mItemClickListener;
     }
 
     public ExploreBooksAdapter(Context mContext, List<Book> l) {
         this.mContext = mContext;
         this.booksList = l;
-        System.out.println("BOOKLIISST"+booksList.isEmpty());
+       // System.out.println("BOOKLIISST"+booksList.isEmpty());
     }
 
     @Override
-    public ExploreBooksAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.book_card, parent, false);
 
-        return new ExploreBooksAdapter.MyViewHolder(itemView);
+        return new MyViewHolder(itemView);
     }
 
 
     @Override
-    public void onBindViewHolder(final ExploreBooksAdapter.MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         Book book = booksList.get(position);
         holder.title.setText(book.getBook_title());
         Glide.with(mContext).load(booksList.get(position).getCover()).into(holder.cardImg);

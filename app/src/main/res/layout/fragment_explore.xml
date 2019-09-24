@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -46,6 +46,7 @@
         <!--recycler view for horizontal listing-->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvHorizontal"
+            tools:listitem="@layout/book_card"
             android:layout_width="match_parent"
             android:layout_height="160dp"
             android:layout_marginLeft="15dp"
@@ -100,5 +101,5 @@
 
     </LinearLayout>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>
 

@@ -59,6 +59,7 @@ public class ViewBooks extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.viewbooks);
         SearchView searchView = findViewById(R.id.search_view);

@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wereadv10.Book;
@@ -53,15 +54,17 @@ public class ExploreFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_explore, container, false);
+
         recyclerView = (RecyclerView) root.findViewById(R.id.rvHorizontal);
+        recyclerView.setLayoutManager ( new LinearLayoutManager(this.getContext()));
 
         dbSetUp = new dbSetUp();
-
         FiveBooks = getFiveBooks();
-        book_adapter = new ExploreBooksAdapter(getParentFragment().getContext(),FiveBooks);
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getParentFragment().getContext(), 2);
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new ExploreFragment.GridSpacingItemDecoration(2, dpToPx(10), true));
+
+        book_adapter = new ExploreBooksAdapter(getParentFragment().getContext(), FiveBooks);
+
+       // recyclerView.addItemDecoration(new ExploreFragment.GridSpacingItemDecoration(2, dpToPx(10), true));
+
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(book_adapter);
         book_adapter.notifyDataSetChanged();
@@ -78,6 +81,8 @@ public class ExploreFragment extends Fragment {
 
         return root;
     }
+
+
     private  List<Book> getFiveBooks(){
         CollectionReference bookRef = dbSetUp.db.collection("books");
         bookRef.limit(5).get()
