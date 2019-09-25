@@ -217,7 +217,6 @@ public class ExploreFragment extends Fragment {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 System.out.println(document.getData());
-                                System.out.println("LAMA");
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());

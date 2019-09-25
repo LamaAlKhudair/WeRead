@@ -53,8 +53,6 @@ public class ViewBooks extends AppCompatActivity {
     private   List<Book> bookList;
     private static final String TAG = "ViewBooks";
     private dbSetUp dbSetUp = new dbSetUp();
-//    private FirestoreRecyclerAdapter<Book, BookViewHolder> adapter;
-
 
 
 
@@ -67,41 +65,8 @@ public class ViewBooks extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         recyclerView = (RecyclerView) findViewById(R.id.viewBooksRec);
-//        List<Book> books = getBooks();
         bookList = new ArrayList<Book>();
         getBooks();
-
-
-
-
-        //sol. 2
-        //هنا يطلع ايرور غريب (  book class not found ( line 71
-
-//        Query query =dbSetUp.db.collection("books")
-//                .orderBy("book_title", Query.Direction.ASCENDING) ;
-//
-//        FirestoreRecyclerOptions<Book> options = new FirestoreRecyclerOptions.Builder<Book>()
-//                .setQuery(query, Book.class)
-//                .build();
-//
-//        adapter = new FirestoreRecyclerAdapter<Book, BookViewHolder>(options) {
-//
-//            @NonNull
-//            @Override
-//            public BookViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.book_card, parent, false);
-//                return new BookViewHolder(view);
-//            }
-//
-//            @Override
-//            protected void onBindViewHolder(@NonNull BookViewHolder bookViewHolder, int i, @NonNull Book book) {
-//                bookViewHolder.setBookName(book.getBook_title());
-//            }
-//        };
-//
-//        recyclerView.setAdapter(adapter);
-//        adapter.notifyDataSetChanged();
-
     }//End onCreate()
 
 
@@ -172,8 +137,6 @@ public class ViewBooks extends AppCompatActivity {
                                             }
                                         });
                             }
-//                            System.out.println("bookList is empty fromm inside!!!"+bookList.isEmpty());
-//                            adapter.updateBooksList(bookList);
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
                         }
@@ -184,37 +147,6 @@ public class ViewBooks extends AppCompatActivity {
 //        System.out.println("bookList is empty??"+bookList.isEmpty());
     }
 
-
-    //sol. 2
-
-//    private class BookViewHolder extends RecyclerView.ViewHolder {
-//        private View view;
-//
-//        BookViewHolder(View itemView) {
-//            super(itemView);
-//            view = itemView;
-//        }
-//
-//        void setBookName(String title) {
-//            TextView textView = view.findViewById(R.id.bookName);
-//            textView.setText(title);
-//        }
-//    }
-//
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        adapter.startListening();
-//    }
-//
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//
-//        if (adapter != null) {
-//            adapter.stopListening();
-//        }
-//    }
 
 
 

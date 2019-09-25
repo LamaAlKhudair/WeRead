@@ -64,7 +64,6 @@ public class ExploreBooksAdapter extends RecyclerView.Adapter<ExploreBooksAdapte
     public ExploreBooksAdapter(Context mContext, List<Book> l) {
         this.mContext = mContext;
         this.booksList = l;
-       // System.out.println("BOOKLIISST"+booksList.isEmpty());
     }
 
     @Override

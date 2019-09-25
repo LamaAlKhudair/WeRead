@@ -64,11 +64,8 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
     }
 
     public BooksAdapter(Context mContext, List<Book> l) {
-        //System.out.println("ftom adapter:"+l.isEmpty());
-
         this.mContext = mContext;
         this.booksList = l;
-       // System.out.println("ftom adapter:"+booksList.isEmpty());
     }
 
     @Override
