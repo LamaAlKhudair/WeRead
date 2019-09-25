@@ -8,7 +8,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.profile.profileTab.ProfileSettingActivity"></activity>
+        <activity android:name="com.example.categorypart.categoryPage"></activity>
+        <activity android:name=".Main2Activity" />
+        <activity android:name=".ui.profile.profileTab.ProfileSettingActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".SignUp" />
         <activity android:name=".ForgotPasswordActivity" />
@@ -20,11 +22,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity" />
-        <activity android:name=".ViewBooks">
+        <activity android:name=".ui.books.ViewBooks">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.books.oneBook.bookPage" />
     </application>
 
 </manifest>

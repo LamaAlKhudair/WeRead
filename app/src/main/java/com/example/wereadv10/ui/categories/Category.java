@@ -1,7 +1,8 @@
-package com.example.wereadv10;
+package com.example.wereadv10.ui.categories;
 
 public class Category {
     private String category_name;
+   //todo we need id here
 
     public Category(){}
     public Category(String id , String category_name) {
