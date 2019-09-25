@@ -12,7 +12,8 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".SignUp" />
         <activity android:name=".ForgotPasswordActivity" />
-        <activity android:name=".Splash">
+        <activity android:name=".Splash"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,11 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity" />
-        <activity android:name=".ViewBooks">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".ViewBooks"/>
     </application>
 
 </manifest>
