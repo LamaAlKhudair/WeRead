@@ -3,9 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorAccent"
     >
-
 
     <ImageView
         android:id="@+id/bookCover"
@@ -13,8 +11,7 @@
         android:layout_height="233dp"
         android:layout_gravity="left"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="100dp"
-        app:srcCompat="@mipmap/ic_launcher" />
+        android:layout_marginTop="90dp" />
 
     <TextView
         android:id="@+id/bookName"
@@ -42,21 +39,24 @@
         android:layout_marginLeft="250dp"
         android:textStyle="bold"
         android:layout_marginTop="30dp"
-        android:text="+add"
+        android:text="+add to shelf"
         android:clickable="true"
         android:textColor="@color/colorPrimaryDark" />
-<!--todo onclick here-->
+
 
     <androidx.viewpager.widget.ViewPager
-        android:id="@+id/profile_viewPager"
+        android:id="@+id/bookInfo_viewPager"
         android:layout_width="match_parent"
         android:layout_height="376dp"
-        android:layout_marginTop="110dp">
+        android:layout_marginTop="60dp">
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/profile_tab_layout"
+            android:id="@+id/bookInfo_tab_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:tabGravity="fill"
+            app:tabMode="fixed"
+            app:tabTextColor="@color/colorPrimaryDark" />
 
     </androidx.viewpager.widget.ViewPager>
 

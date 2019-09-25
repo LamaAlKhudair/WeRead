@@ -27,7 +27,7 @@ import com.example.wereadv10.Category;
 import com.example.wereadv10.ExploreBooksAdapter;
 import com.example.wereadv10.ForgotPasswordActivity;
 import com.example.wereadv10.R;
-import com.example.wereadv10.ViewBooks;
+import com.example.wereadv10.ui.books.ViewBooks;
 import com.example.wereadv10.dbSetUp;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;

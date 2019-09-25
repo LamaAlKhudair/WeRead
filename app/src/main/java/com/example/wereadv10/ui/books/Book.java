@@ -1,8 +1,6 @@
-package com.example.wereadv10;
+package com.example.wereadv10.ui.books;
 
-import android.graphics.Bitmap;
-
-import com.google.firebase.firestore.DocumentReference;
+import com.example.wereadv10.ui.categories.Category;
 
 public class Book {
 
