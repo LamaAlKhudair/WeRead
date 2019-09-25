@@ -2,7 +2,7 @@ package com.example.wereadv10.ui.books.oneBook.reviews;
 
 class Review {
 
-    private String userName; //for now
+    private String userName; // String for now
     private String text;
 //    rate here
 

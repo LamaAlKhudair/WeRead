@@ -13,17 +13,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.wereadv10.ui.books.Book;
+import com.example.wereadv10.ui.books.oneBook.bookPage;
 import com.example.wereadv10.ui.categories.Category;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExploreBooksAdapter extends RecyclerView.Adapter<ExploreBooksAdapter.MyViewHolder> implements ItemClickListener {
+public class ExploreBooksAdapter extends RecyclerView.Adapter<ExploreBooksAdapter.MyViewHolder>  {
     private Context mContext;
     private List<Book> booksList = new ArrayList<>();
     private static final String TAG = "ExploreBooksAdapter";
     private dbSetUp dbSetUp = new dbSetUp();
-    OnItemClickListener mItemClickListener;
 
 
 
@@ -31,19 +31,17 @@ public class ExploreBooksAdapter extends RecyclerView.Adapter<ExploreBooksAdapte
         public TextView title;
         public ImageView cardImg;
         private CardView card;
-        private ItemClickListener itemClickListener;
 
         public MyViewHolder(View view) {
             super(view);
             cardImg = (ImageView) view.findViewById(R.id.cardImg);
-            title = (TextView) view.findViewById(R.id.Title);
             card = (CardView) view.findViewById(R.id.card_view);
             card.setOnClickListener(this);
         }
         @Override
         public void onClick(View view) {
 
-            Intent intent = new Intent(view.getContext(), BookInfoFragment.class);
+            Intent intent = new Intent(view.getContext(), bookPage.class);
             intent.putExtra("TITLE", booksList.get(getAdapterPosition()).getBook_title());
             //  intent.putExtra("COVER", booksList.get(getAdapterPosition()).getCover());
             intent.putExtra("AUTHOR", booksList.get(getAdapterPosition()).getAuthor());
@@ -55,13 +53,9 @@ public class ExploreBooksAdapter extends RecyclerView.Adapter<ExploreBooksAdapte
 
     }//End MyViewHolder Class
 
-    public interface OnItemClickListener{
-        public void onItemClick(View view, int Position);
-    }
 
-    public void SetOnItemClickListner(final OnItemClickListener mItemClickListener){
-        this.mItemClickListener = mItemClickListener;
-    }
+
+
 
     public ExploreBooksAdapter(Context mContext, List<Book> l) {
         this.mContext = mContext;
@@ -81,7 +75,6 @@ public class ExploreBooksAdapter extends RecyclerView.Adapter<ExploreBooksAdapte
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         Book book = booksList.get(position);
-        holder.title.setText(book.getBook_title());
         Glide.with(mContext).load(booksList.get(position).getCover()).into(holder.cardImg);
 
 
@@ -95,10 +88,7 @@ public class ExploreBooksAdapter extends RecyclerView.Adapter<ExploreBooksAdapte
         else return 0;
     }
 
-    @Override
-    public void onItemClick(View v, int pos) {
 
-    }
 
 }
 

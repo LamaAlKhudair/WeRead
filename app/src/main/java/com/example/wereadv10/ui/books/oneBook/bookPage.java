@@ -1,12 +1,10 @@
 package com.example.wereadv10.ui.books.oneBook;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
-import com.example.wereadv10.R;
-import com.example.wereadv10.ui.books.oneBook.reviews.ReviewsTab;
-import com.google.android.material.tabs.TabLayout;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,14 +13,23 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
+
+import com.example.wereadv10.R;
+import com.example.wereadv10.ui.books.oneBook.reviews.ReviewsTab;
+import com.google.android.material.tabs.TabLayout;
+
 public class bookPage extends AppCompatActivity implements View.OnClickListener , PopupMenu.OnMenuItemClickListener {
     public TextView bookTitle;
     public TextView add;
     public ImageView bookCover;
     private ViewPager viewPager;
+    private Bitmap bitmap;
     private bookInfoTab infoFragment=new bookInfoTab();;
     private ReviewsTab reviewsTab = new ReviewsTab();
     TabsAdapter tabsAdapter;
+    private Context mContext;
 
 
     @Override
@@ -58,10 +65,20 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
             if (intent.getExtras().getString("TITLE") != null)
                 bookTitle.setText(intent.getExtras().getString("TITLE"));
             if (intent.getExtras().getString("COVER") != null)
-                bookCover.setImageResource(getImageId(this, intent.getExtras().getString("COVER")));
+//                bookCover.setImageResource(getImageId(this, intent.getExtras().getString("COVER")));
+            {
+                Uri selectedImageUri = Uri.parse(intent.getExtras().getString("COVER")) ;
+                String filestring = selectedImageUri.getPath();
+                Bitmap img = BitmapFactory.decodeFile(filestring);
+                bookCover.setImageBitmap(img);
+
+            }
+
 
         }
     }
+
+
 
     public int getImageId(Context context, String imageName) {
         Intent intent = getIntent();
@@ -69,11 +86,38 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
     }
 
 
-
+//    public void pickImage(View View) {
+//        Intent intent = new Intent();
+//        intent.setType("image/*");
+//        intent.setAction(Intent.ACTION_GET_CONTENT);
+//        intent.addCategory(Intent.CATEGORY_OPENABLE);
+//        startActivityForResult(intent, 1);
+//    }
+//
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if (requestCode == 1 && resultCode == Activity.RESULT_OK)
+//            try {
+//                // We need to recyle unused bitmaps
+//                if (bitmap != null) {
+//                    bitmap.recycle();
+//                }
+//                InputStream stream = getContentResolver().openInputStream(
+//                        data.getData());
+//                bitmap = BitmapFactory.decodeStream(stream);
+//                stream.close();
+//                bookCover.setImageBitmap(bitmap);
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        super.onActivityResult(requestCode, resultCode, data);
+//    }
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        if (item.getItemId()!=R.id.cancel) {
+        if (item.getItemId()!= R.id.cancel) {
             Toast.makeText(this, "The book has been added successfully", Toast.LENGTH_SHORT).show(); //todo enhance the behavior
             return true;
         }

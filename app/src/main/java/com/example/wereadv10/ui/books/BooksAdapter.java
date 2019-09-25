@@ -6,12 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import androidx.cardview.widget.CardView;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
-import com.example.wereadv10.ui.books.oneBook.bookPage;
 import com.example.wereadv10.R;
 import com.example.wereadv10.dbSetUp;
+import com.example.wereadv10.ui.books.oneBook.bookPage;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +40,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
                     intent.putExtra("TITLE", booksList.get(getAdapterPosition()).getBook_title());
                     intent.putExtra("COVER", booksList.get(getAdapterPosition()).getCover());
                     intent.putExtra("AUTHOR", booksList.get(getAdapterPosition()).getAuthor());
-//                    intent.putExtra("CATEGORY", booksList.get(getAdapterPosition()).getBook_category().toString()); //generate an error
+                    intent.putExtra("CATEGORY", booksList.get(getAdapterPosition()).getBook_category().getCategory_name()); //generate an error
                     intent.putExtra("SUMMARY", booksList.get(getAdapterPosition()).getSummary());
 
             mContext.startActivity(intent);
