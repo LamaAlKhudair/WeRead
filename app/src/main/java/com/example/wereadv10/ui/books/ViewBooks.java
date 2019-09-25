@@ -1,48 +1,28 @@
-package com.example.wereadv10;
+package com.example.wereadv10.ui.books;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-
+import com.example.wereadv10.ui.categories.Category;
+import com.example.wereadv10.R;
+import com.example.wereadv10.dbSetUp;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.FirebaseStorage;
 import android.net.Uri;
-
-
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.Parcel;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.SearchView;
-import android.widget.TextView;
-
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.StorageReference;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,8 +31,7 @@ public class ViewBooks extends AppCompatActivity {
     private BooksAdapter adapter;
     private   List<Book> bookList;
     private static final String TAG = "ViewBooks";
-    private dbSetUp dbSetUp = new dbSetUp();
-//    private FirestoreRecyclerAdapter<Book, BookViewHolder> adapter;
+    private com.example.wereadv10.dbSetUp dbSetUp = new dbSetUp();
 
 
 
@@ -62,12 +41,11 @@ public class ViewBooks extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.viewbooks);
-        SearchView searchView = findViewById(R.id.search_view);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle("Books");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        SearchView searchView = findViewById(R.id.search_view);
         recyclerView = (RecyclerView) findViewById(R.id.viewBooksRec);
-//        List<Book> books = getBooks();
         bookList = new ArrayList<Book>();
 
         adapter = new BooksAdapter(this,getBooks()) ;//should pass a book list to the adapter
@@ -78,45 +56,11 @@ public class ViewBooks extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
-
-
-        //sol. 2
-        //هنا يطلع ايرور غريب (  book class not found ( line 71
-
-//        Query query =dbSetUp.db.collection("books")
-//                .orderBy("book_title", Query.Direction.ASCENDING) ;
-//
-//        FirestoreRecyclerOptions<Book> options = new FirestoreRecyclerOptions.Builder<Book>()
-//                .setQuery(query, Book.class)
-//                .build();
-//
-//        adapter = new FirestoreRecyclerAdapter<Book, BookViewHolder>(options) {
-//
-//            @NonNull
-//            @Override
-//            public BookViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.book_card, parent, false);
-//                return new BookViewHolder(view);
-//            }
-//
-//            @Override
-//            protected void onBindViewHolder(@NonNull BookViewHolder bookViewHolder, int i, @NonNull Book book) {
-//                bookViewHolder.setBookName(book.getBook_title());
-//            }
-//        };
-//
-//        recyclerView.setAdapter(adapter);
-//        adapter.notifyDataSetChanged();
-
     }//End onCreate()
 
 
 
 
-
-
-
-    //sol. 1
 
     private List<Book> getBooks() {
 
@@ -188,8 +132,6 @@ public class ViewBooks extends AppCompatActivity {
                                                     }
                                                 });
                             }
-//                            System.out.println("bookList is empty fromm inside!!!"+bookList.isEmpty());
-//                            adapter.updateBooksList(bookList);
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
                         }
@@ -197,40 +139,8 @@ public class ViewBooks extends AppCompatActivity {
                 });
 
                return bookList;
-//        System.out.println("bookList is empty??"+bookList.isEmpty());
     }
 
-
-    //sol. 2
-
-//    private class BookViewHolder extends RecyclerView.ViewHolder {
-//        private View view;
-//
-//        BookViewHolder(View itemView) {
-//            super(itemView);
-//            view = itemView;
-//        }
-//
-//        void setBookName(String title) {
-//            TextView textView = view.findViewById(R.id.bookName);
-//            textView.setText(title);
-//        }
-//    }
-//
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        adapter.startListening();
-//    }
-//
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//
-//        if (adapter != null) {
-//            adapter.stopListening();
-//        }
-//    }
 
 
 
@@ -277,14 +187,12 @@ public class ViewBooks extends AppCompatActivity {
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 
-    @Override
-    public void onBackPressed() {
-            super.onBackPressed();
-        Intent i = new Intent(this, MainActivity.class);
-        startActivity(i);
-        finish();
-    }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 
 }
 
