@@ -52,9 +52,6 @@ public class ViewBooks extends AppCompatActivity {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        //todo scroll to the end
-//        recyclerView.scrollToPosition(adapter.getItemCount() - 1);
-//        recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
