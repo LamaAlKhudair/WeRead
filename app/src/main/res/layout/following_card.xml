@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/test"
+        android:background="@color/profileBackground"
         >
 <TextView
     android:id="@+id/following_name"
