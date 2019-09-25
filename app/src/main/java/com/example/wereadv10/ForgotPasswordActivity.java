@@ -42,7 +42,7 @@ Button restPasswordBtn;
                 String email = emailEt.getText().toString();
 
                 if (email.equals("")) {
-                    Toast.makeText(getApplication(), "Enter your email id please ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplication(), "Enter your email please ", Toast.LENGTH_SHORT).show();
                     return;
                 }
 

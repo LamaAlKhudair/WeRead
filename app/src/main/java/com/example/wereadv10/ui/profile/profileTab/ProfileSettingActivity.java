@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.example.wereadv10.LoginActivity;
 import com.example.wereadv10.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 
 public class ProfileSettingActivity extends AppCompatActivity implements View.OnClickListener {
     LinearLayout nameLL, passwordLL, logoutLL;
@@ -37,6 +39,23 @@ public class ProfileSettingActivity extends AppCompatActivity implements View.On
         passwordLL.setOnClickListener(this);
         logoutLL.setOnClickListener(this);
         initToolBar();
+
+
+        //to display the name
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null) {
+            String name = user.getDisplayName();
+            // If the above were null, iterate the provider data
+            // and set with the first non null data
+            for (UserInfo userInfo : user.getProviderData()) {
+                if (name == null && userInfo.getDisplayName() != null) {
+                    name = userInfo.getDisplayName();
+                }
+            }
+            nameTV.setText(name);
+        }
+
     }
 
     @Override
