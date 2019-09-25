@@ -30,6 +30,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -59,7 +60,6 @@ public class ViewBooks extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.viewbooks);
         SearchView searchView = findViewById(R.id.search_view);
@@ -69,14 +69,8 @@ public class ViewBooks extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.viewBooksRec);
 //        List<Book> books = getBooks();
         bookList = new ArrayList<Book>();
+        getBooks();
 
-        adapter = new BooksAdapter(this,getBooks()) ;//should pass a book list to the adapter
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
 
 
 
@@ -126,13 +120,19 @@ public class ViewBooks extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-
+                            adapter = new BooksAdapter(ViewBooks.this,bookList) ;//should pass a book list to the adapter
+                            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(ViewBooks.this, 2);
+                            recyclerView.setLayoutManager(mLayoutManager);
+                            recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+                            recyclerView.setItemAnimator(new DefaultItemAnimator());
+                            recyclerView.setAdapter(adapter);
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 final Book book = new Book();
                                 String book_title = document.get("book_title").toString();
-                                 String summary = document.get("summary").toString();
-                                 String author = document.get("author").toString();
-                                 String bookCover = document.get("book_cover").toString();
+                                String summary = document.get("summary").toString();
+                                String author = document.get("author").toString();
+                                String bookCover = document.get("book_cover").toString();
+                                Toast.makeText(ViewBooks.this, "yesss", Toast.LENGTH_LONG).show();
 
                                 dbSetUp.storageRef.child("books_covers/"+bookCover).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
@@ -147,23 +147,6 @@ public class ViewBooks extends AppCompatActivity {
                                         // Handle any errors
                                     }
                                 });
-                                      /*
-                                      // To byte
-                                      dbSetUp.storageRef.child("books_covers/"+bookCover).getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                                             @Override
-                                             public void onSuccess(byte[] bytes) {
-                                                 // Use the bytes to display the image
-                                                 System.out.println("byyyyye"+bytes);
-                                             }
-                                         }).addOnFailureListener(new OnFailureListener() {
-                                             @Override
-                                             public void onFailure(@NonNull Exception exception) {
-                                                 // Handle any errors
-                                             }
-                                         });*/
-
-
-
                                 book.setBook_title(book_title);
                                 book.setSummary(summary);
                                 book.setAuthor(author);
@@ -171,22 +154,23 @@ public class ViewBooks extends AppCompatActivity {
                                 String path = doc.getPath();
                                 String col = path.substring(0, path.indexOf("/"));
                                 String doc3 = path.substring(path.indexOf("/")+1);
-                                        dbSetUp.db.collection(col).whereEqualTo("category_name", doc3)
-                                                .get()
-                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                        if (task.isSuccessful()) {
-                                                            for (QueryDocumentSnapshot document2 : task.getResult()) {
-                                                                Category book_cat = document2.toObject(Category.class);
-                                                                book.setBook_category(book_cat);
-                                                            }
-                                                        } else {
-                                                            Log.d(TAG, "Error getting documents: ", task.getException());
-                                                        }
-                                                        bookList.add(book);
+                                dbSetUp.db.collection(col).whereEqualTo("category_name", doc3)
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    for (QueryDocumentSnapshot document2 : task.getResult()) {
+                                                        Category book_cat = document2.toObject(Category.class);
+                                                        book.setBook_category(book_cat);
                                                     }
-                                                });
+                                                } else {
+                                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                                }
+                                                bookList.add(book);
+                                                adapter.notifyDataSetChanged();
+                                            }
+                                        });
                             }
 //                            System.out.println("bookList is empty fromm inside!!!"+bookList.isEmpty());
 //                            adapter.updateBooksList(bookList);
@@ -196,7 +180,7 @@ public class ViewBooks extends AppCompatActivity {
                     }
                 });
 
-               return bookList;
+        return bookList;
 //        System.out.println("bookList is empty??"+bookList.isEmpty());
     }
 
@@ -279,7 +263,7 @@ public class ViewBooks extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-            super.onBackPressed();
+        super.onBackPressed();
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
         finish();
@@ -287,5 +271,3 @@ public class ViewBooks extends AppCompatActivity {
 
 
 }
-
-
