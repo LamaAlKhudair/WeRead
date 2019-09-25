@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.wereadv10.LoginActivity;
 import com.example.wereadv10.R;
+import com.example.wereadv10.SignUp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
@@ -77,7 +78,8 @@ public class ProfileSettingActivity extends AppCompatActivity implements View.On
                 break;
 
             case R.id.profile_setting_resetPasswordLL:
-
+                Intent intent = new Intent(ProfileSettingActivity.this, ChangePasswordActivity.class);
+                startActivity(intent);
                 break;
 
             case R.id.profile_setting_logoutLL:

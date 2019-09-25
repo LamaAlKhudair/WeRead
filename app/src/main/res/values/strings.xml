@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WeREad.V1.0</string>
+    <string name="app_name">WeRead</string>
     <string name="title_activity_book_info">BookInfo</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>

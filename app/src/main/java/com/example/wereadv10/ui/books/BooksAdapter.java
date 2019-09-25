@@ -37,11 +37,11 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
         public void onClick(View view) {
 
             Intent intent = new Intent(view.getContext(), bookPage.class);
-                    intent.putExtra("TITLE", booksList.get(getAdapterPosition()).getBook_title());
-                    intent.putExtra("COVER", booksList.get(getAdapterPosition()).getCover());
-                    intent.putExtra("AUTHOR", booksList.get(getAdapterPosition()).getAuthor());
-                    intent.putExtra("CATEGORY", booksList.get(getAdapterPosition()).getBook_category().getCategory_name()); //generate an error
-                    intent.putExtra("SUMMARY", booksList.get(getAdapterPosition()).getSummary());
+            intent.putExtra("TITLE", booksList.get(getAdapterPosition()).getBook_title());
+            intent.putExtra("COVER", booksList.get(getAdapterPosition()).getCover());
+            intent.putExtra("AUTHOR", booksList.get(getAdapterPosition()).getAuthor());
+            intent.putExtra("CATEGORY", booksList.get(getAdapterPosition()).getBook_category().getCategory_name()); //generate an error
+            intent.putExtra("SUMMARY", booksList.get(getAdapterPosition()).getSummary());
 
             mContext.startActivity(intent);
         }
@@ -75,7 +75,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
 
     @Override
     public int getItemCount() {
-            return booksList.size();
+        return booksList.size();
     }
 
 
