@@ -35,18 +35,17 @@ public class ExploreBooksAdapter extends RecyclerView.Adapter<ExploreBooksAdapte
         public MyViewHolder(View view) {
             super(view);
             cardImg = (ImageView) view.findViewById(R.id.cardImg);
-            card = (CardView) view.findViewById(R.id.card_view);
-            card.setOnClickListener(this);
+            cardImg.setOnClickListener(this);
         }
         @Override
         public void onClick(View view) {
 
             Intent intent = new Intent(view.getContext(), bookPage.class);
             intent.putExtra("TITLE", booksList.get(getAdapterPosition()).getBook_title());
-            //  intent.putExtra("COVER", booksList.get(getAdapterPosition()).getCover());
+            intent.putExtra("COVER", booksList.get(getAdapterPosition()).getCover());
             intent.putExtra("AUTHOR", booksList.get(getAdapterPosition()).getAuthor());
-            Category cat=booksList.get(getAdapterPosition()).getBook_category();
-            intent.putExtra("CATEGORY", cat.toString());
+            intent.putExtra("CATEGORY", booksList.get(getAdapterPosition()).getBook_category().getCategory_name()); //generate an error
+            intent.putExtra("SUMMARY", booksList.get(getAdapterPosition()).getSummary());
 
             mContext.startActivity(intent);
         }

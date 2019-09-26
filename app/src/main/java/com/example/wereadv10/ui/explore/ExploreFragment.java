@@ -59,8 +59,8 @@ public class ExploreFragment extends Fragment {
     private RecyclerView.Adapter rvBooks_adapter;
     private RecyclerView.Adapter rvClubs_adapter;
 
-    private RecyclerView.LayoutManager rvBooks_LayoutManager; // to be deleted
-    private RecyclerView.LayoutManager rvClubs_mLayoutManager; // to be deleted
+    private RecyclerView.LayoutManager rvBooks_LayoutManager;
+    private RecyclerView.LayoutManager rvClubs_mLayoutManager;
 
     private List<Book> FiveBooks = new ArrayList<>();
     private List<Club> FiveClubs = new ArrayList<>();
@@ -76,7 +76,8 @@ public class ExploreFragment extends Fragment {
         rvBooks = (RecyclerView) root.findViewById(R.id.rvHorizontal);
         rvClubs = (RecyclerView) root.findViewById(R.id.rvVertical);
 
-        rvBooks.setLayoutManager ( new LinearLayoutManager(ExploreFragment.this.getContext()));
+        rvBooks_LayoutManager = new LinearLayoutManager(ExploreFragment.this.getContext(), LinearLayoutManager.HORIZONTAL, false);
+        rvBooks.setLayoutManager ( rvBooks_LayoutManager );
         rvClubs.setLayoutManager ( new LinearLayoutManager(ExploreFragment.this.getContext()));
 
         rvBooks_adapter = new ExploreBooksAdapter(getParentFragment().getContext(), FiveBooks);
@@ -112,9 +113,7 @@ public class ExploreFragment extends Fragment {
     }
 
     /*
-            //rvBooks_adapter = new ExploreBooksAdapter(getParentFragment().getContext(), FiveBooks);
             //rvBooks.setItemAnimator(new DefaultItemAnimator());
-            //rvBooks.setAdapter(rvBooks_adapter);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
