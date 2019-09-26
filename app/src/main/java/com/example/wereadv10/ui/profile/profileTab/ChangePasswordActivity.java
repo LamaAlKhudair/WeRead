@@ -89,7 +89,10 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
             confirmNewPasswordET.setText("");
             return;
         }//end if
-
+//check if the the new password not the same the old password
+        if(checkPassword(oldPassword,newPassword)){
+            return;
+        }
         // get user email from FireBase
         user = FirebaseAuth.getInstance().getCurrentUser();
         String email = "";
@@ -114,14 +117,15 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        Log.d(TAG, "Password updated");
+                                        Toast.makeText(ChangePasswordActivity.this, "Password updated", Toast.LENGTH_LONG).show();
+
                                     } else {
-                                        Log.d(TAG, "Error password not updated");
+                                        Toast.makeText(ChangePasswordActivity.this, "the password is not updated, please try again", Toast.LENGTH_LONG).show();
                                     }
                                 }
                             });
                         } else {
-                            Log.d(TAG, "Error auth failed");
+                            oldPasswordIL.setError("you have enter a wrong password ");
                         }
                     }
                 });
@@ -133,11 +137,11 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.change_password_forgot_passwordTV:
-forgotPassword();
+                forgotPassword();
                 break;
 
             case R.id.change_password_restPassBtn:
-                changePassword(oldPasswordET.getText().toString(),newPasswordET.getText().toString(),confirmNewPasswordET.getText().toString());
+                changePassword(oldPasswordET.getText().toString(), newPasswordET.getText().toString(), confirmNewPasswordET.getText().toString());
                 break;
         }//end switch
     }
@@ -155,7 +159,7 @@ forgotPassword();
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(ChangePasswordActivity.this, "We have sent you email instructions to reset your password!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ChangePasswordActivity.this, "We have sent you email instructions to reset your password", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(ChangePasswordActivity.this, "Failed to send reset email!", Toast.LENGTH_SHORT).show();
                         }
@@ -169,10 +173,23 @@ forgotPassword();
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }//end initToolBar()
-    @Override
 
+    @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }//end onSupportNavigateUp
+
+    public boolean checkPassword(String oldPass, String newPass) {
+        if (oldPass.equals(newPass)) {
+            Toast.makeText(ChangePasswordActivity.this, "you can't use the same password", Toast.LENGTH_SHORT).show();
+            oldPasswordET.setText("");
+            newPasswordET.setText("");
+            confirmNewPasswordET.setText("");
+            return true;
+        } else {
+            return false;
+        }
+
+    }
 }//end class
