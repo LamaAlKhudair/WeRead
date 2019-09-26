@@ -5,19 +5,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     >
 
+    <ImageView
+        android:id="@+id/logo_explore"
+        android:layout_width="150dp"
+        android:layout_height="70dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/book_layout"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/logoo" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
 
         <!--title of the horizontal listing-->
         <LinearLayout
+            android:id="@+id/book_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <TextView
@@ -26,7 +31,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginBottom="10dp"
                 android:text="Books"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@color/colorPrimary"
@@ -44,6 +48,10 @@
 
 
         <!--recycler view for horizontal listing-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvHorizontal"
             tools:listitem="@layout/book_card"
@@ -51,20 +59,18 @@
             android:layout_height="160dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            >
+            android:orientation="horizontal"
+            android:scrollbars="horizontal"
+            />
+        </LinearLayout>
 
-        </androidx.recyclerview.widget.RecyclerView>
-
-
-        <!-- **************************  -->
-
+        <!-- ***********************************************  -->
 
 
         <!--title of the vertical listing-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:orientation="horizontal">
 
             <TextView
@@ -73,7 +79,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginBottom="10dp"
                 android:text="Reading Clubs"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@color/colorPrimary"
@@ -89,17 +94,22 @@
 
         </LinearLayout>
 
+
         <!--recycler view for vertical listing-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvVertical"
             android:layout_width="match_parent"
             android:layout_height="210dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
+            android:orientation="vertical"
+            android:scrollbars="vertical"
             />
-
-
-    </LinearLayout>
+        </LinearLayout>
 
 </LinearLayout>
 

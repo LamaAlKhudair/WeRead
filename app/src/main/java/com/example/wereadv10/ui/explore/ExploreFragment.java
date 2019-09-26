@@ -22,13 +22,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.example.wereadv10.Club;
 import com.example.wereadv10.ExploreBooksAdapter;
+import com.example.wereadv10.ExploreClubsAdapter;
 import com.example.wereadv10.ForgotPasswordActivity;
 import com.example.wereadv10.R;
+import com.example.wereadv10.ViewClubs;
 import com.example.wereadv10.ui.books.Book;
 import com.example.wereadv10.ui.books.ViewBooks;
 import com.example.wereadv10.dbSetUp;
 import com.example.wereadv10.ui.categories.Category;
+import com.example.wereadv10.ui.clubs.ClubsFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,32 +42,56 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.sql.Ref;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class ExploreFragment extends Fragment {
-    private RecyclerView recyclerView;
-    private com.example.wereadv10.dbSetUp dbSetUp;
     private static final String TAG = "ExploreFragment";
-    private ExploreBooksAdapter book_adapter;
-    TextView more;
-    private List<Book> FiveBooks = new ArrayList<Book>();
+
+    private RecyclerView rvBooks; // H Recycler View for books
+    private RecyclerView rvClubs; // V Recycler View for clubs
+
+    private Button allBooks;
+    private Button allClubs;
+
+    private RecyclerView.Adapter rvBooks_adapter;
+    private RecyclerView.Adapter rvClubs_adapter;
+
+    private RecyclerView.LayoutManager rvBooks_LayoutManager; // to be deleted
+    private RecyclerView.LayoutManager rvClubs_mLayoutManager; // to be deleted
+
+    private List<Book> FiveBooks = new ArrayList<>();
+    private List<Club> FiveClubs = new ArrayList<>();
+
+    private com.example.wereadv10.dbSetUp dbSetUp;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_explore, container, false);
 
-        recyclerView = (RecyclerView) root.findViewById(R.id.rvHorizontal);
+        rvBooks = (RecyclerView) root.findViewById(R.id.rvHorizontal);
+        rvClubs = (RecyclerView) root.findViewById(R.id.rvVertical);
+
+        rvBooks.setLayoutManager ( new LinearLayoutManager(ExploreFragment.this.getContext()));
+        rvClubs.setLayoutManager ( new LinearLayoutManager(ExploreFragment.this.getContext()));
+
+        rvBooks_adapter = new ExploreBooksAdapter(getParentFragment().getContext(), FiveBooks);
+        rvClubs_adapter = new ExploreClubsAdapter(getParentFragment().getContext(), FiveClubs);
+
+        rvBooks.setAdapter(rvBooks_adapter);
+        rvClubs.setAdapter(rvClubs_adapter);
 
         dbSetUp = new dbSetUp();
-         getFiveBooks();
 
+        getFiveBooks();
+        getFiveClubs();
 
-
-        more = root.findViewById(R.id.show_books);
-        more.setOnClickListener(new View.OnClickListener() {
+        allBooks = root.findViewById(R.id.show_books);
+        allBooks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getContext(), ViewBooks.class);
@@ -71,24 +99,55 @@ public class ExploreFragment extends Fragment {
             }
         });
 
+        allClubs = root.findViewById(R.id.show_clubs);
+        allClubs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(), ViewClubs.class);
+                startActivity(i);
+            }
+        });
+
         return root;
     }
 
+    /*
+            //rvBooks_adapter = new ExploreBooksAdapter(getParentFragment().getContext(), FiveBooks);
+            //rvBooks.setItemAnimator(new DefaultItemAnimator());
+            //rvBooks.setAdapter(rvBooks_adapter);
 
-    private  List<Book> getFiveBooks(){
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main_activity);
+
+      *  mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+        mRecyclerView.setHasFixedSize(true);
+
+      *  rvBooks_LayoutManager = new LinearLayoutManager(this);
+      *  mRecyclerView.setLayoutManager(rvBooks_LayoutManager);
+
+        mAdapter = new MessageAdapter(getBaseContext(), messageList);
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        fillWithNonsenseText();
+    }*/
+
+
+    private List<Book> getFiveBooks(){
+
         CollectionReference bookRef = dbSetUp.db.collection("books");
         bookRef.limit(5).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            book_adapter = new ExploreBooksAdapter(getParentFragment().getContext(), FiveBooks);
-                            recyclerView.setLayoutManager ( new LinearLayoutManager(ExploreFragment.this.getContext()));
-                            recyclerView.setItemAnimator(new DefaultItemAnimator());
-                            recyclerView.setAdapter(book_adapter);
 
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 final Book book = new Book();
+
                                 String book_title = document.get("book_title").toString();
                                 String summary = document.get("summary").toString();
                                 String author = document.get("author").toString();
@@ -104,9 +163,11 @@ public class ExploreFragment extends Fragment {
                                         // Handle any errors
                                     }
                                 });
+
                                 book.setBook_title(book_title);
                                 book.setSummary(summary);
                                 book.setAuthor(author);
+
                                 DocumentReference doc = document.getDocumentReference("book_category");
                                 String path = doc.getPath();
                                 String col = path.substring(0, path.indexOf("/"));
@@ -126,9 +187,7 @@ public class ExploreFragment extends Fragment {
                                                 }
 
                                                 FiveBooks.add(book);
-                                                book_adapter.notifyDataSetChanged();
-
-                                                System.out.println("ISSS EMPTY"+FiveBooks.isEmpty());
+                                                rvBooks_adapter.notifyDataSetChanged();
 
                                             }
 
@@ -140,71 +199,58 @@ public class ExploreFragment extends Fragment {
                         }
                     }
                 });
-            return FiveBooks;
+        return FiveBooks;
     }
 
 
-    private void getClubs(){
-        // this function retrive all the clubs in the system and
-        // save them in clubs List
-        dbSetUp.db.collection("clubs")
-                .get()
+    private List<Club> getFiveClubs(){
+
+        CollectionReference clubRef = dbSetUp.db.collection("clubs");
+        clubRef.limit(5).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            List<String> clubs = new ArrayList<String>();
+
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                clubs.add(document.getData().toString());
-                                System.out.println(document.getData().toString());
+                                final Club club = new Club();
+
+                                String club_name = document.get("club_name").toString();
+                                String club_owner = document.get("club_owner").toString();
+                                String club_description = document.get("club_description").toString();
+                                String club_image = document.get("club_image").toString();
+
+                                dbSetUp.storageRef.child("clubs_images/"+club_image).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        club.setClub_image(uri.toString());
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception exception) {
+                                        // Handle any errors
+                                    }
+                                });
+
+                                club.setClub_name(club_name);
+                                club.setClub_owner(club_owner);
+                                club.setClub_description(club_description);
+
+
+                                FiveClubs.add(club);
+                                rvClubs_adapter.notifyDataSetChanged();
                             }
+
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
                         }
                     }
                 });
-    }
-    public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
-
-        private int spanCount;
-        private int spacing;
-        private boolean includeEdge;
-
-        public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
-            this.spanCount = spanCount;
-            this.spacing = spacing;
-            this.includeEdge = includeEdge;
-        }
-
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            int position = parent.getChildAdapterPosition(view); // item position
-            int column = position % spanCount; // item column
-
-            if (includeEdge) {
-                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
-                outRect.right = (column + 1) * spacing / spanCount; // (column + 1) * ((1f / spanCount) * spacing)
-
-                if (position < spanCount) { // top edge
-                    outRect.top = spacing;
-                }
-                outRect.bottom = spacing; // item bottom
-            } else {
-                outRect.left = column * spacing / spanCount; // column * ((1f / spanCount) * spacing)
-                outRect.right = spacing - (column + 1) * spacing / spanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
-                if (position >= spanCount) {
-                    outRect.top = spacing; // item top
-                }
-            }
-        }
-
+        return FiveClubs;
     }
 
-    private int dpToPx(int dp) {
-        Resources r = getResources();
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
-    }
 
+    //??
     private void getBooksBasedOnCategory(String book_category){
         // book_category
 
@@ -225,4 +271,5 @@ public class ExploreFragment extends Fragment {
                     }
                 });
     }
+
 }

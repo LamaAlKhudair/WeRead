@@ -19,53 +19,54 @@ import com.example.wereadv10.ui.categories.Category;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExploreBooksAdapter extends RecyclerView.Adapter<ExploreBooksAdapter.MyViewHolder>  {
+public class ExploreClubsAdapter extends RecyclerView.Adapter<ExploreClubsAdapter.MyViewHolder> {
+
     private Context mContext;
-    private List<Book> booksList = new ArrayList<>();
-    private static final String TAG = "ExploreBooksAdapter";
+    private List<Club> clubsList = new ArrayList<>();
+    private static final String TAG = "ExploreClubsAdapter";
     private dbSetUp dbSetUp = new dbSetUp();
 
 
-
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView title;
-        public ImageView cardImg;
+        public TextView club_name;
+        public TextView club_description;
+        public ImageView club_image;
         private CardView card;
 
         public MyViewHolder(View view) {
             super(view);
-            cardImg = (ImageView) view.findViewById(R.id.cardImg);
-            card = (CardView) view.findViewById(R.id.card_view);
-            card.setOnClickListener(this);
+            club_name = (TextView) view.findViewById(R.id.club_name);
+            club_description = (TextView) view.findViewById(R.id.club_description);
+            club_image = (ImageView) view.findViewById(R.id.club_img);
+            card = (CardView) view.findViewById(R.id.club_card);
+            //card.setOnClickListener(this);
         }
+
         @Override
         public void onClick(View view) {
 
-            Intent intent = new Intent(view.getContext(), bookPage.class);
+/*          Intent intent = new Intent(view.getContext(), bookPage.class);
             intent.putExtra("TITLE", booksList.get(getAdapterPosition()).getBook_title());
             //  intent.putExtra("COVER", booksList.get(getAdapterPosition()).getCover());
             intent.putExtra("AUTHOR", booksList.get(getAdapterPosition()).getAuthor());
             Category cat=booksList.get(getAdapterPosition()).getBook_category();
             intent.putExtra("CATEGORY", cat.toString());
 
-            mContext.startActivity(intent);
+            mContext.startActivity(intent);*/
         }
 
     }//End MyViewHolder Class
 
 
-
-
-
-    public ExploreBooksAdapter(Context mContext, List<Book> l) {
+    public ExploreClubsAdapter(Context mContext, List<Club> l) {
         this.mContext = mContext;
-        this.booksList = l;
+        this.clubsList = l;
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.book_card, parent, false);
+                .inflate(R.layout.club_card, parent, false);
 
         return new MyViewHolder(itemView);
     }
@@ -73,22 +74,18 @@ public class ExploreBooksAdapter extends RecyclerView.Adapter<ExploreBooksAdapte
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        Book book = booksList.get(position);
-        Glide.with(mContext).load(booksList.get(position).getCover()).into(holder.cardImg);
-
-
+        Club club = clubsList.get(position);
+        Glide.with(mContext).load(clubsList.get(position).getClub_image()).into(holder.club_image);
+        holder.club_name.setText(clubsList.get(position).getClub_name());
+        holder.club_description.setText(clubsList.get(position).getClub_description());
     }
 
 
     @Override
     public int getItemCount() {
-        if (booksList!=null)
-            return booksList.size();
+        if (clubsList!=null)
+            return clubsList.size();
         else return 0;
     }
 
-
-
 }
-
-
