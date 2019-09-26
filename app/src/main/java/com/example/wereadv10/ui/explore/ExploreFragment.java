@@ -78,7 +78,8 @@ public class ExploreFragment extends Fragment {
 
         rvBooks_LayoutManager = new LinearLayoutManager(ExploreFragment.this.getContext(), LinearLayoutManager.HORIZONTAL, false);
         rvBooks.setLayoutManager ( rvBooks_LayoutManager );
-        rvClubs.setLayoutManager ( new LinearLayoutManager(ExploreFragment.this.getContext()));
+        rvClubs_mLayoutManager = new LinearLayoutManager(ExploreFragment.this.getContext());
+        rvClubs.setLayoutManager ( rvClubs_mLayoutManager );
 
         rvBooks_adapter = new ExploreBooksAdapter(getParentFragment().getContext(), FiveBooks);
         rvClubs_adapter = new ExploreClubsAdapter(getParentFragment().getContext(), FiveClubs);
@@ -112,28 +113,6 @@ public class ExploreFragment extends Fragment {
         return root;
     }
 
-    /*
-            //rvBooks.setItemAnimator(new DefaultItemAnimator());
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity);
-
-      *  mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-        mRecyclerView.setHasFixedSize(true);
-
-      *  rvBooks_LayoutManager = new LinearLayoutManager(this);
-      *  mRecyclerView.setLayoutManager(rvBooks_LayoutManager);
-
-        mAdapter = new MessageAdapter(getBaseContext(), messageList);
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        fillWithNonsenseText();
-    }*/
-
 
     private List<Book> getFiveBooks(){
 
@@ -151,6 +130,7 @@ public class ExploreFragment extends Fragment {
                                 String summary = document.get("summary").toString();
                                 String author = document.get("author").toString();
                                 String bookCover = document.get("book_cover").toString();
+
                                 dbSetUp.storageRef.child("books_covers/"+bookCover).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
                                     public void onSuccess(Uri uri) {
@@ -187,15 +167,13 @@ public class ExploreFragment extends Fragment {
 
                                                 FiveBooks.add(book);
                                                 rvBooks_adapter.notifyDataSetChanged();
-
                                             }
 
                                         });
                             }
 
-                        } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
-                        }
+                        } else Log.w(TAG, "Error getting documents.", task.getException());
+
                     }
                 });
         return FiveBooks;
@@ -235,14 +213,12 @@ public class ExploreFragment extends Fragment {
                                 club.setClub_owner(club_owner);
                                 club.setClub_description(club_description);
 
-
                                 FiveClubs.add(club);
                                 rvClubs_adapter.notifyDataSetChanged();
                             }
 
-                        } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
-                        }
+                        } else Log.w(TAG, "Error getting documents.", task.getException());
+
                     }
                 });
         return FiveClubs;

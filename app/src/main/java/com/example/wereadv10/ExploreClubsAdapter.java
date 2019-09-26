@@ -45,14 +45,13 @@ public class ExploreClubsAdapter extends RecyclerView.Adapter<ExploreClubsAdapte
         @Override
         public void onClick(View view) {
 
-/*          Intent intent = new Intent(view.getContext(), bookPage.class);
-            intent.putExtra("TITLE", booksList.get(getAdapterPosition()).getBook_title());
-            //  intent.putExtra("COVER", booksList.get(getAdapterPosition()).getCover());
-            intent.putExtra("AUTHOR", booksList.get(getAdapterPosition()).getAuthor());
-            Category cat=booksList.get(getAdapterPosition()).getBook_category();
-            intent.putExtra("CATEGORY", cat.toString());
+/*          Intent intent = new Intent(view.getContext(), clubPage.class);
+            intent.putExtra("NAME", clubsList.get(getAdapterPosition()).getClub_name());
+            intent.putExtra("IMAGE", clubsList.get(getAdapterPosition()).getClub_image());
+            intent.putExtra("OWNER", clubsList.get(getAdapterPosition()).getClub_owner());
+            intent.putExtra("DESCRIPTION", clubsList.get(getAdapterPosition()).getClub_description());
 
-            mContext.startActivity(intent);*/
+            mContext.startActivity(intent); */
         }
 
     }//End MyViewHolder Class
@@ -75,9 +74,9 @@ public class ExploreClubsAdapter extends RecyclerView.Adapter<ExploreClubsAdapte
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         Club club = clubsList.get(position);
-        Glide.with(mContext).load(clubsList.get(position).getClub_image()).into(holder.club_image);
-        holder.club_name.setText(clubsList.get(position).getClub_name());
-        holder.club_description.setText(clubsList.get(position).getClub_description());
+        Glide.with(mContext).load(club.getClub_image()).into(holder.club_image);
+        holder.club_name.setText(club.getClub_name());
+        holder.club_description.setText(club.getClub_description());
     }
 
 

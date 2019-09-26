@@ -24,7 +24,6 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
     private com.example.wereadv10.dbSetUp dbSetUp = new dbSetUp();
 
 
-
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView cardImg;
 
@@ -33,6 +32,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
             cardImg = (ImageView) view.findViewById(R.id.cardImg);
             cardImg.setOnClickListener(this);
         }
+
         @Override
         public void onClick(View view) {
 
@@ -46,9 +46,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
             mContext.startActivity(intent);
         }
 
-
     }//End MyViewHolder Class
-
 
 
     public BooksAdapter(Context mContext, List<Book> l) {
@@ -67,9 +65,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         Book book = booksList.get(position);
-        Glide.with(mContext).load(booksList.get(position).getCover()).into(holder.cardImg);
-
-
+        Glide.with(mContext).load(book.getCover()).into(holder.cardImg);
     }
 
 
@@ -77,7 +73,6 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
     public int getItemCount() {
         return booksList.size();
     }
-
 
 
 }

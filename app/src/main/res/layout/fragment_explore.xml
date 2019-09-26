@@ -46,7 +46,6 @@
 
         </LinearLayout>
 
-
         <!--recycler view for horizontal listing-->
         <LinearLayout
             android:layout_width="match_parent"
@@ -56,13 +55,14 @@
             android:id="@+id/rvHorizontal"
             tools:listitem="@layout/book_card"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="150dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:orientation="horizontal"
             android:scrollbars="horizontal"
             />
         </LinearLayout>
+
 
         <!-- ***********************************************  -->
 
@@ -102,8 +102,9 @@
             android:orientation="vertical">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvVertical"
+            tools:listitem="@layout/club_card"
             android:layout_width="match_parent"
-            android:layout_height="210dp"
+            android:layout_height="230dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:orientation="vertical"

@@ -20,21 +20,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExploreBooksAdapter extends RecyclerView.Adapter<ExploreBooksAdapter.MyViewHolder>  {
+
     private Context mContext;
     private List<Book> booksList = new ArrayList<>();
     private static final String TAG = "ExploreBooksAdapter";
     private dbSetUp dbSetUp = new dbSetUp();
 
 
-
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView title;
+
         public ImageView cardImg;
         private CardView card;
 
         public MyViewHolder(View view) {
             super(view);
             cardImg = (ImageView) view.findViewById(R.id.cardImg);
+            card = (CardView) view.findViewById(R.id.card_view);
+            card.getLayoutParams().height = 500;
+            card.getLayoutParams().width = 420;
             cardImg.setOnClickListener(this);
         }
         @Override
@@ -51,9 +54,6 @@ public class ExploreBooksAdapter extends RecyclerView.Adapter<ExploreBooksAdapte
         }
 
     }//End MyViewHolder Class
-
-
-
 
 
     public ExploreBooksAdapter(Context mContext, List<Book> l) {
@@ -73,9 +73,7 @@ public class ExploreBooksAdapter extends RecyclerView.Adapter<ExploreBooksAdapte
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         Book book = booksList.get(position);
-        Glide.with(mContext).load(booksList.get(position).getCover()).into(holder.cardImg);
-
-
+        Glide.with(mContext).load(book.getCover()).into(holder.cardImg);
     }
 
 
