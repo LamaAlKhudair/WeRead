@@ -2,6 +2,7 @@ package com.example.wereadv10;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
             card = (CardView) view.findViewById(R.id.category_card);
             card.getLayoutParams().height = 500;
             card.getLayoutParams().width = 420;
+            card.setCardBackgroundColor(Color.TRANSPARENT);
+
             card.setOnClickListener(this);
         }
         @Override

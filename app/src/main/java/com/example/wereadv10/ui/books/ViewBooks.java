@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wereadv10.CategoryAdapter;
@@ -62,15 +63,19 @@ public class ViewBooks extends AppCompatActivity {
     }//End onCreate()
 
     private List<Category> getCategory(){
+
         dbSetUp.db.collection("categories")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(ViewBooks.this, 2);
+                            //new LinearLayoutManager(ExploreFragment.this.getContext(), LinearLayoutManager.HORIZONTAL, false);
+                            int count =3;
+                            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(ViewBooks.this, LinearLayoutManager.HORIZONTAL, false);
                             catRecyclerView.setLayoutManager(mLayoutManager);
-                            catRecyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(10), true));
+
+                            catRecyclerView.addItemDecoration(new GridSpacingItemDecoration(count, dpToPx(1), true));
                             catRecyclerView.setItemAnimator(new DefaultItemAnimator());
                             catRecyclerView.setAdapter(categoryAdapter);
                             for (QueryDocumentSnapshot document : task.getResult()) {
@@ -78,6 +83,7 @@ public class ViewBooks extends AppCompatActivity {
                                 String category_name = document.get("category_name").toString();
                                 category.setCategory_name(category_name);
                                 categoryList.add(category);
+                                count = count+1;
                                 categoryAdapter.notifyDataSetChanged();
                             }
                         } else {
@@ -124,21 +130,6 @@ public class ViewBooks extends AppCompatActivity {
                                         // Handle any errors
                                     }
                                 });
-                                      /*
-                                      // To byte
-                                      dbSetUp.storageRef.child("books_covers/"+bookCover).getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                                             @Override
-                                             public void onSuccess(byte[] bytes) {
-                                                 // Use the bytes to display the image
-                                                 System.out.println("byyyyye"+bytes);
-                                             }
-                                         }).addOnFailureListener(new OnFailureListener() {
-                                             @Override
-                                             public void onFailure(@NonNull Exception exception) {
-                                                 // Handle any errors
-                                             }
-                                         });*/
-
 
 
                                 book.setBook_title(book_title);
