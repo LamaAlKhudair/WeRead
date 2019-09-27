@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.wereadv10.CategoryAdapter;
 import com.example.wereadv10.R;
 import com.example.wereadv10.dbSetUp;
 import com.example.wereadv10.ui.categories.Category;
@@ -30,12 +31,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ViewBooks extends AppCompatActivity {
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerView, catRecyclerView;
     private BooksAdapter adapter;
+    private CategoryAdapter categoryAdapter;
     private   List<Book> bookList;
+    private List<Category> categoryList;
     private static final String TAG = "ViewBooks";
     private com.example.wereadv10.dbSetUp dbSetUp = new dbSetUp();
-
+//category_rv
 
 
 
@@ -48,13 +51,43 @@ public class ViewBooks extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         SearchView searchView = findViewById(R.id.search_view);
         recyclerView = (RecyclerView) findViewById(R.id.viewBooksRec);
+        catRecyclerView = (RecyclerView) findViewById(R.id.category_rv);
+
         bookList = new ArrayList<Book>();
+        categoryList = new ArrayList<Category>();
 
         adapter = new BooksAdapter(this,getBooks()) ;//should pass a book list to the adapter
-
+        categoryAdapter = new CategoryAdapter(this, getCategory());
 
     }//End onCreate()
 
+    private List<Category> getCategory(){
+        dbSetUp.db.collection("categories")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(ViewBooks.this, 2);
+                            catRecyclerView.setLayoutManager(mLayoutManager);
+                            catRecyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(10), true));
+                            catRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                            catRecyclerView.setAdapter(categoryAdapter);
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                final Category category = new Category();
+                                String category_name = document.get("category_name").toString();
+                                category.setCategory_name(category_name);
+                                categoryList.add(category);
+                                categoryAdapter.notifyDataSetChanged();
+                            }
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+
+        return categoryList;
+    }
 
 
 
@@ -84,7 +117,6 @@ public class ViewBooks extends AppCompatActivity {
                                     public void onSuccess(Uri uri) {
                                         // Got the download URL for 'users/me/profile.png'
                                         book.setCover(uri.toString());
-                                        //System.out.println("Uriiiii"+uri.toString());
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                                     @Override

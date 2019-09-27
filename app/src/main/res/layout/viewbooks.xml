@@ -9,11 +9,11 @@
 
 <!--    todo this for categories-->
 
-<!--        <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:id="@+id/category_rv"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content" />-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/category_rv"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
 
             <SearchView
