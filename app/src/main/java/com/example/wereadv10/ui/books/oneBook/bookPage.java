@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import com.bumptech.glide.Glide;
 import com.example.wereadv10.R;
 import com.example.wereadv10.ui.books.oneBook.reviews.ReviewsTab;
 import com.google.android.material.tabs.TabLayout;
@@ -64,13 +65,12 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
         if (intent.getExtras() != null) {
             if (intent.getExtras().getString("TITLE") != null)
                 bookTitle.setText(intent.getExtras().getString("TITLE"));
-            if (intent.getExtras().getString("COVER") != null)
-//                bookCover.setImageResource(getImageId(this, intent.getExtras().getString("COVER")));
-            {
-                Uri selectedImageUri = Uri.parse(intent.getExtras().getString("COVER")) ;
-                String filestring = selectedImageUri.getPath();
-                Bitmap img = BitmapFactory.decodeFile(filestring);
-                bookCover.setImageBitmap(img);
+            if (intent.getExtras().getString("COVER") != null) {
+                Glide.with(bookPage.this).load(intent.getExtras().getString("COVER")).into(bookCover);
+
+
+            }else{
+                Glide.with(bookPage.this).load(R.drawable.logo).into(bookCover);
 
             }
 

@@ -13,7 +13,8 @@
             android:id="@+id/category_rv"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:scrollbars="horizontal"/>
 
 
             <SearchView
@@ -30,6 +31,6 @@
         android:layout_height="435dp"
         android:layout_marginTop="200dp"
         android:isScrollContainer="true"
-        android:scrollbars="vertical" />
+        android:scrollbars="vertical"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
