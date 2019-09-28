@@ -7,15 +7,17 @@
     android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
->
+    >
 
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="370dp"
-        android:layout_height="187dp"
+        android:layout_width="329dp"
+        android:layout_height="195dp"
         android:layout_gravity="center"
-        android:layout_marginTop="230dp"
+        android:foregroundGravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="200dp"
         app:srcCompat="@drawable/logo" />
 
 

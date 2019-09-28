@@ -70,13 +70,9 @@ public class ViewBooks extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            //new LinearLayoutManager(ExploreFragment.this.getContext(), LinearLayoutManager.HORIZONTAL, false);
                             int count =3;
                             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(ViewBooks.this, LinearLayoutManager.HORIZONTAL, false);
                             catRecyclerView.setLayoutManager(mLayoutManager);
-
-                            catRecyclerView.addItemDecoration(new GridSpacingItemDecoration(count, dpToPx(1), true));
-                            catRecyclerView.setItemAnimator(new DefaultItemAnimator());
                             catRecyclerView.setAdapter(categoryAdapter);
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 final Category category = new Category();

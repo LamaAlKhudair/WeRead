@@ -7,18 +7,18 @@
 
     <ImageView
         android:id="@+id/bookCover"
-        android:layout_width="194dp"
-        android:layout_height="233dp"
-        android:layout_gravity="left"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="90dp" />
+        android:layout_width="150dp"
+        android:layout_height="190dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="40dp" />
+
 
     <TextView
         android:id="@+id/bookName"
         android:layout_width="159dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="250dp"
-        android:layout_marginTop="-200dp"
+        android:layout_marginLeft="200dp"
+        android:layout_marginTop="-150dp"
         android:textStyle="bold"
         android:text="bookName"
         android:textColor="@color/colorPrimaryDark" />
@@ -27,7 +27,7 @@
         android:layout_width="159dp"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:layout_marginLeft="250dp"
+        android:layout_marginLeft="200dp"
         android:layout_marginTop="20dp"
         android:text="rate here"
         android:textColor="@color/colorPrimaryDark" />
@@ -36,9 +36,9 @@
         android:id="@+id/addToShelf"
         android:layout_width="155dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="250dp"
+        android:layout_marginLeft="200dp"
         android:textStyle="bold"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:text="+add to shelf"
         android:clickable="true"
         android:textColor="@color/colorPrimaryDark" />
@@ -48,7 +48,7 @@
         android:id="@+id/bookInfo_viewPager"
         android:layout_width="match_parent"
         android:layout_height="376dp"
-        android:layout_marginTop="60dp">
+        android:layout_marginTop="40dp">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/bookInfo_tab_layout"

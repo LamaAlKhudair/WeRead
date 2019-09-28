@@ -80,41 +80,6 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
 
 
 
-    public int getImageId(Context context, String imageName) {
-        Intent intent = getIntent();
-        return context.getResources().getIdentifier(intent.getExtras().getString("COVER"), null, context.getPackageName());
-    }
-
-
-//    public void pickImage(View View) {
-//        Intent intent = new Intent();
-//        intent.setType("image/*");
-//        intent.setAction(Intent.ACTION_GET_CONTENT);
-//        intent.addCategory(Intent.CATEGORY_OPENABLE);
-//        startActivityForResult(intent, 1);
-//    }
-//
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == 1 && resultCode == Activity.RESULT_OK)
-//            try {
-//                // We need to recyle unused bitmaps
-//                if (bitmap != null) {
-//                    bitmap.recycle();
-//                }
-//                InputStream stream = getContentResolver().openInputStream(
-//                        data.getData());
-//                bitmap = BitmapFactory.decodeStream(stream);
-//                stream.close();
-//                bookCover.setImageBitmap(bitmap);
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        super.onActivityResult(requestCode, resultCode, data);
-//    }
-
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         if (item.getItemId()!= R.id.cancel) {
