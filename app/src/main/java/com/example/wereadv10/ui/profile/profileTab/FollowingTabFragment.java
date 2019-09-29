@@ -41,7 +41,7 @@ public class FollowingTabFragment extends Fragment {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 if (e!= null){
-                    Toast.makeText(getContext(), "somthing error",
+                    Toast.makeText(getContext(), "something error",
                             Toast.LENGTH_LONG).show();
                     return;
                 }//end if
@@ -50,8 +50,8 @@ public class FollowingTabFragment extends Fragment {
                 List<User> users = queryDocumentSnapshots.toObjects(User.class);
                 adapter=new FollowingAdapter(getContext(),users);
                 rv.setAdapter(adapter);
-                Toast.makeText(getContext(), "yesss",
-                        Toast.LENGTH_LONG).show();
+//                Toast.makeText(getContext(), "yesss",
+//                        Toast.LENGTH_LONG).show();
             }
         })
 /*        FirestoreRecyclerOptions<User> response = new FirestoreRecyclerOptions.Builder<User>()

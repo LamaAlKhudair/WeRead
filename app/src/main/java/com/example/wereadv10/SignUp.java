@@ -145,8 +145,24 @@ public class SignUp extends AppCompatActivity {
 
                         // Add a new document with a generated ID
                             db.collection("users")
-                                    .add(user)
-                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    .document(mAuth.getUid())
+                                    .set(user)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Log.d(TAG, "DocumentSnapshot added with" );
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.w(TAG, "Error writing document", e);
+                                        }
+                                    });
+/*                            db.collection("users")
+                                   .document(mAuth.getUid())
+                                    .set(user)*/
+/*                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                         @Override
                                         public void onSuccess(DocumentReference documentReference) {
                                             Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
@@ -157,7 +173,7 @@ public class SignUp extends AppCompatActivity {
                                         public void onFailure(@NonNull Exception e) {
                                             Log.w(TAG, "Error adding document", e);
                                         }
-                                    });
+                                    });*/
 
                             sendVerificationEmail();
 

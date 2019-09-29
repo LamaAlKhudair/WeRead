@@ -58,4 +58,9 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }//end initToolBar()
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 }
