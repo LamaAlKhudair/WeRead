@@ -1,4 +1,4 @@
-package com.example.wereadv10;
+package com.example.wereadv10.ui.clubs;
 
 public class Club {
 
@@ -58,8 +58,6 @@ public class Club {
     public void setClub_image(String club_image) {
         this.club_image = club_image;
     }
-
-
 
 
 }

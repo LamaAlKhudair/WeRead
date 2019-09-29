@@ -1,38 +1,29 @@
 package com.example.wereadv10.ui.explore;
 
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.SearchView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.example.wereadv10.Club;
+import com.example.wereadv10.ui.clubs.Club;
 import com.example.wereadv10.ExploreBooksAdapter;
 import com.example.wereadv10.ExploreClubsAdapter;
-import com.example.wereadv10.ForgotPasswordActivity;
 import com.example.wereadv10.R;
-import com.example.wereadv10.ViewClubs;
+import com.example.wereadv10.ui.clubs.ViewClubs;
 import com.example.wereadv10.ui.books.Book;
 import com.example.wereadv10.ui.books.ViewBooks;
 import com.example.wereadv10.dbSetUp;
 import com.example.wereadv10.ui.categories.Category;
-import com.example.wereadv10.ui.clubs.ClubsFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -42,7 +33,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.sql.Ref;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -224,27 +214,5 @@ public class ExploreFragment extends Fragment {
         return FiveClubs;
     }
 
-
-    //??
-    private void getBooksBasedOnCategory(String book_category){
-        // book_category
-
-        dbSetUp.db.collection("books")
-                .whereEqualTo("book_category ", "/categories/Medicine")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                System.out.println(document.getData());
-                                System.out.println("LAMA");
-                            }
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-    }
 
 }
