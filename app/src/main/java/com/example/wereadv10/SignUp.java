@@ -37,7 +37,7 @@ import java.util.Map;
 public class SignUp extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private TextView loginTV;
-    private TextInputLayout nameIL, emailIL, passwordIL, confirmPasswordIL;
+    private TextInputLayout  emailIL, passwordIL;
     private EditText nameET, emailET, passwordET, confirmPasswordET;
     private Button signUpBtn;
     private String TAG = SignUp.class.getSimpleName();
@@ -56,10 +56,8 @@ public class SignUp extends AppCompatActivity {
         passwordET = findViewById(R.id.singup_passwordET);
         confirmPasswordET = findViewById(R.id.singup_confirmPasswordET);
         signUpBtn = findViewById(R.id.singup_registerBtn);
-        nameIL = findViewById(R.id.singup_nameInputLayout);
         emailIL = findViewById(R.id.singup_emailInputLayout);
         passwordIL = findViewById(R.id.singup_passwordInputLayout);
-        confirmPasswordIL = findViewById(R.id.singup_confirmPasswordInputLayout);
         signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
