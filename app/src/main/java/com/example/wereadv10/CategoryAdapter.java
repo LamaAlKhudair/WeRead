@@ -36,8 +36,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
             super(view);
             category_name = (TextView) view.findViewById(R.id.category_name);
             card = (CardView) view.findViewById(R.id.category_card);
-            card.getLayoutParams().height = 500;
-            card.getLayoutParams().width = 420;
             card.setCardBackgroundColor(Color.TRANSPARENT);
 
             card.setOnClickListener(this);

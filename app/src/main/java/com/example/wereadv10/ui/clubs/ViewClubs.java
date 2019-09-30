@@ -1,14 +1,17 @@
 package com.example.wereadv10.ui.clubs;
 
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
+import android.view.View;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.wereadv10.ExploreClubsAdapter;
 import com.example.wereadv10.R;
 import com.example.wereadv10.dbSetUp;
+import com.example.wereadv10.ui.clubs.oneClub.clubPage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,6 +40,8 @@ public class ViewClubs extends AppCompatActivity {
     private RecyclerView.Adapter Clubs_adapter;
 
     private RecyclerView.LayoutManager Clubs_LayoutManager;
+
+    private CardView clubCard;
 
     private List<Club> Clubs = new ArrayList<>();
 
@@ -64,14 +70,7 @@ public class ViewClubs extends AppCompatActivity {
 
         getClubs();
 
-/*        Clubs = root.findViewById(R.id.show_clubs);
-        Clubs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getContext(), ViewClubs.class);
-                startActivity(i);
-            }
-        });*/
+
 
     }
 
