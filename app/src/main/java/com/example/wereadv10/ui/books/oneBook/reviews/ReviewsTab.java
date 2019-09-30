@@ -72,7 +72,10 @@ public class ReviewsTab extends Fragment {
                                     String rev_text = document.get("text").toString();
                                     review.setRevTitle(rev_title);
                                     review.setText(rev_text);
-                                    String user_name = document.get("user").toString();
+                                    DocumentReference doc_user = document.getDocumentReference("user");
+                                    String user_name = doc_user.getPath();
+                                    String doc33 = user_name.substring(user_name.indexOf("/")+1);
+                                    user_name = doc33;
                                     review.setUserName(user_name);
                                     RevList.add(review);
                                 }
