@@ -1,14 +1,18 @@
 package com.example.wereadv10.ui.books.oneBook.reviews;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,6 +33,9 @@ public class ReviewsTab extends Fragment {
     private List<Review> RevList;
     private ReviewsAdapter reviewsAdapter;
     private String book_title;
+    private Button ButtonAdd;
+    private Button ButtonAdd2;
+
     private com.example.wereadv10.dbSetUp dbSetUp = new dbSetUp();
 
 
@@ -37,18 +44,43 @@ public class ReviewsTab extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.review_tab, container, false);
         rv=view.findViewById(R.id.review_rv);
-//        rv.setHasFixedSize(true);
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
         RevList=new ArrayList<>();
         book_title = getActivity().getIntent().getExtras().getString("TITLE");
-        getRevList();
-//        reviewsAdapter = new BooksAdapter(this,getReviews()) ;
-//        rv.setItemAnimator(new DefaultItemAnimator());
-//        rv.setAdapter(reviewsAdapter);
-//        reviewsAdapter.notifyDataSetChanged();
+        ButtonAdd=view.findViewById(R.id.addButton);
+        ButtonAdd2=view.findViewById(R.id.Add2);
+
+        reviewsAdapter = new ReviewsAdapter(this.getContext(),getRevList()) ;
+        rv.setItemAnimator(new DefaultItemAnimator());
+        rv.setAdapter(reviewsAdapter);
+        reviewsAdapter.notifyDataSetChanged();
+        //new added review
+        if(getActivity().getIntent()!=null) {
+            Review review = new Review(getActivity().getIntent().getExtras().getString("username"), getActivity().getIntent().getExtras().getString("revTitle"),
+                    getActivity().getIntent().getExtras().getString("body"));
+//            RevList.add(RevList.size() - 1, review); لأن الاراي فاضيه ماراح نستخدم هذا حالياً
+            RevList.add(0, review);
+            reviewsAdapter.notifyDataSetChanged();
+
+        }
+
+        ButtonAdd.setOnClickListener(new View.OnClickListener()
+
+        {
+            @Override
+            public void onClick (View view){
+                Intent i = new Intent(getContext(),OneReview.class);
+                startActivity(i);
+
+            }
+
+        });
         return view;
 
     }
+
+
+
     private List<Review> getRevList(){
         dbSetUp.db.collection("reviews") //review_title
                 .get()
@@ -78,4 +110,9 @@ public class ReviewsTab extends Fragment {
                 });
         return RevList;
     }
+
+
+
+
 }
+
