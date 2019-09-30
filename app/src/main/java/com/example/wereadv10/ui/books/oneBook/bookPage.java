@@ -28,6 +28,7 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
     private ViewPager viewPager;
     private bookInfoTab infoFragment=new bookInfoTab();;
     private ReviewsTab reviewsTab = new ReviewsTab();
+    private String book_id;
     TabsAdapter tabsAdapter;
 
     @Override

@@ -127,7 +127,6 @@ public class ViewBooks extends AppCompatActivity {
                                     }
                                 });
 
-
                                 book.setBook_title(book_title);
                                 book.setSummary(summary);
                                 book.setAuthor(author);

@@ -4,7 +4,7 @@ import com.example.wereadv10.ui.categories.Category;
 
 public class Book {
 
-    private long ID;
+    private String ID;
     private String author;
     private Category book_category;
     private String book_title;
@@ -25,7 +25,7 @@ public class Book {
 
 
 
-    public long getID() {
+    public String getID() {
         return ID;
     }
 
@@ -50,7 +50,7 @@ public class Book {
     }
 
 
-    public void setID(long ID) {
+    public void setID(String ID) {
         this.ID = ID;
     }
 
