@@ -11,12 +11,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.wereadv10.R;
+import com.example.wereadv10.dbSetUp;
 
 import java.util.List;
 
 public class ReviewsAdapter  extends RecyclerView.Adapter<ReviewsAdapter.ViewHolder>{
     private List<Review> ReviewsList;
     private Context context;
+    private dbSetUp dbSetUp = new dbSetUp();
+
 
     public ReviewsAdapter(Context context, List<Review> listData) {
         this.context = context;
@@ -34,6 +37,7 @@ public class ReviewsAdapter  extends RecyclerView.Adapter<ReviewsAdapter.ViewHol
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Review review=ReviewsList.get(position);
         holder.revTxt.setText(review.getText());
+        // holder.revTitle.setText(review.getRevTitle());
         holder.userName.setText(review.getUserName());
 
 

@@ -26,12 +26,9 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
     public TextView add;
     public ImageView bookCover;
     private ViewPager viewPager;
-    private Bitmap bitmap;
     private bookInfoTab infoFragment=new bookInfoTab();;
     private ReviewsTab reviewsTab = new ReviewsTab();
     TabsAdapter tabsAdapter;
-    private Context mContext;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
