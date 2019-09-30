@@ -42,8 +42,19 @@
                     tools:textColor="@android:color/black" />
 
                 <TextView
-                    android:id="@+id/userName"
+                    android:id="@+id/reviewTitle"
                     android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_toRightOf="@+id/idLinearLayout"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:textSize="25dp"
+                    tools:textColor="@android:color/black" />
+
+
+                <TextView
+                    android:id="@+id/userName"
+                    android:layout_width="44dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_toRightOf="@+id/idLinearLayout"

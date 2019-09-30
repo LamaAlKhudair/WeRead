@@ -3,11 +3,20 @@
 android:orientation="vertical" android:layout_width="match_parent"
 android:layout_height="match_parent">
 
+    <Button
+        android:id="@+id/addButton"
+        android:layout_width="match_parent"
+        android:layout_marginTop="60dp"
+        android:layout_height="wrap_content"
+        android:text="Add Review" />
+
 <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/review_rv"
-    android:layout_margin="10dp"
+    android:layout_marginTop="80dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
 </androidx.recyclerview.widget.RecyclerView>
+
+
 </LinearLayout>
