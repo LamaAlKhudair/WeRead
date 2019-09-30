@@ -88,6 +88,11 @@ public class ReviewsTab extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+//                            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(ViewBooks.this, 2);
+//                            recyclerView.setLayoutManager(mLayoutManager);
+//                            recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+//                            recyclerView.setItemAnimator(new DefaultItemAnimator());
+//                            recyclerView.setAdapter(adapter);
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 final Review review = new Review();
                                 DocumentReference doc = document.getDocumentReference("book");
@@ -95,11 +100,15 @@ public class ReviewsTab extends Fragment {
                                 String col = path.substring(0, path.indexOf("/"));
                                 String doc3 = path.substring(path.indexOf("/")+1);
                                 if (doc3.equalsIgnoreCase(book_title)){
-                                    System.out.println("Inside");
                                     String rev_title = document.get("review_title").toString();
                                     String rev_text = document.get("text").toString();
                                     review.setRevTitle(rev_title);
                                     review.setText(rev_text);
+                                    DocumentReference doc_user = document.getDocumentReference("user_name");
+                                    String user_name = doc_user.getPath();
+                                    String doc33 = user_name.substring(user_name.indexOf("/")+1);
+                                    user_name = doc33;
+                                    review.setUserName(user_name);
                                     RevList.add(review);
                                 }
                             }
