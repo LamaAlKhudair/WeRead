@@ -1,10 +1,12 @@
 package com.example.wereadv10;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.wereadv10.ui.clubs.Club;
+import com.example.wereadv10.ui.clubs.oneClub.clubPage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,36 +22,35 @@ import java.util.List;
 public class ExploreClubsAdapter extends RecyclerView.Adapter<ExploreClubsAdapter.MyViewHolder> {
 
     private Context mContext;
-    private List<Club> clubsList = new ArrayList<>();
-    private static final String TAG = "ExploreClubsAdapter";
-    private dbSetUp dbSetUp = new dbSetUp();
-
+    private List<Club> clubsList ;
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView club_name;
         public TextView club_description;
         public ImageView club_image;
-        private CardView card;
+        private LinearLayout card;
 
         public MyViewHolder(View view) {
             super(view);
-            club_name = (TextView) view.findViewById(R.id.club_name);
-            club_description = (TextView) view.findViewById(R.id.club_description);
-            club_image = (ImageView) view.findViewById(R.id.club_img);
-            card = (CardView) view.findViewById(R.id.club_card);
-            //card.setOnClickListener(this);
+            club_name = view.findViewById(R.id.club_name);
+            club_description = view.findViewById(R.id.club_description);
+
+            club_image = view.findViewById(R.id.club_img);
+            club_image.setOnClickListener(this);
+            card = view.findViewById(R.id.card_club);
+            card.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
 
-/*          Intent intent = new Intent(view.getContext(), clubPage.class);
+          Intent intent = new Intent(view.getContext(), clubPage.class);
             intent.putExtra("NAME", clubsList.get(getAdapterPosition()).getClub_name());
             intent.putExtra("IMAGE", clubsList.get(getAdapterPosition()).getClub_image());
             intent.putExtra("OWNER", clubsList.get(getAdapterPosition()).getClub_owner());
             intent.putExtra("DESCRIPTION", clubsList.get(getAdapterPosition()).getClub_description());
 
-            mContext.startActivity(intent); */
+            mContext.startActivity(intent);
         }
 
     }//End MyViewHolder Class

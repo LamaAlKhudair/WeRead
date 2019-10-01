@@ -16,6 +16,7 @@
         app:cardCornerRadius="5dp">
 
         <LinearLayout
+            android:id="@+id/card_club"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#E0DFDF"

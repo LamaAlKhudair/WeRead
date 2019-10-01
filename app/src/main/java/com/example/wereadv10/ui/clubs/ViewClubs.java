@@ -1,12 +1,10 @@
 package com.example.wereadv10.ui.clubs;
 
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
-import android.view.View;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
@@ -16,10 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.example.wereadv10.ExploreClubsAdapter;
 import com.example.wereadv10.R;
 import com.example.wereadv10.dbSetUp;
-import com.example.wereadv10.ui.clubs.oneClub.clubPage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -57,7 +53,7 @@ public class ViewClubs extends AppCompatActivity {
 
         SearchView searchView = findViewById(R.id.search_club);
 
-        rvClubs = (RecyclerView) findViewById(R.id.viewClubsRec);
+        rvClubs = findViewById(R.id.viewClubsRec);
 
         Clubs_LayoutManager = new LinearLayoutManager(this);
         rvClubs.setLayoutManager ( Clubs_LayoutManager );
@@ -69,8 +65,6 @@ public class ViewClubs extends AppCompatActivity {
         dbSetUp = new dbSetUp();
 
         getClubs();
-
-
 
     }
 

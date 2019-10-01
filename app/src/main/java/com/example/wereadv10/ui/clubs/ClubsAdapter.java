@@ -35,10 +35,11 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.MyViewHolder
 
             public MyViewHolder(View view) {
                 super(view);
-                club_name = (TextView) view.findViewById(R.id.club_name);
-                club_description = (TextView) view.findViewById(R.id.club_description);
-                club_image = (ImageView) view.findViewById(R.id.club_img);
-                card = (CardView) view.findViewById(R.id.club_card);
+                club_name =  view.findViewById(R.id.club_name);
+                club_description = view.findViewById(R.id.club_description);
+                club_image = view.findViewById(R.id.club_img);
+                club_image.setOnClickListener(this);
+                card = view.findViewById(R.id.club_card);
                 card.setOnClickListener(this);
             }
 
