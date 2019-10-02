@@ -53,26 +53,20 @@ public class ReviewsTab extends Fragment {
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
         RevList=new ArrayList<>();
         book_title = getActivity().getIntent().getExtras().getString("TITLE");
-        book_id = getActivity().getIntent().getExtras().getString("BOOK_ID");
-        System.out.println("LAMA"+book_id);
-        getRevList();
-
         ButtonAdd=view.findViewById(R.id.addButton);
         ButtonAdd2=view.findViewById(R.id.Add2);
+        getRevList();
 
-        reviewsAdapter = new ReviewsAdapter(this.getContext(),getRevList()) ;
-        rv.setItemAnimator(new DefaultItemAnimator());
-        rv.setAdapter(reviewsAdapter);
-        reviewsAdapter.notifyDataSetChanged();
         //new added review
-        if(getActivity().getIntent()!=null) {
-            Review review = new Review(getActivity().getIntent().getExtras().getString("username"), getActivity().getIntent().getExtras().getString("revTitle"),
-                    getActivity().getIntent().getExtras().getString("body"));
-//            RevList.add(RevList.size() - 1, review); لأن الاراي فاضيه ماراح نستخدم هذا حالياً
-            RevList.add(0, review);
-            reviewsAdapter.notifyDataSetChanged();
-
-        }
+//        if(getActivity().getIntent()!=null) {
+//            Review review = new Review(getActivity().getIntent().getExtras().getString("username"), getActivity().getIntent().getExtras().getString("revTitle"),
+//                    getActivity().getIntent().getExtras().getString("body"));
+//            if (RevList.isEmpty()){} else {
+//                RevList.add(RevList.size() - 1, review);// لأن الاراي فاضيه ماراح نستخدم هذا حالياً
+//            RevList.add(0, review);
+//            reviewsAdapter.notifyDataSetChanged();}
+//
+//        }
 
         ButtonAdd.setOnClickListener(new View.OnClickListener()
 
@@ -85,6 +79,7 @@ public class ReviewsTab extends Fragment {
             }
 
         });
+
         return view;
 
     }
@@ -98,27 +93,49 @@ public class ReviewsTab extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-//                            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(ViewBooks.this, 2);
-//                            recyclerView.setLayoutManager(mLayoutManager);
-//                            recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
-//                            recyclerView.setItemAnimator(new DefaultItemAnimator());
-//                            recyclerView.setAdapter(adapter);
+                            reviewsAdapter = new ReviewsAdapter(ReviewsTab.this.getContext(), RevList) ;
+                            rv.setItemAnimator(new DefaultItemAnimator());
+                            rv.setAdapter(reviewsAdapter);
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 final Review review = new Review();
-                                DocumentReference doc = document.getDocumentReference("book");
-                                String path = doc.getPath();
-                                String col = path.substring(0, path.indexOf("/"));
-                                String doc3 = path.substring(path.indexOf("/")+1);
-                                if (doc3.equalsIgnoreCase(book_title)){
+                                String doc_book_title = document.getString("book");
+                                if (doc_book_title.equalsIgnoreCase(book_title)) {
                                     String rev_title = document.get("review_title").toString();
                                     String rev_text = document.get("text").toString();
                                     review.setRevTitle(rev_title);
                                     review.setText(rev_text);
                                     // USER
                                     DocumentReference doc_user = document.getDocumentReference("user_name");
-                                    String user_name = doc_user.getPath();
-                                    String doc33 = user_name.substring(user_name.indexOf("/")+1);
-                                    user_name = doc33;
+                                    String user_name1 = doc_user.getPath();
+                                    String doc33 = user_name1.substring(user_name1.indexOf("/") + 1);
+                                    String user_name = doc33;
+                                    review.setUserName(user_name);
+                                    //getBook(doc);
+                                    RevList.add(review);
+                                    reviewsAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                        for (Review review2 : RevList){
+                            System.out.println("LAMA"+review2.getRevTitle());
+                            System.out.println("LAMA2 \t"+ review2.getText());
+                        }
+                    }
+
+                });
+        return RevList;
+    }
+   /* private void getBook(DocumentReference doc){
+        dbSetUp.db.collection("books").document(doc.getPath()).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task2) {
+                        if (task2.isSuccessful()) {
+                            for (QueryDocumentSnapshot book_document : task2.getResult()) {
+                                String doc3 = book_document.get("book_title").toString();
+                                if (doc3.equalsIgnoreCase(book_title)){
                                     // Convert to User Object
 //                                    dbSetUp.db.collection("users")
 //                                            .whereEqualTo("name", user_name)
@@ -133,40 +150,51 @@ public class ReviewsTab extends Fragment {
 //                                                    }
 //                                            }
 //                                                                       });
-
-                                    review.setUserName(user_name);
                                     RevList.add(review);
                                 }
                             }
-                        } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
                         }
                     }
                 });
-        return RevList;
     }
 
+    */
     private void addReview(){
-        Map<String, Object> rev1 = new HashMap<>();
+        final Map<String, Object> rev1 = new HashMap<>();
         rev1.put("text", "Los Angeles");
         rev1.put("review_title", "CA");
+       dbSetUp.db.collection("books").whereEqualTo("book_title",book_title).get()
+               .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                   @Override
+                   public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                       if (task.isSuccessful()) {
+                           for (QueryDocumentSnapshot document : task.getResult()) {
 
-        rev1.put("book","kk" );
-        rev1.put("user_name", "users/lama");
-        dbSetUp.db.collection("reviews").document("LA")
-                .set(rev1)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        System.out.println("DocumentSnapshot successfully written!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error writing document", e);
-                    }
-                });    }
+                               DocumentReference doc = document.getReference();
+                               rev1.put("book", doc);
+                               rev1.put("user_name", "users/lama");
+                               dbSetUp.db.collection("reviews").document("LA")
+                                       .set(rev1)
+                                       .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                           @Override
+                                           public void onSuccess(Void aVoid) {
+                                               System.out.println("DocumentSnapshot successfully written!");
+                                           }
+                                       })
+                                       .addOnFailureListener(new OnFailureListener() {
+                                           @Override
+                                           public void onFailure(@NonNull Exception e) {
+                                               Log.w(TAG, "Error writing document", e);
+                                           }
+                                       });
+                           }
+                       } else {
+                           Log.w(TAG, "Error getting documents.", task.getException());
+                       }
+                   }
+               });
+
+          }
 
 }
 
