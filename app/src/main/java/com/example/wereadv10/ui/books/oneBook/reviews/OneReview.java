@@ -41,11 +41,10 @@ public class OneReview extends AppCompatActivity {
     private TextView username;
     private EditText revTitle;
     private EditText body;
-    private Button ButtonAdd;
+    private Button ButtonAdd, cancel;
     private String book_title, userEmail;
     private com.example.wereadv10.dbSetUp dbSetUp = new dbSetUp();
 
-    private Button ButtonAdd , cancel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +57,7 @@ public class OneReview extends AppCompatActivity {
         revTitle=findViewById(R.id.revTitle);
         body=findViewById(R.id.body);
         ButtonAdd=findViewById(R.id.Add2);
-        cancel= findViewById(R.id.CancelRev);
+        cancel=findViewById(R.id.cancelRev);
         ButtonAdd.setOnClickListener(new View.OnClickListener()
 
         {
@@ -74,6 +73,7 @@ public class OneReview extends AppCompatActivity {
             }
 
         });
+
         getExtras();
 
     }
@@ -100,8 +100,6 @@ public class OneReview extends AppCompatActivity {
                                             }
                                         });
 
-
-                
                     Intent intent = new Intent(OneReview.this,bookPage.class);
                     intent.putExtra("username", username.getText().toString());
                     intent.putExtra("revTitle", revTitle.getText().toString());
@@ -109,13 +107,10 @@ public class OneReview extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 }
-                else
+                else{
 
                     Toast.makeText(getApplicationContext(),"You Cannot Leave This Empty!",Toast.LENGTH_SHORT).show();
             }
-
-        });
-
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,9 +135,6 @@ public class OneReview extends AppCompatActivity {
 
     }
 
-
-
-    }
     private String getRandom(){
         return UUID.randomUUID().toString();
     }

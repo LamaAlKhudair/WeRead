@@ -6,9 +6,6 @@
     android:isScrollContainer="true"
     >
 
-
-
-
     <!--we should retrieve this from database and display it -->
     <TextView
         android:id="@+id/User"
@@ -20,7 +17,6 @@
         android:textAlignment="center"
 
         />
-
 
     <EditText
         android:id="@+id/revTitle"
@@ -57,7 +53,7 @@
         />
 
     <Button
-        android:id="@+id/CancelRev"
+        android:id="@+id/cancelRev"
         android:layout_width="100dp"
         android:layout_gravity="center"
         android:layout_marginTop="-30dp"

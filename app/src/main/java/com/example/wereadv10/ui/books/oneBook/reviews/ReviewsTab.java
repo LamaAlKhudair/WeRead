@@ -52,20 +52,8 @@ public class ReviewsTab extends Fragment {
         getUserEmail();
         book_title = getActivity().getIntent().getExtras().getString("TITLE");
         ButtonAdd=view.findViewById(R.id.addButton);
-        reviewsAdapter = new ReviewsAdapter(this.getContext(),getRevList()) ;
+        RevList = getRevList() ;
 
-        rv.setItemAnimator(new DefaultItemAnimator());
-        rv.setAdapter(reviewsAdapter);
-        reviewsAdapter.notifyDataSetChanged();
-        //new added review
-        if(getActivity().getIntent()!=null) {
-            Review review = new Review(getActivity().getIntent().getExtras().getString("username"), getActivity().getIntent().getExtras().getString("revTitle"),
-                    getActivity().getIntent().getExtras().getString("body"));
-//            RevList.add(RevList.size() - 1, review); لأن الاراي فاضيه ماراح نستخدم هذا حالياً
-            RevList.add(0, review);
-            reviewsAdapter.notifyDataSetChanged();
-
-        }
 
         ButtonAdd.setOnClickListener(new View.OnClickListener()
 
@@ -102,13 +90,13 @@ public class ReviewsTab extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            reviewsAdapter = new ReviewsAdapter(ReviewsTab.this.getContext(), RevList) ;
+                            rv.setItemAnimator(new DefaultItemAnimator());
+                            rv.setAdapter(reviewsAdapter);
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 final Review review = new Review();
-                                DocumentReference doc = document.getDocumentReference("book");
-                                String path = doc.getPath();
-                                String col = path.substring(0, path.indexOf("/"));
-                                String doc3 = path.substring(path.indexOf("/")+1);
-                                if (doc3.equalsIgnoreCase(book_title)){
+                                String doc_book_title = document.getString("book");
+                                if (doc_book_title.equalsIgnoreCase(book_title)) {
                                     String rev_title = document.get("review_title").toString();
                                     String rev_text = document.get("text").toString();
                                     review.setRevTitle(rev_title);
@@ -118,15 +106,19 @@ public class ReviewsTab extends Fragment {
                                     getUserName(doc_user);
                                     review.setUserName(userName);
                                     RevList.add(review);
+                                    reviewsAdapter.notifyDataSetChanged();
                                 }
                             }
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
                         }
+
                     }
+
                 });
         return RevList;
     }
+
 private String getUserName(String doc_user){
     dbSetUp.db.collection("users").whereEqualTo("email", doc_user)
             .get()
