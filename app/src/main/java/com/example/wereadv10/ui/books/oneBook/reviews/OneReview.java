@@ -2,6 +2,7 @@ package com.example.wereadv10.ui.books.oneBook.reviews;
 
 import androidx.annotation.NonNull;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,6 +28,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -114,16 +117,9 @@ public class OneReview extends AppCompatActivity {
                                                 Log.w("Error writing document", e);
                                             }
                                         });
-
-                    Intent intent = new Intent(OneReview.this,bookPage.class);
-                    intent.putExtra("username", username.getText().toString());
-                    intent.putExtra("revTitle", revTitle.getText().toString());
-                    intent.putExtra("body", body.getText().toString());
-                    startActivity(intent);
                     finish();
                 }
                 else{
-
                     Toast.makeText(getApplicationContext(),"You Cannot Leave This Empty!",Toast.LENGTH_SHORT).show();
             }
 

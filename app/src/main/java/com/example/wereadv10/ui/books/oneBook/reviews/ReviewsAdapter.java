@@ -50,7 +50,9 @@ public class ReviewsAdapter  extends RecyclerView.Adapter<ReviewsAdapter.ViewHol
     public int getItemCount() {
         return ReviewsList.size();
     }
-
+    public void clear(){
+        ReviewsList.clear();
+    }
     public class ViewHolder extends RecyclerView.ViewHolder{
         private TextView revTxt;
         private TextView revTitle;
