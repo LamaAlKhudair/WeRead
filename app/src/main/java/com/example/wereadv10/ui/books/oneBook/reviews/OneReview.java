@@ -15,6 +15,7 @@ import android.util.Log;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -33,6 +34,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,19 +48,25 @@ public class OneReview extends AppCompatActivity {
     private EditText body;
     private Button ButtonAdd, cancel;
     private String book_title, userEmail;
+    private List<Review> RevList;
+    private ReviewsTab reviewsTab;
+    private ReviewsAdapter adapter;
     private com.example.wereadv10.dbSetUp dbSetUp = new dbSetUp();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_one_review);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         book_title = "";
         userEmail = "";
         setTitle("Add Review");
-
+        RevList=new ArrayList<>();
         username=findViewById(R.id.User);
         revTitle=findViewById(R.id.revTitle);
+        revTitle.setSelection(0);
         body=findViewById(R.id.body);
+        body.setSelection(0);
         ButtonAdd=findViewById(R.id.Add2);
         cancel=findViewById(R.id.cancelRev);
         getExtras();
@@ -92,11 +100,9 @@ public class OneReview extends AppCompatActivity {
                 alertDialog.show();
             }
         });
-
-
     }
     private void addReview(){
-        if(!revTitle.getText().toString().equals("")&&!body.getText().toString().equals(""))//or null?
+        if(!revTitle.getText().toString().equals("")&&!body.getText().toString().equals(""))
                 {
         final Map<String, Object> rev1 = new HashMap<>();
         rev1.put("text", body.getText().toString());
@@ -109,6 +115,8 @@ public class OneReview extends AppCompatActivity {
                                             @Override
                                             public void onSuccess(Void aVoid) {
                                                 System.out.println("DocumentSnapshot successfully written!");
+
+
                                             }
                 })
                 .addOnFailureListener(new OnFailureListener() {

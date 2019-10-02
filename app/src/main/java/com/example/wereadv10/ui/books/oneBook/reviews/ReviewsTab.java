@@ -35,10 +35,9 @@ import java.util.List;
 public class ReviewsTab extends Fragment {
     private static final String TAG = "ReviewsTab";
     private RecyclerView rv;
-    private List<Review> RevList;
+    private List<Review> RevList=new ArrayList<>();
     private ReviewsAdapter reviewsAdapter;
     private String book_title, userEmail, userName;
-
     private Button ButtonAdd;
 
     private com.example.wereadv10.dbSetUp dbSetUp = new dbSetUp();
@@ -50,13 +49,11 @@ public class ReviewsTab extends Fragment {
         View view = inflater.inflate(R.layout.review_tab, container, false);
         rv=view.findViewById(R.id.review_rv);
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
-        RevList=new ArrayList<>();
+        reviewsAdapter = new ReviewsAdapter(getContext(),getRevList());
+        reviewsAdapter.notifyDataSetChanged();
         getUserEmail();
         book_title = getActivity().getIntent().getExtras().getString("TITLE");
         ButtonAdd=view.findViewById(R.id.addButton);
-        RevList = getRevList() ;
-
-
         ButtonAdd.setOnClickListener(new View.OnClickListener()
 
         {
@@ -85,13 +82,14 @@ public class ReviewsTab extends Fragment {
 
 
 
-    private List<Review> getRevList(){
+    public List<Review> getRevList(){
         dbSetUp.db.collection("reviews") //review_title
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            RevList=new ArrayList<>();
                             reviewsAdapter = new ReviewsAdapter(ReviewsTab.this.getContext(), RevList) ;
                             rv.setItemAnimator(new DefaultItemAnimator());
                             rv.setAdapter(reviewsAdapter);
@@ -116,7 +114,6 @@ public class ReviewsTab extends Fragment {
                                                             review.setUserName(document2.get("name").toString());
                                                             RevList.add(review);
                                                             System.out.println("La La Land "+ review.getUserName());
-
                                                             reviewsAdapter.notifyDataSetChanged();
                                                         }
                                                     } else {

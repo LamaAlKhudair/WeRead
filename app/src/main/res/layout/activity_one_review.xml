@@ -6,7 +6,6 @@
     android:isScrollContainer="true"
     >
 
-    <!--we should retrieve this from database and display it -->
     <TextView
         android:id="@+id/User"
         android:layout_marginTop="50dp"
@@ -24,19 +23,24 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:gravity="center"
-        android:hint="title"
+        android:hint="                                  title"
         />
 
-    <EditText
-        android:id="@+id/body"
-        android:layout_width="300dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="40dp"
+
+    <LinearLayout
+        android:layout_width="297dp"
+        android:layout_height="224dp"
         android:layout_gravity="center"
-        android:hint="Write your review  here"
-        android:gravity="center|bottom"
-        />
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/body"
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:gravity="bottom"
+            android:hint="               Write your review  here" />
+    </LinearLayout>
 
 
     <Button

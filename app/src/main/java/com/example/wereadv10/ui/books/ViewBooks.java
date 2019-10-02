@@ -39,7 +39,6 @@ public class ViewBooks extends AppCompatActivity {
     private List<Category> categoryList;
     private static final String TAG = "ViewBooks";
     private com.example.wereadv10.dbSetUp dbSetUp = new dbSetUp();
-//category_rv
 
 
 
