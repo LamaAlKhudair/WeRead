@@ -63,7 +63,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         TabLayout tabLayout = root.findViewById(R.id.profile_tab_layout);
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
-// creating and adding the fragment to the adapter
+// creating and adding the fragment to the book_tab_card
 
         bookTabFragment = new BookTabFragment();
         followingTabFragment = new FollowingTabFragment();
