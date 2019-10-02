@@ -1,40 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:isScrollContainer="true"
+    >
 
-
-
-
-<!--we should retrieve this from database and display it -->
-    <EditText
+    <TextView
         android:id="@+id/User"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="usernsme"
-         />
+        android:layout_marginTop="50dp"
+        android:layout_width="300dp"
+        android:layout_gravity="center"
+        android:layout_height="50dp"
+        android:text="USER"
+        android:textAlignment="center"
 
-    <EditText
-        android:id="@+id/revTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="title"
         />
 
     <EditText
-        android:id="@+id/body"
-        android:layout_width="match_parent"
+        android:id="@+id/revTitle"
+        android:layout_marginTop="40dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:hint="Write your review  here"
-       />
+        android:layout_gravity="center"
+        android:hint="                                  title"
+        />
+
+
+    <LinearLayout
+        android:layout_width="297dp"
+        android:layout_height="224dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/body"
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:gravity="bottom"
+            android:hint="               Write your review  here" />
+    </LinearLayout>
 
 
     <Button
         android:id="@+id/Add2"
-        android:layout_width="match_parent"
+        android:layout_width="100dp"
+        android:layout_gravity="center"
         android:layout_marginTop="60dp"
-        android:layout_height="wrap_content"
-        android:text="Add" />
+        android:layout_marginRight="100dp"
+        android:layout_height="30dp"
+        android:text="Add"
+        android:textColor="#ffffff"
+        android:background="@color/colorPrimaryDark"
+
+        />
+
+    <Button
+        android:id="@+id/cancelRev"
+        android:layout_width="100dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="-30dp"
+        android:layout_marginLeft="100dp"
+        android:layout_height="30dp"
+        android:text="Cancel"
+        android:textColor="#ffffff"
+        android:background="@color/colorPrimaryDark">
+
+    </Button>
 
 
 </LinearLayout>

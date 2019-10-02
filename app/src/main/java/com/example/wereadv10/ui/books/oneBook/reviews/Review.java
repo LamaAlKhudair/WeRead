@@ -1,6 +1,6 @@
 package com.example.wereadv10.ui.books.oneBook.reviews;
 
-class Review {
+public class Review {
     public Review() {
     }
 
