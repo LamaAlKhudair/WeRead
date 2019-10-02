@@ -44,7 +44,8 @@
                     android:layout_toRightOf="@+id/idLinearLayout"
                     android:gravity="center_vertical|center_horizontal"
                     android:textSize="16dp"
-                    tools:textColor="@android:color/black" />
+                    tools:textColor="@android:color/black"
+                    />
                 <TextView
                     android:id="@+id/reviewTitle"
                     android:layout_width="250dp"

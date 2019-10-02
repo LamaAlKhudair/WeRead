@@ -58,23 +58,38 @@ public class OneReview extends AppCompatActivity {
         body=findViewById(R.id.body);
         ButtonAdd=findViewById(R.id.Add2);
         cancel=findViewById(R.id.cancelRev);
+        getExtras();
         ButtonAdd.setOnClickListener(new View.OnClickListener()
 
         {
             @Override
             public void onClick (View view){
 
-//                Intent intent = new Intent(OneReview.this,bookPage.class);
-//                intent.putExtra("username",username.getText().toString());
-//                intent.putExtra("revTitle",);
-//                intent.putExtra("body",);
-//                startActivity(intent);
                     addReview();
             }
 
         });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog alertDialog = new AlertDialog.Builder(OneReview.this).create();
+                alertDialog.setMessage("Discard this review?");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        });
+                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
+            }
+        });
 
-        getExtras();
 
     }
     private void addReview(){
@@ -83,7 +98,7 @@ public class OneReview extends AppCompatActivity {
         final Map<String, Object> rev1 = new HashMap<>();
         rev1.put("text", body.getText().toString());
         rev1.put("review_title", revTitle.getText().toString());
-        rev1.put("user_name", "users/lama");
+        rev1.put("user_name", userEmail);
         rev1.put("book", book_title);
         dbSetUp.db.collection("reviews").document(getRandom())
                 .set(rev1)
@@ -111,27 +126,6 @@ public class OneReview extends AppCompatActivity {
 
                     Toast.makeText(getApplicationContext(),"You Cannot Leave This Empty!",Toast.LENGTH_SHORT).show();
             }
-
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog alertDialog = new AlertDialog.Builder(OneReview.this).create();
-                alertDialog.setMessage("Discard this review?");
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Yes",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                finish();
-                            }
-                        });
-                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                alertDialog.show();
-            }
-        });
 
     }
 

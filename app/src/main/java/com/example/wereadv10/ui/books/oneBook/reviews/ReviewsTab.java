@@ -103,10 +103,26 @@ public class ReviewsTab extends Fragment {
                                     review.setText(rev_text);
                                     // USER
                                     String doc_user = document.getString("user_name");
-                                    getUserName(doc_user);
-                                    review.setUserName(userName);
-                                    RevList.add(review);
-                                    reviewsAdapter.notifyDataSetChanged();
+                                    dbSetUp.db.collection("users").whereEqualTo("email", doc_user)
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task2) {
+                                                    if (task2.isSuccessful()) {
+                                                        for (QueryDocumentSnapshot document2 : task2.getResult()) {
+                                                            userName = document2.get("name").toString();
+                                                            review.setUserName(document2.get("name").toString());
+                                                            RevList.add(review);
+                                                            System.out.println("La La Land "+ review.getUserName());
+
+                                                            reviewsAdapter.notifyDataSetChanged();
+                                                        }
+                                                    } else {
+                                                        Log.w(TAG, "Error getting documents.", task2.getException());
+                                                    }
+                                                }
+                                            });
+
                                 }
                             }
                         } else {
@@ -119,24 +135,6 @@ public class ReviewsTab extends Fragment {
         return RevList;
     }
 
-private String getUserName(String doc_user){
-    dbSetUp.db.collection("users").whereEqualTo("email", doc_user)
-            .get()
-            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                             userName = document.get("name").toString();
-                            System.out.println("La La Land "+ userName);
-                        }
-                    } else {
-                        Log.w(TAG, "Error getting documents.", task.getException());
-                    }
-                }
-            });
-    return userName;
-}
 
 
 
