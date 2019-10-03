@@ -6,6 +6,7 @@ import com.example.wereadv10.dbSetUp;
 import com.example.wereadv10.ui.books.Book;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -35,11 +36,18 @@ public class bookSearch {
                 .whereEqualTo("book_title", searchInput)
                 .whereEqualTo("author", searchInput)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                             Book book = document.toObject(Book.class);
+                             System.out.println("AMANI"+ book.getBook_title());
+                             bookList.add(book);
+
+                        }
+                    }
                 }
-            }});
+                });
         return bookList;
     }
 }

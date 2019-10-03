@@ -73,8 +73,17 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
     public int getItemCount() {
         return booksList.size();
     }
+    public void updateList(List<Book> list){
+        if (list.isEmpty()){
 
-
+        }else{
+            booksList.clear();
+            booksList = new ArrayList<Book>();
+            booksList.addAll(list);
+            System.out.println(list.get(0).getBook_title()+"\t Amani is crying");
+            notifyDataSetChanged();
+        }
+    }
 }
 
 
