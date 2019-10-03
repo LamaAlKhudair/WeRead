@@ -9,7 +9,7 @@
     android:background="@color/white">
 
     <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPager"
+        android:id="@+id/fragment_book_tab_currently_book_read_viewPager"
         android:layout_width="match_parent"
         android:layout_height="230dp"
         android:layout_gravity="bottom"
@@ -20,9 +20,9 @@
         android:paddingRight="80dp"
         android:paddingStart="80dp" />
     <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPager2"
+        android:id="@+id/fragment_book_tab_to_read_viewPager"
         android:layout_width="match_parent"
-        android:layout_height="230dp"
+        android:layout_height="250dp"
         android:layout_gravity="bottom"
         android:clipToPadding="false"
         android:overScrollMode="never"
@@ -31,7 +31,7 @@
         android:paddingRight="80dp"
         android:paddingStart="80dp"/>
     <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPager3"
+        android:id="@+id/fragment_book_tab_complete_book_viewPager"
         android:layout_width="match_parent"
         android:layout_height="190dp"
         android:layout_gravity="bottom"

@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.bumptech.glide.Glide;
 import com.example.wereadv10.R;
 import com.example.wereadv10.ui.books.Book;
 import com.example.wereadv10.ui.books.oneBook.bookPage;
@@ -92,7 +94,10 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
 
     private void bind(Book item, View view) {
         TextView titleTextView = (TextView) view.findViewById(R.id.titleTextView);
-     //   TextView contentTextView = (TextView) view.findViewById(R.id.contentTextView);
+        ImageView bookImg = view.findViewById(R.id.book_tab_card_img);
+        Glide.with(view.getContext()).load(item.getCover()).into(bookImg);
+
+        //   TextView contentTextView = (TextView) view.findViewById(R.id.contentTextView);
         titleTextView.setText(item.getBook_title());
      //   contentTextView.setText(item.getText());
     }

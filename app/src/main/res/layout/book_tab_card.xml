@@ -18,26 +18,27 @@
             android:gravity="center"
             android:orientation="vertical"
             android:padding="24dp">
+            <ImageView
+                android:id="@+id/book_tab_card_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="-5dp"
+                android:src="@drawable/b4" />
 
             <TextView
                 android:id="@+id/titleTextView"
                 style="@style/TextAppearance.AppCompat.Title"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textSize="14sp"/>
 
 
 
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/book_tab_card_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="-5dp"
-            android:src="@drawable/b4" />
 
     </FrameLayout>
 
