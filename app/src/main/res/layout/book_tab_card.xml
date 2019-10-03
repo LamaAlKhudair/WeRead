@@ -7,10 +7,6 @@
     android:layout_gravity="center"
     app:cardUseCompatPadding="true">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
 
 
         <LinearLayout
@@ -18,8 +14,13 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="24dp">
-
+            >
+            <ImageView
+                android:id="@+id/book_tab_card_img"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:src="@drawable/b4" />
 
 
             <TextView
@@ -27,28 +28,14 @@
                 style="@style/TextAppearance.AppCompat.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
 
 
         </LinearLayout>
 
-<!--        <ImageView
-            android:id="@+id/book_tab_card_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="-5dp"
-            android:src="@drawable/b4" />-->
-        <ImageView
-            android:id="@+id/book_tab_card_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="-5dp"
-            android:src="@drawable/b4" />
-    </FrameLayout>
+
+
+
 
 </androidx.cardview.widget.CardView>
