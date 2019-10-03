@@ -40,7 +40,7 @@ dependencies {
     implementation "com.google.firebase:firebase-firestore:11.4.2"
     implementation "com.firebaseui:firebase-ui-auth:3.0.0"
     implementation "com.firebaseui:firebase-ui-firestore:3.0.0"
-    implementation 'com.google.firebase:firebase-storage:19.0.1'
+    implementation 'com.google.firebase:firebase-storage:19.1.0'
 
 
 }

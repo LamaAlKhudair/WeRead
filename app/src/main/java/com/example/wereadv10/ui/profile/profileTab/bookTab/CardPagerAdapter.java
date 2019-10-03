@@ -98,7 +98,7 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
         Glide.with(view.getContext()).load(item.getCover()).into(bookImg);
 
         //   TextView contentTextView = (TextView) view.findViewById(R.id.contentTextView);
-        titleTextView.setText(item.getBook_title());
+       titleTextView.setText(item.getBook_title());
      //   contentTextView.setText(item.getText());
     }
 

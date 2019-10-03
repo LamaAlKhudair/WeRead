@@ -39,6 +39,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
@@ -58,6 +60,10 @@ public class BookTabFragment extends Fragment implements View.OnClickListener, C
     private String TAG = BookTabFragment.class.getSimpleName();
     private FirebaseUser user;
 
+    private FirebaseStorage storage ;
+    private StorageReference storageRef ;
+
+
 
     private ShadowTransformer mFragmentCardShadowTransformer;
 
@@ -66,9 +72,9 @@ public class BookTabFragment extends Fragment implements View.OnClickListener, C
         mCurrentlyBookReadViewPager = view.findViewById(R.id.fragment_book_tab_currently_book_read_viewPager);
         dbSetUp = new dbSetUp();
         user = FirebaseAuth.getInstance().getCurrentUser();
+        storage = FirebaseStorage.getInstance();
 
-        mCurrentlyBookReadCardAdapter = new CardPagerAdapter();
-        getCurrentReadBook();
+       getCurrentReadBook();
      /*   mCurrentlyBookReadCardAdapter.addCardItem(new Book("auth1", new Category("kjgk", "book1"), "book1", "gkjg"));
         mCurrentlyBookReadCardAdapter.addCardItem(new Book("auth2", new Category("kjgk", "book2"), "book2", "gkjg"));
         mCurrentlyBookReadCardAdapter.addCardItem(new Book("auth3", new Category("kjgk", "book3"), "book3", "gkjg"));
@@ -86,6 +92,7 @@ public class BookTabFragment extends Fragment implements View.OnClickListener, C
 
         mToReadAdapter = new CardPagerAdapter();
         getToReadBook();
+
 
 /*
         mToReadAdapter.addCardItem(new Book("auth1",new Category("kjgk","jkhjk"),"fgjk","gkjg"));
@@ -181,22 +188,11 @@ public class BookTabFragment extends Fragment implements View.OnClickListener, C
                                 String author = document.get("author").toString();
                                 String bookCover = document.get("book_cover").toString();
 
-                                dbSetUp.storageRef.child("books_covers/" + bookCover).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                        // Got the download URL for 'users/me/profile.png'
-                                        book.setCover(uri.toString());
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception exception) {
-                                        // Handle any errors
-                                    }
-                                });
-
                                 book.setBook_title(book_title);
                                 book.setSummary(summary);
                                 book.setAuthor(author);
+                                book.setCover(bookCover);
+
                                 DocumentReference doc = document.getDocumentReference("book_category");
                                 String path = doc.getPath();
                                 String col = path.substring(0, path.indexOf("/"));
@@ -219,17 +215,18 @@ public class BookTabFragment extends Fragment implements View.OnClickListener, C
                                         });
                                 mToReadAdapter.addCardItem(book);
                                 mToReadAdapter.notifyDataSetChanged();
-
                             }
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
                         }
+                        //mToReadAdapter.notifyDataSetChanged();
+
                     }
                 });
 
 
     }
-    // complete read book
+   // complete read book
     private void getCompleteReadBook() {
 
         String userId = user.getUid();
@@ -272,22 +269,12 @@ public class BookTabFragment extends Fragment implements View.OnClickListener, C
                                 String author = document.get("author").toString();
                                 String bookCover = document.get("book_cover").toString();
 
-                                dbSetUp.storageRef.child("books_covers/" + bookCover).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                        // Got the download URL for 'users/me/profile.png'
-                                        book.setCover(uri.toString());
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception exception) {
-                                        // Handle any errors
-                                    }
-                                });
 
                                 book.setBook_title(book_title);
                                 book.setSummary(summary);
                                 book.setAuthor(author);
+                                book.setCover(bookCover);
+
                                 DocumentReference doc = document.getDocumentReference("book_category");
                                 String path = doc.getPath();
                                 String col = path.substring(0, path.indexOf("/"));
@@ -321,7 +308,7 @@ public class BookTabFragment extends Fragment implements View.OnClickListener, C
 
     }
     // current read book
-    private void getCurrentReadBook() {
+  private void getCurrentReadBook() {
 
         String userId = user.getUid();
         dbSetUp.db.collection("current_read_book")
@@ -363,22 +350,11 @@ public class BookTabFragment extends Fragment implements View.OnClickListener, C
                                 String author = document.get("author").toString();
                                 String bookCover = document.get("book_cover").toString();
 
-                                dbSetUp.storageRef.child("books_covers/" + bookCover).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                        // Got the download URL for 'users/me/profile.png'
-                                        book.setCover(uri.toString());
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception exception) {
-                                        // Handle any errors
-                                    }
-                                });
-
                                 book.setBook_title(book_title);
                                 book.setSummary(summary);
                                 book.setAuthor(author);
+                                book.setCover(bookCover);
+
                                 DocumentReference doc = document.getDocumentReference("book_category");
                                 String path = doc.getPath();
                                 String col = path.substring(0, path.indexOf("/"));
