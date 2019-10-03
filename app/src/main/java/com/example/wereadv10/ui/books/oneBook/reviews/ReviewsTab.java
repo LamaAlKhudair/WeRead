@@ -49,11 +49,11 @@ public class ReviewsTab extends Fragment {
         View view = inflater.inflate(R.layout.review_tab, container, false);
         rv=view.findViewById(R.id.review_rv);
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
-        reviewsAdapter = new ReviewsAdapter(getContext(),getRevList());
-        reviewsAdapter.notifyDataSetChanged();
+        RevList=new ArrayList<>();
         getUserEmail();
         book_title = getActivity().getIntent().getExtras().getString("TITLE");
         ButtonAdd=view.findViewById(R.id.addButton);
+        RevList = getRevList() ;
         ButtonAdd.setOnClickListener(new View.OnClickListener()
 
         {
@@ -89,7 +89,6 @@ public class ReviewsTab extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            RevList=new ArrayList<>();
                             reviewsAdapter = new ReviewsAdapter(ReviewsTab.this.getContext(), RevList) ;
                             rv.setItemAnimator(new DefaultItemAnimator());
                             rv.setAdapter(reviewsAdapter);
