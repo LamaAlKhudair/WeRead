@@ -121,7 +121,6 @@ public class ExploreFragment extends Fragment {
                                 String author = document.get("author").toString();
                                 String bookCover = document.get("book_cover").toString();
 
-/*
                                 dbSetUp.storageRef.child("books_covers/"+bookCover).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
                                     public void onSuccess(Uri uri) {
@@ -133,12 +132,10 @@ public class ExploreFragment extends Fragment {
                                         // Handle any errors
                                     }
                                 });
-*/
 
                                 book.setBook_title(book_title);
                                 book.setSummary(summary);
                                 book.setAuthor(author);
-                                book.setCover(bookCover);
 
                                 DocumentReference doc = document.getDocumentReference("book_category");
                                 String path = doc.getPath();
@@ -188,23 +185,12 @@ public class ExploreFragment extends Fragment {
                                 String club_name = document.get("club_name").toString();
                                 String club_owner = document.get("club_owner").toString();
                                 String club_description = document.get("club_description").toString();
-/*                                String club_image = document.get("club_image").toString();
-
-                                dbSetUp.storageRef.child("clubs_images/"+club_image).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                        club.setClub_image(uri.toString());
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception exception) {
-                                        // Handle any errors
-                                    }
-                                });*/
+                                String club_image = document.get("club_image").toString();
 
                                 club.setClub_name(club_name);
                                 club.setClub_owner(club_owner);
                                 club.setClub_description(club_description);
+                                club.setClub_image(club_image);
 
                                 FiveClubs.add(club);
                                 rvClubs_adapter.notifyDataSetChanged();

@@ -10,7 +10,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="0dp">
 
@@ -39,60 +39,48 @@
             android:textSize="40dp"
             android:text="Club Name" />
 
+        <TextView
+            android:id="@+id/club_owner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="Club Owner"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/club_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_marginTop="30dp"
+            android:text="Club Description"
+            android:textSize="20dp" />
+
         <ImageView
             android:id="@+id/invite"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             app:srcCompat="@drawable/ic_share"
             android:layout_alignRight="@id/club_name"
             android:layout_margin="20dp"/>
 
-
-
-        <LinearLayout
-            android:layout_width="360dp"
-            android:layout_height="400dp"
-            android:layout_marginTop="160dp"
-            android:layout_centerHorizontal="true">
-
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:elevation="10dp"
-                app:cardCornerRadius="8dp"
-                android:background="#F5F5F5">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="10dp"
-                android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="20dp"
-                android:text="Club Owner"
-                android:id="@+id/club_owner"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="20dp"
-                android:text="Club Description"
-                android:id="@+id/club_description"/>
-
-            </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-
-        </LinearLayout>
-
-
     </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/club_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        //Noura's Code
+
+
+
+
+
+    </LinearLayout>
 
 
 </LinearLayout>

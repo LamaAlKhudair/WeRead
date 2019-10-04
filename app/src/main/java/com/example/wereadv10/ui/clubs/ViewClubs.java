@@ -86,21 +86,10 @@ public class ViewClubs extends AppCompatActivity {
                                 String club_description = document.get("club_description").toString();
                                 String club_image = document.get("club_image").toString();
 
-                                dbSetUp.storageRef.child("clubs_images/"+club_image).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                        club.setClub_image(uri.toString());
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception exception) {
-                                        // Handle any errors
-                                    }
-                                });
-
                                 club.setClub_name(club_name);
                                 club.setClub_owner(club_owner);
                                 club.setClub_description(club_description);
+                                club.setClub_image(club_image);
 
                                 Clubs.add(club);
                                 Clubs_adapter.notifyDataSetChanged();

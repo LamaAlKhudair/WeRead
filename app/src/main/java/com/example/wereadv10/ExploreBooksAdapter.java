@@ -24,7 +24,6 @@ public class ExploreBooksAdapter extends RecyclerView.Adapter<ExploreBooksAdapte
     private Context mContext;
     private List<Book> booksList = new ArrayList<>();
     private static final String TAG = "ExploreBooksAdapter";
-    private dbSetUp dbSetUp = new dbSetUp();
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -34,8 +33,8 @@ public class ExploreBooksAdapter extends RecyclerView.Adapter<ExploreBooksAdapte
 
         public MyViewHolder(View view) {
             super(view);
-            cardImg = (ImageView) view.findViewById(R.id.cardImg);
-            card = (CardView) view.findViewById(R.id.card_view);
+            cardImg = view.findViewById(R.id.cardImg);
+            card = view.findViewById(R.id.card_view);
             card.getLayoutParams().height = 500;
             card.getLayoutParams().width = 420;
             cardImg.setOnClickListener(this);
