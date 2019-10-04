@@ -15,7 +15,7 @@ public class clubPage extends AppCompatActivity {
 
     public TextView clubName;
     public ImageView clubImage;
-    public  TextView clubOwner;
+    public TextView clubOwner;
     public TextView clubDescription;
 
     @Override
@@ -24,28 +24,31 @@ public class clubPage extends AppCompatActivity {
         setContentView(R.layout.activity_club_page);
 
         clubName = findViewById(R.id.club_name);
-        clubImage = findViewById(R.id.club_img);
+        clubImage = findViewById(R.id.club_image);
         clubOwner = findViewById(R.id.club_owner);
         clubDescription = findViewById(R.id.club_description);
+
+        getSupportActionBar().hide();
 
         getExtras();
     }
 
     private void getExtras() {
+
         Intent intent = getIntent();
         if (intent.getExtras() != null) {
+
             if (intent.getExtras().getString("NAME") != null)
                 clubName.setText(intent.getExtras().getString("NAME"));
-            if (intent.getExtras().getString("IMAGE") != null) {
-             //   Glide.with(clubPage.this).load(intent.getExtras().getString("IMAGE")).into(clubImage);
-            }else{
-             //   Glide.with(clubPage.this).load(R.drawable.logo).into(clubImage);
-            }
             if (intent.getExtras().getString("OWNER") != null)
-             //   clubOwner.setText(intent.getExtras().getString("OWNER"));
+                clubOwner.setText(intent.getExtras().getString("OWNER"));
             if (intent.getExtras().getString("DESCRIPTION") != null)
                 clubDescription.setText(intent.getExtras().getString("DESCRIPTION"));
+            if (intent.getExtras().getString("IMAGE") != null)
+                Glide.with(clubPage.this).load(intent.getExtras().getString("IMAGE")).into(clubImage);
 
         }
     }
+
+
 }

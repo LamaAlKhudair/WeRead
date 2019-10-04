@@ -30,9 +30,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.ref.Reference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,8 +65,8 @@ public class ExploreFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_explore, container, false);
 
-        rvBooks = (RecyclerView) root.findViewById(R.id.rvHorizontal);
-        rvClubs = (RecyclerView) root.findViewById(R.id.rvVertical);
+        rvBooks = root.findViewById(R.id.rvHorizontal);
+        rvClubs = root.findViewById(R.id.rvVertical);
 
         rvBooks_LayoutManager = new LinearLayoutManager(ExploreFragment.this.getContext(), LinearLayoutManager.HORIZONTAL, false);
         rvBooks.setLayoutManager ( rvBooks_LayoutManager );
@@ -176,8 +178,20 @@ public class ExploreFragment extends Fragment {
                                 String club_description = document.get("club_description").toString();
                                 String club_image = document.get("club_image").toString();
 
+                                //get club owner name
+                                DocumentReference userRef = dbSetUp.db.collection("users").document(club_owner);
+                                userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                                        if(task.isSuccessful()){
+                                            DocumentSnapshot doc = task.getResult();
+                                            club.setClub_owner( doc.get("name").toString() );
+                                        }
+                                    }
+                                });
+
                                 club.setClub_name(club_name);
-                                club.setClub_owner(club_owner);
                                 club.setClub_description(club_description);
                                 club.setClub_image(club_image);
 
@@ -191,6 +205,5 @@ public class ExploreFragment extends Fragment {
                 });
         return FiveClubs;
     }
-
 
 }

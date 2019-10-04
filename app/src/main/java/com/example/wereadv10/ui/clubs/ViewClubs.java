@@ -1,7 +1,6 @@
 package com.example.wereadv10.ui.clubs;
 
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -17,10 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.wereadv10.R;
 import com.example.wereadv10.dbSetUp;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -86,8 +85,21 @@ public class ViewClubs extends AppCompatActivity {
                                 String club_description = document.get("club_description").toString();
                                 String club_image = document.get("club_image").toString();
 
+                                //get club owner name
+                                DocumentReference userRef = dbSetUp.db.collection("users").document(club_owner);
+                                userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                                        if(task.isSuccessful()){
+                                            DocumentSnapshot doc = task.getResult();
+                                            club.setClub_owner( doc.get("name").toString() );
+                                        }
+                                    }
+                                });
+
+
                                 club.setClub_name(club_name);
-                                club.setClub_owner(club_owner);
                                 club.setClub_description(club_description);
                                 club.setClub_image(club_image);
 

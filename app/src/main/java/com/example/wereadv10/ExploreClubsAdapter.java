@@ -34,7 +34,6 @@ public class ExploreClubsAdapter extends RecyclerView.Adapter<ExploreClubsAdapte
             super(view);
             club_name = view.findViewById(R.id.club_name);
             club_description = view.findViewById(R.id.club_description);
-
             club_image = view.findViewById(R.id.club_img);
             club_image.setOnClickListener(this);
             card = view.findViewById(R.id.card_club);
@@ -44,7 +43,7 @@ public class ExploreClubsAdapter extends RecyclerView.Adapter<ExploreClubsAdapte
         @Override
         public void onClick(View view) {
 
-          Intent intent = new Intent(view.getContext(), clubPage.class);
+            Intent intent = new Intent(view.getContext(), clubPage.class);
             intent.putExtra("NAME", clubsList.get(getAdapterPosition()).getClub_name());
             intent.putExtra("IMAGE", clubsList.get(getAdapterPosition()).getClub_image());
             intent.putExtra("OWNER", clubsList.get(getAdapterPosition()).getClub_owner());
