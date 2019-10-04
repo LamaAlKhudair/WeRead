@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:isScrollContainer="true"
+    >
+
+<ImageView
+    android:layout_width="400dp"
+    android:layout_gravity="center"
+    android:layout_marginTop="20dp"
+    android:id="@+id/cover"
+    android:layout_height="400dp">
+
+</ImageView>
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:numStars="5"
+        android:stepSize="1"
+        android:theme="@style/RatingBar"
+        android:layout_height="wrap_content" />
+
+
+    <Button
+        android:id="@+id/RateBtn"
+        android:layout_width="100dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:layout_height="30dp"
+        android:text="Rate"
+        android:textColor="#ffffff"
+        android:background="@color/colorAccent"
+        >
+
+    </Button>
+
+
+    <Button
+        android:id="@+id/cancell"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorAccent"
+        android:text="Cancel"
+        android:textColor="#ffffff">
+
+    </Button>
+
+</LinearLayout>

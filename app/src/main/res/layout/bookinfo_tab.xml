@@ -8,6 +8,7 @@
 
     <ScrollView
         android:layout_width="fill_parent"
+        android:paddingBottom="100dp"
         android:layout_height="match_parent">
 
         <LinearLayout
@@ -17,7 +18,7 @@
 
             <TextView
                 android:id="@+id/textView11"
-                android:layout_marginLeft="20dp"
+                android:paddingLeft="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Book Category:"
@@ -28,7 +29,7 @@
                 android:id="@+id/book_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:paddingLeft="20dp"
                 android:text="TextView"
                 android:textColor="@color/colorPrimary"
 
@@ -39,7 +40,7 @@
                 android:id="@+id/textView9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:paddingLeft="20dp"
                 android:text="Book Author:"
                 android:textStyle="bold" />
 
@@ -48,7 +49,7 @@
                 android:id="@+id/book_author"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:paddingLeft="20dp"
                 android:text="TextView"
                 android:textColor="@color/colorPrimary" />
 
@@ -57,7 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Book Summary:"
-                android:layout_marginLeft="20dp"
+                android:paddingLeft="20dp"
                 android:textStyle="bold" />
 
 
@@ -65,10 +66,12 @@
                 android:id="@+id/book_summary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:paddingLeft="20dp"
                 android:text="TextView"
                 android:textColor="@color/colorPrimary" />
 
         </LinearLayout>
+
     </ScrollView>
+
 </LinearLayout>

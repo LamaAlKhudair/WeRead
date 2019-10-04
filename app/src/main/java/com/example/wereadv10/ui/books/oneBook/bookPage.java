@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -25,10 +26,13 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
     public TextView bookTitle;
     public TextView add;
     public ImageView bookCover;
+    public ImageView star;
     private ViewPager viewPager;
+    TextView yourRating;
     private bookInfoTab infoFragment=new bookInfoTab();;
     private ReviewsTab reviewsTab = new ReviewsTab();
     private String book_id;
+    String Cover;
     TabsAdapter tabsAdapter;
 
     @Override
@@ -39,6 +43,10 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
         bookCover=findViewById(R.id.bookCover);
         add=findViewById(R.id.addToShelf);
         add.setOnClickListener(this);
+        star=findViewById(R.id.ratingstar);
+        yourRating=findViewById(R.id.rateThis);
+        if (getIntent().getExtras().getString("RATING_VALUE")!=null)
+        yourRating.setText(getIntent().getExtras().getString("RATING_VALUE")+"/5");
         setTitle("Details");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -52,6 +60,17 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
         viewPager.setAdapter(tabsAdapter);
         tabLayout.setupWithViewPager(viewPager);
         getExtras();
+        star.setOnClickListener(new View.OnClickListener()
+
+        {
+            @Override
+            public void onClick (View view){
+                Intent i = new Intent(bookPage.this,ratingPage.class);
+                i.putExtra("COVER_RATING",Cover);
+                startActivity(i);
+            }
+
+        });
 
 
 
@@ -65,7 +84,7 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
                 bookTitle.setText(intent.getExtras().getString("TITLE"));
             if (intent.getExtras().getString("COVER") != null) {
                 Glide.with(bookPage.this).load(intent.getExtras().getString("COVER")).into(bookCover);
-
+                Cover = intent.getExtras().getString("COVER");
 
             }else{
                 Glide.with(bookPage.this).load(R.drawable.logo).into(bookCover);
@@ -101,6 +120,8 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
         popup.inflate(R.menu.popup_menu);
         popup.show();
     }
+
+
 
 }
 
