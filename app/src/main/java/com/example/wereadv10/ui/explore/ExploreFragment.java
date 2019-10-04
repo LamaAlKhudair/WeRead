@@ -121,21 +121,10 @@ public class ExploreFragment extends Fragment {
                                 String author = document.get("author").toString();
                                 String bookCover = document.get("book_cover").toString();
 
-                                dbSetUp.storageRef.child("books_covers/"+bookCover).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                        book.setCover(uri.toString());
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception exception) {
-                                        // Handle any errors
-                                    }
-                                });
-
                                 book.setBook_title(book_title);
                                 book.setSummary(summary);
                                 book.setAuthor(author);
+                                book.setCover(bookCover);
 
                                 DocumentReference doc = document.getDocumentReference("book_category");
                                 String path = doc.getPath();
