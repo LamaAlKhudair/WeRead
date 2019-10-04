@@ -49,9 +49,9 @@ public class ViewBooks extends AppCompatActivity implements SearchView.OnQueryTe
         setTitle("Books");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        SearchView searchView = findViewById(R.id.search_view);
-        String newTest = "";
+        SearchView searchView = (SearchView) findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(this);
+
         recyclerView = (RecyclerView) findViewById(R.id.viewBooksRec);
         catRecyclerView = (RecyclerView) findViewById(R.id.category_rv);
 
@@ -101,14 +101,16 @@ public class ViewBooks extends AppCompatActivity implements SearchView.OnQueryTe
     public boolean onQueryTextChange(String s){
 
         List<Book> newList = new ArrayList<>();
+        s=s.toLowerCase();
         for(int i=0; i<bookList.size(); i++){
-            String book_name = bookList.get(i).getBook_title();
-            System.out.println("LAMA GGG"+bookList.size());
-            if(book_name.contains(s)){
+            String book_name = bookList.get(i).getBook_title().toLowerCase();
+            String book_author = bookList.get(i).getAuthor().toLowerCase();
+            if(book_name.contains(s) || book_author.contains(s) ){
                 newList.add(bookList.get(i));
             }
         }
         adapter.updateList(newList);
+        adapter.notifyDataSetChanged();
         return true;
     }
 

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,8 +21,10 @@ import java.util.List;
 public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder>  {
     private Context mContext;
     private List<Book> booksList = new ArrayList<>();
+
     private static final String TAG = "BooksAdapter";
     private com.example.wereadv10.dbSetUp dbSetUp = new dbSetUp();
+
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -52,6 +55,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
     public BooksAdapter(Context mContext, List<Book> l) {
         this.mContext = mContext;
         this.booksList = l;
+
     }
 
     @Override
@@ -75,12 +79,11 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
     }
     public void updateList(List<Book> list){
         if (list.isEmpty()){
+            Toast.makeText(this.mContext, "No book found", Toast.LENGTH_SHORT).show();
 
         }else{
-            booksList.clear();
             booksList = new ArrayList<Book>();
             booksList.addAll(list);
-            System.out.println(list.get(0).getBook_title()+"\t Amani is crying");
             notifyDataSetChanged();
         }
     }
