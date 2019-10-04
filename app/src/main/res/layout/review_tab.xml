@@ -14,14 +14,21 @@
         android:background="@color/colorPrimaryDark"
         />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/review_rv"
-        android:layout_width="match_parent"
-        android:isScrollContainer="true"
-        android:layout_height="505dp"
-        android:layout_marginTop="10dp">
 
-    </androidx.recyclerview.widget.RecyclerView>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/review_rv"
+            android:scrollbars="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="505dp"
+            android:padding="10dp">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </ScrollView>
+
 
 
 </LinearLayout>
