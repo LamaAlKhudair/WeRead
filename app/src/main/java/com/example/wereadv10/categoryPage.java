@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -32,7 +33,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class categoryPage extends AppCompatActivity {
+public class categoryPage extends AppCompatActivity implements SearchView.OnQueryTextListener {
     private RecyclerView catRecyclerView;
     private List<Category> categoryList;
 
@@ -51,9 +52,13 @@ public class categoryPage extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         category = " ";
+        SearchView searchView = (SearchView) findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(this);
 
         getExtras();
         recyclerView = (RecyclerView) findViewById(R.id.viewBooksRec);
+
+
         bookList = new ArrayList<Book>();
         booksAdapter = new BooksAdapter(categoryPage.this,getBooks()) ;
     }
@@ -95,21 +100,8 @@ public class categoryPage extends AppCompatActivity {
                                 String summary = document.get("summary").toString();
                                 String author = document.get("author").toString();
                                 String bookCover = document.get("book_cover").toString();
-                                System.out.println(book_title);
-                                dbSetUp.storageRef.child("books_covers/"+bookCover).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                        // Got the download URL for 'users/me/profile.png'
-                                        book.setCover(uri.toString());
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception exception) {
-                                        // Handle any errors
-                                    }
-                                });
 
-
+                                book.setCover(bookCover);
                                 book.setBook_title(book_title);
                                 book.setSummary(summary);
                                 book.setAuthor(author);
@@ -147,8 +139,6 @@ public class categoryPage extends AppCompatActivity {
 
         return bookList;
     }
-
-
 
 
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
@@ -195,6 +185,26 @@ public class categoryPage extends AppCompatActivity {
     }
 
 
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        return false;
+    }
 
+    @Override
+    public boolean onQueryTextChange(String s){
+
+        List<Book> newList = new ArrayList<>();
+        s=s.toLowerCase();
+        for(int i=0; i<bookList.size(); i++){
+            String book_name = bookList.get(i).getBook_title().toLowerCase();
+            String book_author = bookList.get(i).getAuthor().toLowerCase();
+            if(book_name.contains(s) || book_author.contains(s) ){
+                newList.add(bookList.get(i));
+            }
+        }
+        booksAdapter.updateList(newList);
+        booksAdapter.notifyDataSetChanged();
+        return true;
+    }
 
 }
