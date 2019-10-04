@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.wereadv10.R;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 
 public class clubPage extends AppCompatActivity {
@@ -28,10 +30,42 @@ public class clubPage extends AppCompatActivity {
         clubOwner = findViewById(R.id.club_owner);
         clubDescription = findViewById(R.id.club_description);
 
-        getSupportActionBar().hide();
 
         getExtras();
+        initCollapsingToolbar();
+
     }
+
+
+    private void initCollapsingToolbar() {
+        final CollapsingToolbarLayout collapsingToolbar =
+                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        collapsingToolbar.setTitle(" ");
+        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
+        appBarLayout.setExpanded(true);
+
+        // hiding & showing the title when toolbar expanded & collapsed
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            boolean isShow = false;
+            int scrollRange = -1;
+            Intent intent = getIntent();
+
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (scrollRange == -1) {
+                    scrollRange = appBarLayout.getTotalScrollRange();
+                }
+                if (scrollRange + verticalOffset == 0) {
+                    collapsingToolbar.setTitle(intent.getExtras().getString("NAME"));
+                    isShow = true;
+                } else if (isShow) {
+                    collapsingToolbar.setTitle(" ");
+                    isShow = false;
+                }
+            }
+        });
+    }//end initCollapsingToolbar
+
 
     private void getExtras() {
 
