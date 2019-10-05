@@ -42,7 +42,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private BookTabFragment bookTabFragment;
     private FollowingTabFragment followingTabFragment;
     FragmentAdapter fragmentAdapter;
-    //   private Button signoutBtn;
     private ImageView profileSettingImg;
     private FirebaseAuth mAuth;
     private TextView nameTV;
@@ -93,7 +92,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             for (UserInfo userInfo : user.getProviderData()) {
                 if (name == null && userInfo.getDisplayName() != null) {
                     name = userInfo.getDisplayName();
-                    MySharedPreference.putString(getContext(),"userName",name);
+                    MySharedPreference.putString(getContext(), "userName", name);
 
                 }
             }
@@ -121,7 +120,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     }
 
 
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -134,10 +132,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        if (!MySharedPreference.getString(getContext(),"userName","").equals("")){
-            nameTV.setText(MySharedPreference.getString(getContext(),"userName",""));
-        }
-        else
+        if (!MySharedPreference.getString(getContext(), "userName", "").equals("")) {
+            nameTV.setText(MySharedPreference.getString(getContext(), "userName", ""));
+        } else
             nameTV.setText("");
     }
 

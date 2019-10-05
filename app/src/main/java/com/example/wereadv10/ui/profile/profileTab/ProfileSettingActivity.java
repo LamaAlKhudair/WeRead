@@ -35,6 +35,8 @@ public class ProfileSettingActivity extends AppCompatActivity implements View.On
     private FirebaseAuth mAuth;
     private String TAG = ProfileSettingActivity.class.getSimpleName();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private boolean update;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -161,16 +163,24 @@ displayName();
                     dialog.setPositiveButton("ok", null);
                     dialog.show();
                 }else {
-                    updateName(forgetEmilET.getText().toString());
-                    dialog.setMessage("the name is update");
-                    dialog.setPositiveButton("ok", null);
-                    dialog.show();
+                    //TODO: return boolean if true show update message else pleas try again
+                    boolean check ;
+                    check = updateName(forgetEmilET.getText().toString());
+                    if (check) {
+                        dialog.setMessage("the name is update");
+                        dialog.setPositiveButton("ok", null);
+                        dialog.show();
+                    }else {
+                        dialog.setMessage("can't update the name now please try again");
+                        dialog.setPositiveButton("ok", null);
+                        dialog.show();
+                    }
                 }//end else
             }//end onClick
         });//end setPositiveButton
         updateNameDialog.show();
     }
-    public void updateName(final String name) {
+    public boolean updateName(final String name) {
         DocumentReference userName = db.collection("users").document(mAuth.getUid());
 
 // Set the "isCapital" field of the city 'DC'
@@ -190,6 +200,9 @@ displayName();
                                         if (task.isSuccessful()) {
                                             Log.d(TAG, "User profile updated.");
                                             MySharedPreference.putString(ProfileSettingActivity.this,"userName",name);
+                                            update = true;
+                                        }else {
+                                            update = false;
                                         }
                                     }
                                 });
@@ -200,7 +213,10 @@ displayName();
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w(TAG, "Error updating document", e);
+                        update = false;
+
                     }
                 });
+        return update;
     }// updateName()
 }//end class

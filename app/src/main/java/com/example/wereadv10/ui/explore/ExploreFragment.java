@@ -178,7 +178,7 @@ public class ExploreFragment extends Fragment {
                                 String club_description = document.get("club_description").toString();
                                 String club_image = document.get("club_image").toString();
 
-                                //get club owner name
+/*                                //get club owner name
                                 DocumentReference userRef = dbSetUp.db.collection("users").document(club_owner);
                                 userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                     @Override
@@ -189,7 +189,7 @@ public class ExploreFragment extends Fragment {
                                             club.setClub_owner( doc.get("name").toString() );
                                         }
                                     }
-                                });
+                                });*/
 
                                 club.setClub_name(club_name);
                                 club.setClub_description(club_description);
