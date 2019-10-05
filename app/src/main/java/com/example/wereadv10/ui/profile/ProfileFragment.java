@@ -55,7 +55,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         nameTV = root.findViewById(R.id.profile_name);
         mAuth = FirebaseAuth.getInstance();
         //to display the name
-        displayName();
+        //displayName();
 
 //for tabs
         viewPager = root.findViewById(R.id.profile_viewPager);
@@ -84,9 +84,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     private void displayName() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
+        String name="";
         if (user != null) {
-            String name = user.getDisplayName();
+             name= user.getDisplayName();
             // If the above were null, iterate the provider data
             // and set with the first non null data
             for (UserInfo userInfo : user.getProviderData()) {
@@ -136,6 +136,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             nameTV.setText(MySharedPreference.getString(getContext(), "userName", ""));
         } else
             nameTV.setText("");
+        displayName();
     }
 
 }
