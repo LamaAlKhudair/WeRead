@@ -1,6 +1,7 @@
 package com.example.wereadv10.ui.clubs.oneClub;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,8 +10,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.wereadv10.R;
+import com.example.wereadv10.ui.clubs.oneClub.events.clubEventTab;
+import com.example.wereadv10.ui.clubs.oneClub.votes.clubVotingTab;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.tabs.TabLayout;
 
 
 public class clubPage extends AppCompatActivity {
@@ -19,6 +23,11 @@ public class clubPage extends AppCompatActivity {
     public ImageView clubImage;
     public TextView clubOwner;
     public TextView clubDescription;
+
+    private ViewPager viewPager;
+    private clubEventTab eventFragment=new clubEventTab();;
+    private clubVotingTab votingTab = new clubVotingTab();
+    clubTabsAdapter ctabsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +39,16 @@ public class clubPage extends AppCompatActivity {
         clubOwner = findViewById(R.id.club_owner);
         clubDescription = findViewById(R.id.club_description);
 
+
+        viewPager = findViewById(R.id.clubEvent_viewPager);
+        TabLayout tabLayout = findViewById(R.id.clubEvent_tab_layout);
+        tabLayout.addTab(tabLayout.newTab());
+        tabLayout.addTab(tabLayout.newTab());
+        ctabsAdapter = new clubTabsAdapter(this.getSupportFragmentManager(), tabLayout.getTabCount());
+        ctabsAdapter.addFragment(eventFragment, "Club events");
+        ctabsAdapter.addFragment(votingTab, "Club voting");
+        viewPager.setAdapter(ctabsAdapter);
+        tabLayout.setupWithViewPager(viewPager);
 
         getExtras();
         initCollapsingToolbar();
