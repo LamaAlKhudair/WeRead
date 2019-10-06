@@ -97,11 +97,14 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
 
 
 
+
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         if (item.getItemId()!= R.id.cancel) {
             Toast.makeText(this, "The book has been added successfully", Toast.LENGTH_SHORT).show(); //todo enhance the behavior
             return true;
+
+
         }
             else
             return false;
@@ -121,7 +124,15 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
         popup.show();
     }
 
-
+    private boolean addToCurrent(){
+            return true;
+    }
+    private boolean addToRead(){
+        return true;
+    }
+    private boolean addToComplate(){
+        return true;
+    }
 
 }
 
