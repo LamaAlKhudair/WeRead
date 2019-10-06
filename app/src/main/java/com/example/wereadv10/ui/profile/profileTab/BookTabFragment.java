@@ -60,8 +60,7 @@ public class BookTabFragment extends Fragment implements View.OnClickListener, C
     private String TAG = BookTabFragment.class.getSimpleName();
     private FirebaseUser user;
 
-    private FirebaseStorage storage ;
-    private StorageReference storageRef ;
+
 
 
 
@@ -72,14 +71,8 @@ public class BookTabFragment extends Fragment implements View.OnClickListener, C
         mCurrentlyBookReadViewPager = view.findViewById(R.id.fragment_book_tab_currently_book_read_viewPager);
         dbSetUp = new dbSetUp();
         user = FirebaseAuth.getInstance().getCurrentUser();
-        storage = FirebaseStorage.getInstance();
         mCurrentlyBookReadCardAdapter = new CardPagerAdapter();
        getCurrentReadBook();
-     /*   mCurrentlyBookReadCardAdapter.addCardItem(new Book("auth1", new Category("kjgk", "book1"), "book1", "gkjg"));
-        mCurrentlyBookReadCardAdapter.addCardItem(new Book("auth2", new Category("kjgk", "book2"), "book2", "gkjg"));
-        mCurrentlyBookReadCardAdapter.addCardItem(new Book("auth3", new Category("kjgk", "book3"), "book3", "gkjg"));
-        mCurrentlyBookReadCardAdapter.addCardItem(new Book("auth4", new Category("kjgk", "book4"), "book4", "gkjg"));
-*/
 
         mCurrentlyBookReadCardShadowTransformer = new ShadowTransformer(mCurrentlyBookReadViewPager, mCurrentlyBookReadCardAdapter);
 
@@ -94,14 +87,6 @@ public class BookTabFragment extends Fragment implements View.OnClickListener, C
         getToReadBook();
 
 
-/*
-        mToReadAdapter.addCardItem(new Book("auth1",new Category("kjgk","jkhjk"),"fgjk","gkjg"));
-        mToReadAdapter.addCardItem(new Book("auth2",new Category("kjgk","jkhjk"),"fgjk","gkjg"));
-        mToReadAdapter.addCardItem(new Book("auth3",new Category("kjgk","jkhjk"),"fgjk","gkjg"));
-        mToReadAdapter.addCardItem(new Book("auth4",new Category("kjgk","jkhjk"),"fgjk","gkjg"));
-*/
-
-
         mToReadCardShadowTransformer = new ShadowTransformer(mToReadViewPager, mToReadAdapter);
 
         mToReadViewPager.setAdapter(mToReadAdapter);
@@ -114,12 +99,6 @@ public class BookTabFragment extends Fragment implements View.OnClickListener, C
 
         mCompleteBookCardAdapter = new CardPagerAdapter();
         getCompleteReadBook();
-/*        mCompleteBookCardAdapter.addCardItem(new Book("auth1", new Category("kjgk", "jkhjk"), "fgjk", "gkjg"));
-        mCompleteBookCardAdapter.addCardItem(new Book("auth2", new Category("kjgk", "jkhjk"), "fgjk", "gkjg"));
-        mCompleteBookCardAdapter.addCardItem(new Book("auth3", new Category("kjgk", "jkhjk"), "fgjk", "gkjg"));
-        mCompleteBookCardAdapter.addCardItem(new Book("auth4", new Category("kjgk", "jkhjk"), "fgjk", "gkjg"));
-*/
-
 
         mCompleteBookCardShadowTransformer = new ShadowTransformer(mCompleteBookViewPager, mCompleteBookCardAdapter);
 
@@ -388,84 +367,5 @@ public class BookTabFragment extends Fragment implements View.OnClickListener, C
 
 
     }
-/*  private void getCurrentReadBook() {
 
-        String userId = user.getUid();
-        dbSetUp.db.collection("current_read_book")
-                .whereEqualTo("userID", userId)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                //get book id
-                                String bookID = document.get("bookID").toString();
-                                getCurrentReadBooks(bookID);
-                            }
-
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-
-                    }
-                });
-        ////
-
-    }//end getToReadBook()
-
-    private void getCurrentReadBooks(String bookId) {
-
-        dbSetUp.db.collection("books").whereEqualTo("bookID", bookId)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                final Book book = new Book();
-                                String book_title = document.get("book_title").toString();
-                                String summary = document.get("summary").toString();
-                                String author = document.get("author").toString();
-                                String bookCover = document.get("book_cover").toString();
-
-
-                                book.setBook_title(book_title);
-                                book.setSummary(summary);
-                                book.setAuthor(author);
-                                book.setCover(bookCover);
-
-                                DocumentReference doc = document.getDocumentReference("book_category");
-                                String path = doc.getPath();
-                                String col = path.substring(0, path.indexOf("/"));
-                                String doc3 = path.substring(path.indexOf("/") + 1);
-                                dbSetUp.db.collection(col).whereEqualTo("category_name", doc3)
-                                        .get()
-                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                if (task.isSuccessful()) {
-                                                    for (QueryDocumentSnapshot document2 : task.getResult()) {
-                                                        Category book_cat = document2.toObject(Category.class);
-                                                        book.setBook_category(book_cat);
-                                                    }
-                                                } else {
-                                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                                }
-
-                                            }
-                                        });
-                                mCurrentlyBookReadCardAdapter.addCardItem(book);
-                                mCurrentlyBookReadCardAdapter.notifyDataSetChanged();
-
-                            }
-                        } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
-                        }
-                    }
-                });
-
-
-    }*/
 }

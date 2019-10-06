@@ -42,7 +42,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private BookTabFragment bookTabFragment;
     private FollowingTabFragment followingTabFragment;
     FragmentAdapter fragmentAdapter;
-    //   private Button signoutBtn;
     private ImageView profileSettingImg;
     private FirebaseAuth mAuth;
     private TextView nameTV;
@@ -56,7 +55,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         nameTV = root.findViewById(R.id.profile_name);
         mAuth = FirebaseAuth.getInstance();
         //to display the name
-        displayName();
+        //displayName();
 
 //for tabs
         viewPager = root.findViewById(R.id.profile_viewPager);
@@ -85,15 +84,15 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     private void displayName() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
+        String name="";
         if (user != null) {
-            String name = user.getDisplayName();
+             name= user.getDisplayName();
             // If the above were null, iterate the provider data
             // and set with the first non null data
             for (UserInfo userInfo : user.getProviderData()) {
                 if (name == null && userInfo.getDisplayName() != null) {
                     name = userInfo.getDisplayName();
-                    MySharedPreference.putString(getContext(),"userName",name);
+                    MySharedPreference.putString(getContext(), "userName", name);
 
                 }
             }
@@ -121,7 +120,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     }
 
 
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -134,11 +132,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        if (!MySharedPreference.getString(getContext(),"userName","").equals("")){
-            nameTV.setText(MySharedPreference.getString(getContext(),"userName",""));
-        }
-        else
+        if (!MySharedPreference.getString(getContext(), "userName", "").equals("")) {
+            nameTV.setText(MySharedPreference.getString(getContext(), "userName", ""));
+        } else
             nameTV.setText("");
+        displayName();
     }
 
 }

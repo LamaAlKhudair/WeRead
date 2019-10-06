@@ -80,7 +80,8 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
     public void updateList(List<Book> list){
         if (list.isEmpty()){
             Toast.makeText(this.mContext, "No book found", Toast.LENGTH_SHORT).show();
-
+            booksList = new ArrayList<Book>();
+            notifyDataSetChanged();
         }else{
             booksList = new ArrayList<Book>();
             booksList.addAll(list);

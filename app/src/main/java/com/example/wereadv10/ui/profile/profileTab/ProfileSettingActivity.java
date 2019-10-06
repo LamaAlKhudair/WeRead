@@ -35,6 +35,7 @@ public class ProfileSettingActivity extends AppCompatActivity implements View.On
     private FirebaseAuth mAuth;
     private String TAG = ProfileSettingActivity.class.getSimpleName();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +54,7 @@ public class ProfileSettingActivity extends AppCompatActivity implements View.On
         logoutLL.setOnClickListener(this);
         initToolBar();
 
-displayName();
+        displayName();
 
     }
 
@@ -142,7 +143,6 @@ displayName();
     }//end logoutDialog
 
 
-
     private void updateNameDialog() {
         android.app.AlertDialog.Builder updateNameDialog = new android.app.AlertDialog.Builder(ProfileSettingActivity.this);//,R.style.AlertDialogStyle
         updateNameDialog.setTitle("Update Name");
@@ -160,18 +160,27 @@ displayName();
                     dialog.setMessage("enter the name");
                     dialog.setPositiveButton("ok", null);
                     dialog.show();
-                }else {
-                    updateName(forgetEmilET.getText().toString());
-                    dialog.setMessage("the name is update");
-                    dialog.setPositiveButton("ok", null);
-                    dialog.show();
+                } else {
+                    //TODO: return boolean if true show update message else pleas try again
+                   updateName(forgetEmilET.getText().toString());
+/*                    if (check) {
+                        dialog.setMessage("the name is update");
+                        dialog.setPositiveButton("ok", null);
+                        dialog.show();
+                    } else {
+                        dialog.setMessage("can't update the name now please try again");
+                        dialog.setPositiveButton("ok", null);
+                        dialog.show();
+                    }*/
                 }//end else
             }//end onClick
         });//end setPositiveButton
         updateNameDialog.show();
     }
+
     public void updateName(final String name) {
         DocumentReference userName = db.collection("users").document(mAuth.getUid());
+        final android.app.AlertDialog.Builder dialog = new android.app.AlertDialog.Builder(ProfileSettingActivity.this);
 
 // Set the "isCapital" field of the city 'DC'
         userName
@@ -179,8 +188,8 @@ displayName();
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        nameTV.setText(name);
                         //update FirebaseUser profile
+
                         FirebaseUser userf = mAuth.getCurrentUser();
                         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
                         userf.updateProfile(profileUpdates)
@@ -189,7 +198,11 @@ displayName();
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
                                             Log.d(TAG, "User profile updated.");
-                                            MySharedPreference.putString(ProfileSettingActivity.this,"userName",name);
+                                            nameTV.setText(name);
+                                            MySharedPreference.putString(ProfileSettingActivity.this, "userName", name);
+                                            dialog.setMessage("the name is update");
+                                            dialog.setPositiveButton("ok", null);
+                                            dialog.show();
                                         }
                                     }
                                 });
@@ -200,6 +213,10 @@ displayName();
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w(TAG, "Error updating document", e);
+                        dialog.setMessage("can't update the name now please try again");
+                        dialog.setPositiveButton("ok", null);
+                        dialog.show();
+
                     }
                 });
     }// updateName()
