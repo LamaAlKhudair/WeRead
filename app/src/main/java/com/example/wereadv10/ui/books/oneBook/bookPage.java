@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,13 +15,24 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.example.wereadv10.R;
+import com.example.wereadv10.dbSetUp;
 import com.example.wereadv10.ui.books.oneBook.reviews.ReviewsTab;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class bookPage extends AppCompatActivity implements View.OnClickListener , PopupMenu.OnMenuItemClickListener {
     public TextView bookTitle;
@@ -32,8 +44,9 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
     private bookInfoTab infoFragment=new bookInfoTab();;
     private ReviewsTab reviewsTab = new ReviewsTab();
     private String book_id;
-    String Cover;
+    String Cover, userEmail, userID;
     TabsAdapter tabsAdapter;
+    private dbSetUp dbSetUp = new dbSetUp();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +61,9 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
         if (getIntent().getExtras().getString("RATING_VALUE")!=null)
         yourRating.setText(getIntent().getExtras().getString("RATING_VALUE")+"/5");
         setTitle("Details");
+        userEmail = "";
+        userID = "";
+        getUserEmail();
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         viewPager = findViewById(R.id.bookInfo_viewPager);
@@ -125,13 +141,79 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
     }
 
     private boolean addToCurrent(){
+        final Map<String, Object> addBook = new HashMap<>();
+        addBook.put("userID", userID);
+        addBook.put("bookID", book_id);
+        dbSetUp.db.collection("current_read_book").document(getRandom())
+                .set(addBook)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        System.out.println("DocumentSnapshot successfully written!");
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Error writing document", e);
+                    }
+                });
             return true;
     }
     private boolean addToRead(){
+        final Map<String, Object> addBook = new HashMap<>();
+        addBook.put("userID", userID);
+        addBook.put("bookID", book_id);
+        dbSetUp.db.collection("to_read_book").document(getRandom())
+                .set(addBook)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        System.out.println("DocumentSnapshot successfully written!");
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Error writing document", e);
+                    }
+                });
         return true;
     }
+    //complete_read_book
     private boolean addToComplate(){
-        return true;
+        final Map<String, Object> addBook = new HashMap<>();
+        addBook.put("userID", userID);
+        addBook.put("bookID", book_id);
+        dbSetUp.db.collection("complete_read_book").document(getRandom())
+                .set(addBook)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        System.out.println("DocumentSnapshot successfully written!");
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Error writing document", e);
+                    }
+                });
+        return true;    }
+    private void getUserEmail() {
+        //to display the name
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null) {
+            userEmail = user.getEmail();
+            userID = user.getUid();
+        }
+    }
+    private String getRandom(){
+        return UUID.randomUUID().toString();
     }
 
 }
