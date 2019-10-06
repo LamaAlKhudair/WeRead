@@ -10,9 +10,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.wereadv10.R;
-import com.example.wereadv10.ui.clubs.oneClub.clubTabsAdapter;
-import com.example.wereadv10.ui.clubs.oneClub.clubEventTab;
-import com.example.wereadv10.ui.clubs.oneClub.clubEventTab;
+import com.example.wereadv10.ui.clubs.oneClub.events.clubEventTab;
+import com.example.wereadv10.ui.clubs.oneClub.votes.clubVotingTab;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;

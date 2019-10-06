@@ -1,4 +1,4 @@
-package com.example.wereadv10.ui.clubs.oneClub;
+package com.example.wereadv10.ui.clubs.oneClub.events;
 
 
 import android.os.Bundle;
@@ -30,8 +30,8 @@ public class clubEventTab extends Fragment {
     ////@Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.club_event_tab, container, false);
-        event=(TextView)view.findViewById(R.id.club_event);
-        event.setText(getActivity().getIntent().getExtras().getString("EVENT"));
+        //event=(TextView)view.findViewById(R.id.club_event);
+        //event.setText(getActivity().getIntent().getExtras().getString("EVENT"));
         return view;
     }
 

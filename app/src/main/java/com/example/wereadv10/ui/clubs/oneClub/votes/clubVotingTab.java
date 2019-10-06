@@ -1,4 +1,4 @@
-package com.example.wereadv10.ui.clubs.oneClub;
+package com.example.wereadv10.ui.clubs.oneClub.votes;
 
 
 import android.os.Bundle;
@@ -30,8 +30,8 @@ public class clubVotingTab extends Fragment {
     ////@Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.club_voting_tab, container, false);
-        voting =(TextView)view.findViewById(R.id.club_voting);
-        voting.setText(getActivity().getIntent().getExtras().getString("VOTING"));
+        //voting =(TextView)view.findViewById(R.id.club_voting);
+       // voting.setText(getActivity().getIntent().getExtras().getString("VOTING"));
         return view;
     }
 
