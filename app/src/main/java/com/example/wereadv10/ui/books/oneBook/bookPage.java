@@ -100,15 +100,30 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        if (item.getItemId()!= R.id.cancel) {
+        if (item.getItemId() == R.id.Currently_Reading) {
+            addToCurrent();
             Toast.makeText(this, "The book has been added successfully", Toast.LENGTH_SHORT).show(); //todo enhance the behavior
             return true;
+        }
 
+        if (item.getItemId() == R.id.to_read) {
+            addToRead();
+            Toast.makeText(this, "The book has been added successfully", Toast.LENGTH_SHORT).show(); //todo enhance the behavior
+            return true;
+        }
 
+        if (item.getItemId() == R.id.completed) {
+            addToComplate();
+            Toast.makeText(this, "The book has been added successfully", Toast.LENGTH_SHORT).show(); //todo enhance the behavior
+            return true;
+        }
+        if (item.getItemId() == R.id.cancel) {
+            return true;
         }
             else
             return false;
     }
+
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -123,6 +138,7 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
         popup.inflate(R.menu.popup_menu);
         popup.show();
     }
+
 
     private boolean addToCurrent(){
             return true;
