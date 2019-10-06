@@ -101,20 +101,27 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         if (item.getItemId() == R.id.Currently_Reading) {
-            addToCurrent();
-            Toast.makeText(this, "The book has been added successfully", Toast.LENGTH_SHORT).show(); //todo enhance the behavior
+            if( addToCurrent())
+            Toast.makeText(this, "The book has been added successfully", Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(this, "The book has not been added,try again", Toast.LENGTH_SHORT).show();
+
             return true;
         }
 
         if (item.getItemId() == R.id.to_read) {
-            addToRead();
-            Toast.makeText(this, "The book has been added successfully", Toast.LENGTH_SHORT).show(); //todo enhance the behavior
+            if(addToRead())
+            Toast.makeText(this, "The book has been added successfully", Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(this, "The book has not been added,try again", Toast.LENGTH_SHORT).show();
             return true;
         }
 
         if (item.getItemId() == R.id.completed) {
-            addToComplate();
-            Toast.makeText(this, "The book has been added successfully", Toast.LENGTH_SHORT).show(); //todo enhance the behavior
+            if(addToComplate())
+            Toast.makeText(this, "The book has been added successfully", Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(this, "The book has not been added,try again", Toast.LENGTH_SHORT).show();
             return true;
         }
         if (item.getItemId() == R.id.cancel) {
