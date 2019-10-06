@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -88,5 +89,16 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.MyViewHolder
             else return 0;
         }
 
+    public void updateList(List<Club> list){
+        if (list.isEmpty()){
+            Toast.makeText(this.mContext, "No club found", Toast.LENGTH_SHORT).show();
+            clubsList = new ArrayList<Club>();
+            notifyDataSetChanged();
+        }else{
+            clubsList = new ArrayList<Club>();
+            clubsList.addAll(list);
+            notifyDataSetChanged();
+        }
+    }
 
 }
