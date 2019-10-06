@@ -63,6 +63,12 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
         setTitle("Details");
         userEmail = "";
         userID = "";
+        if (getIntent().getExtras().getString("BOOK_ID") != null){
+            book_id =getIntent().getExtras().getString("BOOK_ID");
+            System.out.println(book_id+"LLLLLL");
+        }else {
+            System.out.println("No intent ");
+        }
         getUserEmail();
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -223,6 +229,7 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w("Error writing document", e);
+                        Toast.makeText(getApplicationContext(),"You Cannot writing This Empty!",Toast.LENGTH_SHORT).show();
                     }
                 });
         return true;    }

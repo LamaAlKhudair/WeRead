@@ -41,6 +41,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
 
             Intent intent = new Intent(view.getContext(), bookPage.class);
             intent.putExtra("TITLE", booksList.get(getAdapterPosition()).getBook_title());
+            intent.putExtra("BOOK_ID", booksList.get(getAdapterPosition()).getID());
             intent.putExtra("COVER", booksList.get(getAdapterPosition()).getCover());
             intent.putExtra("AUTHOR", booksList.get(getAdapterPosition()).getAuthor());
             intent.putExtra("CATEGORY", booksList.get(getAdapterPosition()).getBook_category().getCategory_name()); //generate an error

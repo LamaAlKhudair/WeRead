@@ -123,6 +123,9 @@ public class ExploreFragment extends Fragment {
                                 String author = document.get("author").toString();
                                 String bookCover = document.get("book_cover").toString();
 
+                                String book_id = document.getString("bookID");
+                                book.setID(book_id);
+
                                 book.setBook_title(book_title);
                                 book.setSummary(summary);
                                 book.setAuthor(author);
