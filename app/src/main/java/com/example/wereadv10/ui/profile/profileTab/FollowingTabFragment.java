@@ -1,5 +1,6 @@
 package com.example.wereadv10.ui.profile.profileTab;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wereadv10.R;
 import com.example.wereadv10.dbSetUp;
+import com.example.wereadv10.ui.otherProfile.OtherProfileActivity;
 import com.example.wereadv10.ui.profile.profileTab.adapter.FollowingAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -32,7 +34,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FollowingTabFragment extends Fragment {
+public class FollowingTabFragment extends Fragment implements FollowingAdapter.OnFollowListener{
     private List<User> listData;
     private RecyclerView rv;
     private FollowingAdapter adapter;
@@ -89,10 +91,11 @@ public class FollowingTabFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            adapter=new FollowingAdapter(getContext(),listData);
+                            adapter=new FollowingAdapter(getContext(),listData,FollowingTabFragment.this);
                             rv.setAdapter(adapter);
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 //get book id
+
                                 String followedByID = document.get("followed_by_id").toString();
                                 getUsers(followedByID);
                             }
@@ -107,14 +110,23 @@ public class FollowingTabFragment extends Fragment {
 
     }//end getToReadBook()
     private void getUsers(String followedByID){
-        DocumentReference docRef = dbSetUp.db.collection("users").document(followedByID);
+        final DocumentReference docRef = dbSetUp.db.collection("users").document(followedByID);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 User user = documentSnapshot.toObject(User.class);
+                user.setId(docRef.getId());
                 listData.add(user);
                 adapter.notifyDataSetChanged();
             }
         });
     }//end getUsers()
+
+    @Override
+    public void onFollowUserClick(String otherUserID,String userEmail) {
+        Intent intent = new Intent(getActivity(), OtherProfileActivity.class);
+        intent.putExtra("otherUserEmail", userEmail);
+        intent.putExtra("otherUserID", otherUserID);
+        startActivity(intent);
+    }
 }

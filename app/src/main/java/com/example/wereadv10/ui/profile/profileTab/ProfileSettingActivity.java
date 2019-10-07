@@ -161,17 +161,8 @@ public class ProfileSettingActivity extends AppCompatActivity implements View.On
                     dialog.setPositiveButton("ok", null);
                     dialog.show();
                 } else {
-                    //TODO: return boolean if true show update message else pleas try again
                    updateName(forgetEmilET.getText().toString());
-/*                    if (check) {
-                        dialog.setMessage("the name is update");
-                        dialog.setPositiveButton("ok", null);
-                        dialog.show();
-                    } else {
-                        dialog.setMessage("can't update the name now please try again");
-                        dialog.setPositiveButton("ok", null);
-                        dialog.show();
-                    }*/
+
                 }//end else
             }//end onClick
         });//end setPositiveButton

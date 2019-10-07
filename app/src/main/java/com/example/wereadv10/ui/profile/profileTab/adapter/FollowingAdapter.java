@@ -15,40 +15,59 @@ import com.example.wereadv10.ui.profile.profileTab.User;
 
 import java.util.List;
 
-public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.ViewHolder>{
-private List<User>listData;
-private     Context context;
-    public FollowingAdapter(Context context, List<User> listData) {
-this.context = context;
-    this.listData = listData;
-        }
+public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.ViewHolder> {
+    private List<User> listData;
+    private Context context;
+    private OnFollowListener onFollowListener;
 
-@NonNull
-@Override
-public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.following_card,parent,false);
-        return new ViewHolder(view);
-        }
+    public FollowingAdapter(Context context, List<User> listData, OnFollowListener onFollowListener) {
+        this.context = context;
+        this.listData = listData;
+        this.onFollowListener = onFollowListener;
+    }
 
-@Override
-public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        User ld=listData.get(position);
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.following_card, parent, false);
+        return new ViewHolder(view, onFollowListener);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        User ld = listData.get(position);
         holder.txtname.setText(ld.getName());
 
-  //  Glide.with(context).load(video.getThumbnail()).into(holder.thumbnail);
+        //  Glide.with(context).load(video.getThumbnail()).into(holder.thumbnail);
 
-}
+    }
 
-@Override
-public int getItemCount() {
+    @Override
+    public int getItemCount() {
         return listData.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private TextView txtname;
+        private OnFollowListener onFollowListener;
+
+        public ViewHolder(View itemView, OnFollowListener onFollowListener) {
+            super(itemView);
+            txtname = itemView.findViewById(R.id.following_name);
+            this.onFollowListener = onFollowListener;
+            itemView.setOnClickListener(this);
         }
 
-public class ViewHolder extends RecyclerView.ViewHolder{
-    private TextView txtname;
-    public ViewHolder(View itemView) {
-        super(itemView);
-        txtname=(TextView)itemView.findViewById(R.id.following_name);
+        @Override
+        public void onClick(View view) {
+            String email = listData.get(getAdapterPosition()).getEmail();
+            String userID = listData.get(getAdapterPosition()).getId();
+            //  onFollowListener.onDepartmentClick(name, departmentList.get(getAdapterPosition()).getId());
+            onFollowListener.onFollowUserClick(userID,email);
+        }//end onClick
     }
-}
+
+    public interface OnFollowListener {
+        void onFollowUserClick(String userID,String userEmail);
+    }//end interface
 }

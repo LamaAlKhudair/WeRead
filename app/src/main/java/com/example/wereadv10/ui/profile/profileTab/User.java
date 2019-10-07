@@ -3,6 +3,16 @@ package com.example.wereadv10.ui.profile.profileTab;
 public class User {
     private String email;
     private String name;
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public User(String email, String name) {
         this.email = email;
         this.name = name;
