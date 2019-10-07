@@ -26,13 +26,13 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewClubs extends AppCompatActivity {
+public class ViewClubs extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     private static final String TAG = "ViewClubs";
 
     private RecyclerView rvClubs;
 
-    private RecyclerView.Adapter Clubs_adapter;
+    private ClubsAdapter Clubs_adapter;
 
     private RecyclerView.LayoutManager Clubs_LayoutManager;
 
@@ -51,6 +51,7 @@ public class ViewClubs extends AppCompatActivity {
         setTitle("Clubs");
 
         SearchView searchView = findViewById(R.id.search_club);
+        searchView.setOnQueryTextListener(this);
 
         rvClubs = findViewById(R.id.viewClubsRec);
 
@@ -114,5 +115,25 @@ public class ViewClubs extends AppCompatActivity {
         return Clubs;
     }
 
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        return false;
+    }
 
+    @Override
+    public boolean onQueryTextChange(String s){
+
+        List<Club> newList = new ArrayList<>();
+        s=s.toLowerCase();
+        for(int i=0; i<Clubs.size(); i++){
+            String club_name = Clubs.get(i).getClub_name().toLowerCase();
+            if(club_name.contains(s)  ){
+                newList.add(Clubs.get(i));
+            }
+        }
+
+        Clubs_adapter.updateList(newList);
+        Clubs_adapter.notifyDataSetChanged();
+        return true;
+    }
 }

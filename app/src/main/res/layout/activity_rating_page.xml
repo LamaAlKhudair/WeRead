@@ -6,6 +6,7 @@
     android:isScrollContainer="true"
     >
 
+
 <ImageView
     android:layout_width="400dp"
     android:layout_gravity="center"
@@ -13,7 +14,18 @@
     android:id="@+id/cover"
     android:layout_height="400dp">
 
+
 </ImageView>
+
+<!--    <TextView-->
+<!--        android:id="@+id/ratenum"-->
+<!--        android:layout_width="78dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="num"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:layout_marginTop="-100dp"-->
+<!--        android:textColor="#FF0000" />-->
+
 
     <RatingBar
         android:id="@+id/ratingBar"
@@ -51,5 +63,6 @@
         android:textColor="#ffffff">
 
     </Button>
+
 
 </LinearLayout>
