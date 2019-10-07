@@ -20,6 +20,7 @@ import com.example.wereadv10.R;
 import com.example.wereadv10.dbSetUp;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
@@ -38,7 +39,8 @@ public class ReviewsTab extends Fragment {
     private List<Review> RevList=new ArrayList<>();
     private ReviewsAdapter reviewsAdapter;
     private String book_title, userEmail, userName;
-    private Button ButtonAdd;
+   // private Button ButtonAdd;
+   private FloatingActionButton addFloatBtn;
 
     private com.example.wereadv10.dbSetUp dbSetUp = new dbSetUp();
 
@@ -52,9 +54,19 @@ public class ReviewsTab extends Fragment {
         RevList=new ArrayList<>();
         getUserEmail();
         book_title = getActivity().getIntent().getExtras().getString("TITLE");
-        ButtonAdd=view.findViewById(R.id.addButton);
+//        ButtonAdd=view.findViewById(R.id.addButton);
+        addFloatBtn = view.findViewById(R.id.fab_T);
         RevList = getRevList() ;
-        ButtonAdd.setOnClickListener(new View.OnClickListener()
+        addFloatBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getContext(),OneReview.class);
+                i.putExtra("BOOK_TITLE", getActivity().getIntent().getExtras().getString("TITLE"));
+                i.putExtra("USER",userEmail );
+                startActivity(i);
+            }
+        });
+/*        ButtonAdd.setOnClickListener(new View.OnClickListener()
 
         {
             @Override
@@ -66,7 +78,7 @@ public class ReviewsTab extends Fragment {
 
             }
 
-        });
+        });*/
         return view;
 
     }

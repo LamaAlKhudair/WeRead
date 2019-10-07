@@ -1,30 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/logo_explore"
         android:layout_width="150dp"
         android:layout_height="70dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/book_layout"
         android:layout_gravity="center"
-        app:srcCompat="@drawable/logoo" />
+        android:layout_marginTop="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/book_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/logoo"
+        android:layout_weight="0.25"
+        />
 
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="3"
+        >
         <!--title of the horizontal listing-->
         <LinearLayout
             android:id="@+id/book_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
             <TextView
                 android:id="@+id/books_title"
                 android:layout_width="wrap_content"
@@ -34,45 +39,48 @@
                 android:text="Books"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@color/colorPrimary"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textSize="18sp"/>
+
 
             <!-- show more books button -->
+
             <Button
                 android:id="@+id/show_books"
                 style="@style/Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="All Books" />
-
+                android:text="All Books"
+                android:textSize="12sp"/>
         </LinearLayout>
 
         <!--recycler view for horizontal listing-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvHorizontal"
-            tools:listitem="@layout/book_card"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:orientation="horizontal"
             android:scrollbars="horizontal"
-            />
-        </LinearLayout>
+            tools:listitem="@layout/book_card" />
 
+    </LinearLayout>
+    <!-- ***********************************************  -->
 
-        <!-- ***********************************************  -->
-
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="5"
+        android:layout_marginBottom="10dp">
         <!--title of the vertical listing-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
             <TextView
                 android:id="@+id/clubs_title"
                 android:layout_width="wrap_content"
@@ -82,15 +90,18 @@
                 android:text="Reading Clubs"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@color/colorPrimary"
-                android:textStyle="bold" />
-
+                android:textStyle="bold"
+                android:textSize="18sp"/>
             <!-- show more clubs button -->
             <Button
                 android:id="@+id/show_clubs"
                 style="@style/Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="All Clubs" />
+                android:text="All Clubs"
+                android:textSize="12sp"/>
+
+
 
         </LinearLayout>
 
@@ -100,17 +111,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvVertical"
-            tools:listitem="@layout/club_card"
-            android:layout_width="match_parent"
-            android:layout_height="230dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:orientation="vertical"
-            android:scrollbars="vertical"
-            />
-        </LinearLayout>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvVertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:orientation="vertical"
+                android:scrollbars="vertical"
+                tools:listitem="@layout/club_card" />
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
 

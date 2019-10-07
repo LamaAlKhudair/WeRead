@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
 
-    <Button
+<!--    <Button
         android:id="@+id/addButton"
         android:layout_width="200dp"
         android:layout_gravity="center"
@@ -12,7 +15,7 @@
         android:text="Add Your Review"
         android:textColor="#ffffff"
         android:background="@color/colorPrimaryDark"
-        />
+        />-->
 
 
     <ScrollView
@@ -27,8 +30,17 @@
             android:padding="10dp">
 
         </androidx.recyclerview.widget.RecyclerView>
+
     </ScrollView>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_T"
+        app:backgroundTint="@color/colorPrimary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/plus"
+        />
 
-
-</LinearLayout>
+</FrameLayout>

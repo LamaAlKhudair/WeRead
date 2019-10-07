@@ -4,53 +4,67 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:orientation="horizontal"
+    android:layout_marginTop="20dp"
+    android:layout_weight="2">
     <ImageView
         android:id="@+id/bookCover"
         android:layout_width="150dp"
         android:layout_height="190dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="40dp" />
-
-
+        android:layout_marginStart="20dp"
+         />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
     <TextView
         android:id="@+id/bookName"
         android:layout_width="159dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="200dp"
-        android:layout_marginTop="-150dp"
         android:textStyle="bold"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:text="bookName"
         android:textColor="@color/colorPrimaryDark" />
-
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center">
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_gravity="start"
+    >
     <ImageView
         android:layout_width="40dp"
         android:layout_height="30dp"
-        android:layout_marginLeft="200dp"
         android:layout_marginTop="20dp"
-        android:src="@drawable/star"
->
-
-    </ImageView>
+        android:src="@drawable/star"/>
 
     <TextView
         android:id="@+id/totalRating"
         android:layout_width="40dp"
         android:layout_height="20dp"
-        android:layout_marginLeft="211dp"
         android:textStyle="bold"
         android:layout_marginTop="-15dp"
+        android:layout_marginStart="10dp"
         android:text="....."
         android:clickable="true"
         android:textColor="@color/colorPrimaryDark" />
-
-
+</LinearLayout>
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
     <ImageView
         android:layout_width="40dp"
         android:layout_height="30dp"
-        android:layout_marginLeft="250dp"
-        android:layout_marginTop="-36dp"
+        android:layout_marginTop="20dp"
         android:id="@+id/ratingstar"
         android:src="@drawable/ratingstar"
         >
@@ -61,31 +75,33 @@
         android:id="@+id/rateThis"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="255dp"
         android:textStyle="bold"
         android:textSize="8dp"
-        android:layout_marginTop="-4dp"
         android:text="Rate This"
         android:clickable="true"
+        android:layout_marginStart="5dp"
         android:textColor="@color/colorPrimaryDark" />
-
+</LinearLayout>
+</LinearLayout>
     <TextView
         android:id="@+id/addToShelf"
-        android:layout_width="155dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="200dp"
         android:textStyle="bold"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:layout_marginTop="20dp"
         android:text="+add to shelf"
         android:clickable="true"
         android:textColor="@color/colorPrimaryDark" />
-
+    </LinearLayout>
+</LinearLayout>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/bookInfo_viewPager"
         android:layout_width="match_parent"
-        android:layout_height="376dp"
-        android:layout_marginTop="40dp">
+        android:layout_height="0dp"
+        android:layout_weight="4">
 
 
         <com.google.android.material.tabs.TabLayout

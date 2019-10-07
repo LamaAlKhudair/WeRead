@@ -93,7 +93,7 @@ public class BookTabFragment extends Fragment implements View.OnClickListener, C
         mToReadViewPager.setPageTransformer(false, mToReadCardShadowTransformer);
         mToReadViewPager.setOffscreenPageLimit(3);
         //3
-        mCompleteBookViewPager = (ViewPager) view.findViewById(R.id.fragment_book_tab_complete_book_viewPager);
+        mCompleteBookViewPager = view.findViewById(R.id.fragment_book_tab_complete_book_viewPager);
 
 
 
@@ -107,10 +107,6 @@ public class BookTabFragment extends Fragment implements View.OnClickListener, C
         mCompleteBookViewPager.setOffscreenPageLimit(3);
         return view;
 
-    }
-
-    public static float dpToPixels(int dp, Context context) {
-        return dp * (context.getResources().getDisplayMetrics().density);
     }
 
     @Override
@@ -198,7 +194,6 @@ public class BookTabFragment extends Fragment implements View.OnClickListener, C
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
                         }
-                        //mToReadAdapter.notifyDataSetChanged();
 
                     }
                 });
@@ -231,7 +226,7 @@ public class BookTabFragment extends Fragment implements View.OnClickListener, C
                 });
         ////
 
-    }//end getToReadBook()
+    }//end getCompleteReadBook()
 
     private void getCompleteReadBooks(String bookId) {
 
@@ -312,7 +307,7 @@ public class BookTabFragment extends Fragment implements View.OnClickListener, C
                 });
         ////
 
-    }//end getToReadBook()
+    }//end getCurrentReadBook()
 
     private void getCurrentReadBooks(String bookId) {
 
