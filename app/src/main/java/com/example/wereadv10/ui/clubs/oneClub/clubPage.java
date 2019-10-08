@@ -19,6 +19,7 @@ import com.google.android.material.tabs.TabLayout;
 
 public class clubPage extends AppCompatActivity {
 
+    public static String clubID;
     public TextView clubName;
     public ImageView clubImage;
     public TextView clubOwner;
@@ -58,7 +59,7 @@ public class clubPage extends AppCompatActivity {
 
     private void initCollapsingToolbar() {
         final CollapsingToolbarLayout collapsingToolbar =
-                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+                findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle(" ");
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
         appBarLayout.setExpanded(true);
@@ -90,6 +91,8 @@ public class clubPage extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent.getExtras() != null) {
+
+                clubID = intent.getExtras().getString("CLUB_ID");
 
             if (intent.getExtras().getString("NAME") != null)
                 clubName.setText(intent.getExtras().getString("NAME"));

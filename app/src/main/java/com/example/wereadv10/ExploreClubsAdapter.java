@@ -9,14 +9,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.wereadv10.ui.clubs.Club;
 import com.example.wereadv10.ui.clubs.oneClub.clubPage;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ExploreClubsAdapter extends RecyclerView.Adapter<ExploreClubsAdapter.MyViewHolder> {
@@ -86,3 +84,28 @@ public class ExploreClubsAdapter extends RecyclerView.Adapter<ExploreClubsAdapte
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

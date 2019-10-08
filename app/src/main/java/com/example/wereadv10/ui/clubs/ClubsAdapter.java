@@ -24,8 +24,6 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.MyViewHolder
 
         private Context mContext;
         private List<Club> clubsList = new ArrayList<>();
-        private static final String TAG = "ClubsAdapter";
-        private com.example.wereadv10.dbSetUp dbSetUp = new dbSetUp();
 
 
         public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -48,6 +46,7 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.MyViewHolder
             public void onClick(View view) {
 
             Intent intent = new Intent(view.getContext(), clubPage.class);
+            intent.putExtra("CLUB_ID", clubsList.get(getAdapterPosition()).getID());
             intent.putExtra("NAME", clubsList.get(getAdapterPosition()).getClub_name());
             intent.putExtra("IMAGE", clubsList.get(getAdapterPosition()).getClub_image());
             intent.putExtra("OWNER", clubsList.get(getAdapterPosition()).getClub_owner());
