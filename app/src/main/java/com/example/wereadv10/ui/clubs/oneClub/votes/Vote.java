@@ -48,4 +48,6 @@ public class Vote {
     public void setVote_title(String vote_title) {
         this.vote_title = vote_title;
     }
+
+
 }
