@@ -2,7 +2,7 @@ package com.example.wereadv10.ui.clubs;
 
 public class Club {
 
-    private long ID;
+    private String ID;
     private String club_name;
     private String club_owner;
     private String club_description;
@@ -11,7 +11,7 @@ public class Club {
 
     public  Club() { }
 
-    public Club(long ID, String club_name, String club_owner, String club_description, String club_image) {
+    public Club(String ID, String club_name, String club_owner, String club_description, String club_image) {
         this.ID = ID;
         this.club_name = club_name;
         this.club_owner = club_owner;
@@ -19,11 +19,11 @@ public class Club {
         this.club_image = club_image;
     }
 
-    public long getID() {
+    public String getID() {
         return ID;
     }
 
-    public void setID(long ID) {
+    public void setID(String ID) {
         this.ID = ID;
     }
 

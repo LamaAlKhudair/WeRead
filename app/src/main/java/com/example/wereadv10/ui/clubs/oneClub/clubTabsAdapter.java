@@ -16,8 +16,6 @@ import java.util.List;
 public class clubTabsAdapter extends FragmentStatePagerAdapter{
     int cNumOfTabs;
 
-
-
     private final List<Fragment> cFragmentList = new ArrayList<>();
     private final List<String> cFragmentTitleList = new ArrayList<>();
 
@@ -27,20 +25,19 @@ public class clubTabsAdapter extends FragmentStatePagerAdapter{
     }
 
 
-
     @Override
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                clubEventTab event_fragment = new clubEventTab();
-                return event_fragment;
+                clubEventTab eventTab = new clubEventTab();
+                return eventTab;
             case 1:
                 clubVotingTab votingTab = new clubVotingTab();
                 return votingTab;
             default:
                 return null;
         } //switch
-    }//getItem
+    }
 
     @Override
     public int getCount() {
@@ -51,7 +48,7 @@ public class clubTabsAdapter extends FragmentStatePagerAdapter{
     public void addFragment(Fragment fragment, String tiltle) {
         cFragmentList.add(fragment);
         cFragmentTitleList.add(tiltle);
-    }//addFragment
+    }
 
 
     @Nullable

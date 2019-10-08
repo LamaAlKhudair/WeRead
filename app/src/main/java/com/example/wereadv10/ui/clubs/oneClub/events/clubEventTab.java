@@ -1,6 +1,7 @@
 package com.example.wereadv10.ui.clubs.oneClub.events;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -42,9 +43,12 @@ public class clubEventTab extends Fragment {
     private List<Event> AllEvents = new ArrayList<>();
 
     private com.example.wereadv10.dbSetUp dbSetUp;
+    private String clubID ;
 
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
+
+
+        public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.club_event_tab, container, false);
@@ -77,7 +81,7 @@ public class clubEventTab extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 final Event event = new Event();
 
-                                //String club_id = document.get("club_id").toString();
+                                String club_id = document.get("club_id").toString();
                                 String event_name = document.get("event_name").toString();
                                 String event_date = document.get("event_date").toString();
                                 String event_desc = document.get("event_desc").toString();
@@ -91,7 +95,8 @@ public class clubEventTab extends Fragment {
                                 event.setEvent_time(event_time);
                                 event.setEvent_desc(event_desc);
 
-                               // if ( club_id == clubPage.clubID )
+
+                                //if ( club_id.equals(clubPage.clubID))
                                 AllEvents.add(event);
 
                                 rvEvents_adapter.notifyDataSetChanged();

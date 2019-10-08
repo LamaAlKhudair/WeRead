@@ -2,6 +2,7 @@ package com.example.wereadv10.ui.clubs.oneClub.events;
 
 public class Event {
 
+    private String club_id;
     private String event_name;
     private String event_location;
     private String event_date;
@@ -10,12 +11,21 @@ public class Event {
 
     public Event (){}
 
-    public Event(String event_name, String event_location, String event_date, String event_time, String event_desc) {
+    public Event(String club_id, String event_name, String event_location, String event_date, String event_time, String event_desc) {
+        this.club_id = club_id;
         this.event_name = event_name;
         this.event_location = event_location;
         this.event_date = event_date;
         this.event_time = event_time;
         this.event_desc = event_desc;
+    }
+
+    public String getClub_id() {
+        return club_id;
+    }
+
+    public void setClub_id(String club_id) {
+        this.club_id = club_id;
     }
 
     public String getEvent_name() {

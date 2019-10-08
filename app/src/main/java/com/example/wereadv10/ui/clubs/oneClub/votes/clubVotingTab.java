@@ -74,7 +74,7 @@ public class clubVotingTab extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 final Vote vote = new Vote();
 
-
+                                String club_id = document.get("club_id").toString();
                                 String option_one = document.get("option_one").toString();
                                 String option_two = document.get("option_two").toString();
                                 String vote_desc = document.get("vote_desc").toString();
@@ -86,7 +86,7 @@ public class clubVotingTab extends Fragment {
                                 vote.setVote_desc(vote_desc);
                                 vote.setVote_title(vote_title);
 
-                                //  if (club id == 212131)
+                                //if ( club_id.equals(clubPage.clubID))
                                 AllVotes.add(vote);
 
                                 rvVotes_adapter.notifyDataSetChanged();

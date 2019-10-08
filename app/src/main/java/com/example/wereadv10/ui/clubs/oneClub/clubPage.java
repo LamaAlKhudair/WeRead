@@ -41,6 +41,7 @@ public class clubPage extends AppCompatActivity {
         clubDescription = findViewById(R.id.club_description);
 
 
+
         viewPager = findViewById(R.id.clubEvent_viewPager);
         TabLayout tabLayout = findViewById(R.id.clubEvent_tab_layout);
         tabLayout.addTab(tabLayout.newTab());

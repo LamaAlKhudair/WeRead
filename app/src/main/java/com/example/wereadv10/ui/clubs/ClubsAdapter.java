@@ -27,6 +27,7 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.MyViewHolder
 
 
         public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
             public TextView club_name;
             public TextView club_description;
             public ImageView club_image;
