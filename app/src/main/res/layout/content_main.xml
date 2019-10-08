@@ -21,7 +21,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabGravity="fill"
-            app:tabTextColor="@color/colorPrimaryDark" />
+            app:tabTextColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            />
 
     </androidx.viewpager.widget.ViewPager>
 

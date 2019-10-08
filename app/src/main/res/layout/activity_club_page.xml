@@ -43,12 +43,33 @@
                     android:scaleType="centerCrop"
                     app:layout_collapseMode="parallax" />
 
+
+                <Button
+                    android:id="@+id/join_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="176dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="300dp"
+                    android:layout_marginBottom="5dp"
+                    android:elevation="5dp"
+                    android:padding="2dp"
+                    android:text="@string/join_club"
+                    android:textColor="@color/white"
+                    android:textSize="15dp"
+                    app:backgroundTint="@color/colorPrimary" />
+
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:gravity="center"
                     android:orientation="vertical"
+                    android:layout_marginTop="10dp"
                     android:padding="10dp">
 
                     <TextView
@@ -78,6 +99,17 @@
                         android:textSize="15sp" />
 
                 </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="350dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="366dp"
+                    android:layout_marginBottom="10dp"
+                    app:srcCompat="@drawable/share_invite" />
 
             </RelativeLayout>
 
