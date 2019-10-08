@@ -97,7 +97,7 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
         });
 
 
-    rateBook();
+   // rateBook();
     }
 private void rateBook(){
     DocumentReference messageRef = dbSetUp.db

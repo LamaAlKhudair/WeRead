@@ -49,6 +49,7 @@ public class ExploreBooksAdapter extends RecyclerView.Adapter<ExploreBooksAdapte
             intent.putExtra("CATEGORY", booksList.get(getAdapterPosition()).getBook_category().getCategory_name()); //generate an error
             intent.putExtra("SUMMARY", booksList.get(getAdapterPosition()).getSummary());
             intent.putExtra("BOOK_ID", booksList.get(getAdapterPosition()).getID());
+            intent.putExtra("BOOK_RATE", booksList.get(getAdapterPosition()).getRate()+" ");
 
             mContext.startActivity(intent);
         }
