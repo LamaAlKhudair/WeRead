@@ -29,6 +29,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.firestore.DocumentReference;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +37,7 @@ import java.util.UUID;
 
 public class bookPage extends AppCompatActivity implements View.OnClickListener , PopupMenu.OnMenuItemClickListener {
     public TextView bookTitle;
-    public TextView add;
+    public TextView add, totalRating;
     public ImageView bookCover;
     public ImageView star;
     private ViewPager viewPager;
@@ -58,6 +59,8 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
         add.setOnClickListener(this);
         star=findViewById(R.id.ratingstar);
         yourRating=findViewById(R.id.rateThis);
+        totalRating = findViewById(R.id.totalRating);
+
         if (getIntent().getExtras().getString("RATING_VALUE")!=null)
         yourRating.setText(getIntent().getExtras().getString("RATING_VALUE")+"/5");
         setTitle("Details");
@@ -65,7 +68,6 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
         userID = "";
         if (getIntent().getExtras().getString("BOOK_ID") != null){
             book_id =getIntent().getExtras().getString("BOOK_ID");
-            System.out.println(book_id+"LLLLLL");
         }else {
             System.out.println("No intent ");
         }
@@ -95,15 +97,27 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
         });
 
 
-
+    rateBook();
     }
-
+private void rateBook(){
+    DocumentReference messageRef = dbSetUp.db
+            .collection("books").document(book_id)
+            .collection("rates").document("111");
+}
 
     private void getExtras() {
         Intent intent = getIntent();
         if (intent.getExtras() != null) {
             if (intent.getExtras().getString("TITLE") != null)
                 bookTitle.setText(intent.getExtras().getString("TITLE"));
+            if (intent.getExtras().getString("BOOK_RATE") != null){
+                String rate = intent.getExtras().getString("BOOK_RATE");
+                totalRating.setText(rate+"/5");
+                System.out.println(totalRating+" Test total rate");
+            }else{
+                System.out.println("NO rate ;(");
+            }
+
             if (intent.getExtras().getString("COVER") != null) {
                 Glide.with(bookPage.this).load(intent.getExtras().getString("COVER")).into(bookCover);
                 Cover = intent.getExtras().getString("COVER");

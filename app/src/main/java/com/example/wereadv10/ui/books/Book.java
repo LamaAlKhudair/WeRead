@@ -11,6 +11,16 @@ public class Book {
     private String summary;
     private String cover;
 
+    public long getRate() {
+        return rate;
+    }
+
+    public void setRate(long rate) {
+        this.rate = rate;
+    }
+
+    private long rate;
+
 
     public Book() { }
 

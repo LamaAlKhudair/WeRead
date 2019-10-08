@@ -134,6 +134,10 @@ public class ViewBooks extends AppCompatActivity implements SearchView.OnQueryTe
                                 String author = document.get("author").toString();
                                 String bookCover = document.get("book_cover").toString();
                                 String book_id = document.getString("bookID");
+
+                                long rate = (long) document.get("book_rate");
+                                book.setRate(rate);
+
                                 book.setID(book_id);
 
                                 book.setBook_title(book_title);

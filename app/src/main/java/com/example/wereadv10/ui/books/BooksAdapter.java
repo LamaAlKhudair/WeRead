@@ -46,6 +46,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
             intent.putExtra("AUTHOR", booksList.get(getAdapterPosition()).getAuthor());
             intent.putExtra("CATEGORY", booksList.get(getAdapterPosition()).getBook_category().getCategory_name()); //generate an error
             intent.putExtra("SUMMARY", booksList.get(getAdapterPosition()).getSummary());
+            intent.putExtra("BOOK_RATE", booksList.get(getAdapterPosition()).getRate()+" ");
 
             mContext.startActivity(intent);
         }
