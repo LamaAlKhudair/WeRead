@@ -74,7 +74,7 @@ public class OtherProfileBookTabFragment extends Fragment implements View.OnClic
         mToReadViewPager.setPageTransformer(false, mToReadCardShadowTransformer);
         mToReadViewPager.setOffscreenPageLimit(3);
         //3
-        mCompleteBookViewPager = (ViewPager) view.findViewById(R.id.fragment_book_tab_complete_book_viewPager);
+        mCompleteBookViewPager =  view.findViewById(R.id.fragment_book_tab_complete_book_viewPager);
 
 
 
@@ -90,9 +90,6 @@ public class OtherProfileBookTabFragment extends Fragment implements View.OnClic
 
     }
 
-    public static float dpToPixels(int dp, Context context) {
-        return dp * (context.getResources().getDisplayMetrics().density);
-    }
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {

@@ -42,7 +42,6 @@ public class OtherProfileFollowingTabFragment extends Fragment implements Follow
         rv=view.findViewById(R.id.other_profile_following_recyclview);
 
         dbSetUp = new dbSetUp();
-                Toast.makeText(getContext(), "yesss", Toast.LENGTH_LONG).show();
         rv.setHasFixedSize(true);
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
         listData=new ArrayList<>();
@@ -58,7 +57,6 @@ public class OtherProfileFollowingTabFragment extends Fragment implements Follow
         String otherUserID = "";
         if (getActivity().getIntent().getExtras().getString("otherUserID")!=null)
             otherUserID = getActivity().getIntent().getExtras().getString("otherUserID");
-            Toast.makeText(getContext(), otherUserID, Toast.LENGTH_SHORT).show();
 
             dbSetUp.db.collection("following")
                     .whereEqualTo("followed_id", otherUserID)

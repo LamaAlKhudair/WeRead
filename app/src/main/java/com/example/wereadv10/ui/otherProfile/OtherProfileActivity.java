@@ -50,7 +50,7 @@ public class OtherProfileActivity extends AppCompatActivity  {
         nameTV = findViewById(R.id.other_profile_name);
         //to display the name
         displayName();
-
+        initToolBar();
 //for tabs
         viewPager = findViewById(R.id.other_profile_viewPager);
         TabLayout tabLayout = findViewById(R.id.other_profile_tab_layout);
@@ -105,4 +105,15 @@ public class OtherProfileActivity extends AppCompatActivity  {
     }//end getExtras()
 
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }//end onSupportNavigateUp
+
+    private void initToolBar() {
+        setTitle(name);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }//end initToolBar()
 }
