@@ -1,7 +1,6 @@
 package com.example.wereadv10.ui.clubs.oneClub.events;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,21 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.example.wereadv10.R;
 import com.example.wereadv10.dbSetUp;
-import com.example.wereadv10.ui.clubs.oneClub.clubPage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -51,11 +45,11 @@ public class clubEventTab extends Fragment {
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.club_event_tab, container, false);
+        clubID = getActivity().getIntent().getExtras().getString("CLUB_ID");
 
         rvEvents = root.findViewById(R.id.events_rv);
         rvEvents_LayoutManager = new LinearLayoutManager(clubEventTab.this.getContext());
         rvEvents.setLayoutManager ( rvEvents_LayoutManager );
-        clubID = getActivity().getIntent().getExtras().getString("CLUB_ID");
         rvEvents_adapter = new EventsAdapter(getContext(), AllEvents);
 
         rvEvents.setAdapter(rvEvents_adapter);
@@ -85,7 +79,6 @@ public class clubEventTab extends Fragment {
                                 String event_location = document.get("event_location").toString();
                                 String event_time = document.get("event_time").toString();
 
-
                                 event.setEvent_name(event_name);
                                 event.setEvent_date(event_date);
                                 event.setEvent_location(event_location);
@@ -102,7 +95,6 @@ public class clubEventTab extends Fragment {
                     }
                 });
         return AllEvents;
-
     }
 }
 

@@ -10,12 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 
 import com.example.wereadv10.R;
 import com.example.wereadv10.dbSetUp;
@@ -65,8 +63,8 @@ public class clubVotingTab extends Fragment {
         return root;
     }
 
-    private List<Vote> getAllVotes() {
 
+    private List<Vote> getAllVotes() {
 
         CollectionReference voteRef = dbSetUp.db.collection("votes");
         voteRef.whereEqualTo("club_id", clubID).get()
@@ -98,6 +96,5 @@ public class clubVotingTab extends Fragment {
                     }
                 });
         return AllVotes;
-
     }
 }
