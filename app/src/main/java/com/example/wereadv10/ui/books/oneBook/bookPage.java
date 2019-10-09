@@ -23,13 +23,17 @@ import com.bumptech.glide.Glide;
 import com.example.wereadv10.R;
 import com.example.wereadv10.dbSetUp;
 import com.example.wereadv10.ui.books.oneBook.reviews.ReviewsTab;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -100,11 +104,55 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
    // rateBook();
     }
 private void rateBook(){
-    DocumentReference messageRef = dbSetUp.db
+    final Map<String, Object> rev1 = new HashMap<>();
+    rev1.put("rate",5);
+    rev1.put("userID",userID);
+   dbSetUp.db
             .collection("books").document(book_id)
-            .collection("rates").document("111");
-}
+            .collection("rates").document(getRandom()).set(rev1)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    System.out.println("DocumentSnapshot successfully written!");
+                    updateBookRate();
 
+
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w("Error writing document", e);
+                }
+            });
+
+}
+private void updateBookRate(){
+        dbSetUp.db
+            .collection("books").document(book_id)
+            .collection("rates").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        @Override
+        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+            if (task.isSuccessful()) {
+                int count = 0;
+                Long ave = Long.valueOf(0);
+                for (DocumentSnapshot document : task.getResult()) {
+                    count++;
+                    ave = ave+document.getLong("rate");
+
+                }
+                final Map<String, Object> rev1 = new HashMap<>();
+                rev1.put("book_rate",(ave/count));
+                dbSetUp.db
+                        .collection("books").document(book_id).update(rev1);
+                System.out.println("DONE :)");
+            } else {
+                System.out.println( "Error getting documents: ");
+            }
+        }
+    });
+
+}
     private void getExtras() {
         Intent intent = getIntent();
         if (intent.getExtras() != null) {
