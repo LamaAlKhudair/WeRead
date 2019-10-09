@@ -56,7 +56,7 @@ public class clubEventTab extends Fragment {
         rvEvents = root.findViewById(R.id.events_rv);
         rvEvents_LayoutManager = new LinearLayoutManager(clubEventTab.this.getContext());
         rvEvents.setLayoutManager ( rvEvents_LayoutManager );
-
+        clubID = getActivity().getIntent().getExtras().getString("CLUB_ID");
         rvEvents_adapter = new EventsAdapter(getContext(), AllEvents);
 
         rvEvents.setAdapter(rvEvents_adapter);
@@ -69,10 +69,10 @@ public class clubEventTab extends Fragment {
     }
 
     private List<Event> getAllEvent() {
-
+    System.out.println("EEVENT"+clubID);
 
         final CollectionReference eventRef = dbSetUp.db.collection("events");
-        eventRef.get()
+        eventRef.whereEqualTo("club_id", clubID).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {

@@ -81,7 +81,7 @@ public class ViewClubs extends AppCompatActivity implements SearchView.OnQueryTe
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 final Club club = new Club();
 
-                                String club_id = document.get("club_name").toString();
+                                String club_id = document.get("club_id").toString();
                                 String club_name = document.get("club_name").toString();
                                 String club_owner = document.get("club_owner").toString();
                                 String club_description = document.get("club_description").toString();
@@ -100,7 +100,7 @@ public class ViewClubs extends AppCompatActivity implements SearchView.OnQueryTe
                                     }
                                 });
 
-
+                                club.setID(club_id);
                                 club.setClub_name(club_name);
                                 club.setClub_description(club_description);
                                 club.setClub_image(club_image);

@@ -94,7 +94,7 @@ public class clubPage extends AppCompatActivity {
         if (intent.getExtras() != null) {
 
                 clubID = intent.getExtras().getString("CLUB_ID");
-
+                System.out.println("CLUD _ID "+ clubID);
             if (intent.getExtras().getString("NAME") != null)
                 clubName.setText(intent.getExtras().getString("NAME"));
             if (intent.getExtras().getString("OWNER") != null)
