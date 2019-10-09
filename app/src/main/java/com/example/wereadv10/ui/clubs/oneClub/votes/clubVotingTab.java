@@ -32,6 +32,8 @@ import java.util.List;
 public class clubVotingTab extends Fragment {
     private static final String TAG = "Vote fragment";
 
+    private String clubID ;
+
     private RecyclerView rvVotes;
     private VotesAdapter rvVotes_adapter;
     private RecyclerView.LayoutManager rvVotes_LayoutManager;
@@ -45,6 +47,8 @@ public class clubVotingTab extends Fragment {
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.club_voting_tab, container, false);
+        clubID = getActivity().getIntent().getExtras().getString("CLUB_ID");
+
 
         rvVotes = root.findViewById(R.id.votes_rv);
         rvVotes_LayoutManager = new LinearLayoutManager(clubVotingTab.this.getContext());
@@ -65,7 +69,7 @@ public class clubVotingTab extends Fragment {
 
 
         CollectionReference voteRef = dbSetUp.db.collection("votes");
-        voteRef.get()
+        voteRef.whereEqualTo("club_id", clubID).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -74,19 +78,16 @@ public class clubVotingTab extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 final Vote vote = new Vote();
 
-                                String club_id = document.get("club_id").toString();
                                 String option_one = document.get("option_one").toString();
                                 String option_two = document.get("option_two").toString();
                                 String vote_desc = document.get("vote_desc").toString();
                                 String vote_title = document.get("vote_title").toString();
-
 
                                 vote.setOption1(option_one);
                                 vote.setOption2(option_two);
                                 vote.setVote_desc(vote_desc);
                                 vote.setVote_title(vote_title);
 
-                                //if ( club_id.equals(clubPage.clubID))
                                 AllVotes.add(vote);
 
                                 rvVotes_adapter.notifyDataSetChanged();

@@ -36,6 +36,8 @@ import java.util.List;
 public class clubEventTab extends Fragment {
     private static final String TAG = "Event fragment";
 
+    private String clubID ;
+
     private RecyclerView rvEvents;
     private EventsAdapter rvEvents_adapter;
     private RecyclerView.LayoutManager rvEvents_LayoutManager;
@@ -43,9 +45,6 @@ public class clubEventTab extends Fragment {
     private List<Event> AllEvents = new ArrayList<>();
 
     private com.example.wereadv10.dbSetUp dbSetUp;
-    private String clubID ;
-
-
 
 
         public View onCreateView(@NonNull LayoutInflater inflater,
@@ -69,7 +68,6 @@ public class clubEventTab extends Fragment {
     }
 
     private List<Event> getAllEvent() {
-    System.out.println("EEVENT"+clubID);
 
         final CollectionReference eventRef = dbSetUp.db.collection("events");
         eventRef.whereEqualTo("club_id", clubID).get()
@@ -81,7 +79,6 @@ public class clubEventTab extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 final Event event = new Event();
 
-                                String club_id = document.get("club_id").toString();
                                 String event_name = document.get("event_name").toString();
                                 String event_date = document.get("event_date").toString();
                                 String event_desc = document.get("event_desc").toString();
@@ -95,8 +92,6 @@ public class clubEventTab extends Fragment {
                                 event.setEvent_time(event_time);
                                 event.setEvent_desc(event_desc);
 
-
-                                //if ( club_id.equals(clubPage.clubID))
                                 AllEvents.add(event);
 
                                 rvEvents_adapter.notifyDataSetChanged();
