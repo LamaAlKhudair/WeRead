@@ -58,9 +58,9 @@ public class OneReview extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_one_review);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        initToolBar();
         book_title = "";
         userEmail = "";
-        setTitle("Add Review");
         RevList=new ArrayList<>();
         username=findViewById(R.id.User);
         revTitle=findViewById(R.id.revTitle);
@@ -151,6 +151,13 @@ public class OneReview extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
-    }
+    }//end onSupportNavigateUp
+
+    private void initToolBar() {
+        setTitle("Add Review");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }//end initToolBar()
+
 }
 

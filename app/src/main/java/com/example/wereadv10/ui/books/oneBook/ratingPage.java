@@ -51,6 +51,7 @@ public class ratingPage extends AppCompatActivity {
         setContentView(R.layout.activity_rating_page);
         ratebtn=findViewById(R.id.RateBtn);
         ratingBar=findViewById(R.id.ratingBar);
+        initToolBar();
         cover = findViewById(R.id.cover);
         Glide.with(ratingPage.this).load(getIntent().getExtras().getString("COVER_RATING")).into(cover);
         ratebtn.setOnClickListener(new View.OnClickListener() {
@@ -148,5 +149,16 @@ public class ratingPage extends AppCompatActivity {
         });
 
     }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }//end onSupportNavigateUp
+
+    private void initToolBar() {
+        setTitle("Add Rating");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }//end initToolBar()
 
 }

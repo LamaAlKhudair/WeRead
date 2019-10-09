@@ -34,7 +34,7 @@ public class clubPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_club_page);
-
+        initToolBar();
         clubName = findViewById(R.id.club_name);
         clubImage = findViewById(R.id.club_image);
         clubOwner = findViewById(R.id.club_owner);
@@ -106,6 +106,17 @@ public class clubPage extends AppCompatActivity {
 
         }
     }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }//end onSupportNavigateUp
+
+    private void initToolBar() {
+        setTitle("Club");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }//end initToolBar()
 
 
 }
