@@ -49,7 +49,7 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
     private bookInfoTab infoFragment=new bookInfoTab();;
     private ReviewsTab reviewsTab = new ReviewsTab();
     private String book_id;
-    String Cover, userEmail, userID;
+    private String Cover, userEmail, userID;
     TabsAdapter tabsAdapter;
     private dbSetUp dbSetUp = new dbSetUp();
 
@@ -95,64 +95,16 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
             public void onClick (View view){
                 Intent i = new Intent(bookPage.this,ratingPage.class);
                 i.putExtra("COVER_RATING",Cover);
+                i.putExtra("BOOK_ID",book_id);
+                i.putExtra("USER_ID", userID);
                 startActivity(i);
             }
 
         });
 
 
-   // rateBook();
     }
-private void rateBook(){
-    final Map<String, Object> rev1 = new HashMap<>();
-    rev1.put("rate",5);
-    rev1.put("userID",userID);
-   dbSetUp.db
-            .collection("books").document(book_id)
-            .collection("rates").document(getRandom()).set(rev1)
-            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    System.out.println("DocumentSnapshot successfully written!");
-                    updateBookRate();
 
-
-                }
-            })
-            .addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.w("Error writing document", e);
-                }
-            });
-
-}
-private void updateBookRate(){
-        dbSetUp.db
-            .collection("books").document(book_id)
-            .collection("rates").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-        @Override
-        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-            if (task.isSuccessful()) {
-                int count = 0;
-                Long ave = Long.valueOf(0);
-                for (DocumentSnapshot document : task.getResult()) {
-                    count++;
-                    ave = ave+document.getLong("rate");
-
-                }
-                final Map<String, Object> rev1 = new HashMap<>();
-                rev1.put("book_rate",(ave/count));
-                dbSetUp.db
-                        .collection("books").document(book_id).update(rev1);
-                System.out.println("DONE :)");
-            } else {
-                System.out.println( "Error getting documents: ");
-            }
-        }
-    });
-
-}
     private void getExtras() {
         Intent intent = getIntent();
         if (intent.getExtras() != null) {
