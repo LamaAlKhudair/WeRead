@@ -6,7 +6,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
@@ -31,11 +34,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewBooks extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class ViewBooks extends AppCompatActivity implements SearchView.OnQueryTextListener, PopupMenu.OnMenuItemClickListener {
     private RecyclerView recyclerView, catRecyclerView;
     private BooksAdapter adapter;
     private CategoryAdapter categoryAdapter;
     private   List<Book> bookList;
+    public ImageView filter;
     private List<Category> categoryList;
     private static final String TAG = "ViewBooks";
     private com.example.wereadv10.dbSetUp dbSetUp = new dbSetUp();
@@ -49,6 +53,16 @@ public class ViewBooks extends AppCompatActivity implements SearchView.OnQueryTe
         setTitle("Books");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        filter=findViewById(R.id.filter);
+        filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popup = new PopupMenu(ViewBooks.this, view);
+                popup.setOnMenuItemClickListener(ViewBooks.this);
+                popup.inflate(R.menu.popup_menu2);
+                popup.show();
+            }
+        });
         SearchView searchView = (SearchView) findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(this);
 
@@ -176,7 +190,10 @@ public class ViewBooks extends AppCompatActivity implements SearchView.OnQueryTe
         return bookList;
     }
 
-
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+        return false;
+    }
 
 
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
