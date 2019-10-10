@@ -45,7 +45,7 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
     public ImageView bookCover;
     public ImageView star;
     private ViewPager viewPager;
-    TextView yourRating;
+    private TextView yourRating;
     private bookInfoTab infoFragment=new bookInfoTab();;
     private ReviewsTab reviewsTab = new ReviewsTab();
     private String book_id;
@@ -90,6 +90,8 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
         viewPager.setAdapter(tabsAdapter);
         tabLayout.setupWithViewPager(viewPager);
         getExtras();
+
+        //clicking both the star icon & the textView will enable the user to rate
         star.setOnClickListener(new View.OnClickListener()
 
         {
@@ -105,6 +107,17 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
 
         });
 
+        yourRating.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(bookPage.this,ratingPage.class);
+                i.putExtra("COVER_RATING",Cover);
+                i.putExtra("BOOK_ID",book_id);
+                i.putExtra("USER_ID", userID);
+                i.putExtra("HAS_RATE",hasRate);
+                startActivity(i);
+            }
+        });
 
     }
     private void getUserRate(){
