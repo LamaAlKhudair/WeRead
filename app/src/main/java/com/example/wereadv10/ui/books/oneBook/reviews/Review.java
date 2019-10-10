@@ -7,6 +7,25 @@ public class Review {
     private String userName; // String for now
     private String text;
     private String revTitle;
+    private String userEmail;
+private  String userID;
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
 //    rate here
 
 

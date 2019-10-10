@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,8 @@ import com.example.wereadv10.ui.profile.profileTab.adapter.FollowingAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -35,11 +38,14 @@ public class OtherProfileFollowingTabFragment extends Fragment implements Follow
     private FollowingAdapter adapter;
     private com.example.wereadv10.dbSetUp dbSetUp;
     private String TAG = OtherProfileFollowingTabFragment.class.getSimpleName();
+    Button followBtn;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_other_profile_following_tab, container, false);
         rv=view.findViewById(R.id.other_profile_following_recyclview);
+        followBtn =((OtherProfileActivity)getActivity()).followBtn;
+
 
         dbSetUp = new dbSetUp();
         rv.setHasFixedSize(true);
@@ -70,6 +76,7 @@ public class OtherProfileFollowingTabFragment extends Fragment implements Follow
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     //get book id
                                     String followedByID = document.get("followed_by_id").toString();
+
                                     getUsers(followedByID);
                                 }
 
@@ -83,11 +90,15 @@ public class OtherProfileFollowingTabFragment extends Fragment implements Follow
 
     }//end getFollowers()
     private void getUsers(String followedByID){
+        final FirebaseUser userF = FirebaseAuth.getInstance().getCurrentUser();
+
         final DocumentReference docRef = dbSetUp.db.collection("users").document(followedByID);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 User user = documentSnapshot.toObject(User.class);
+                if (userF.getUid().equals(user.getId()))
+                    followBtn.setText("unFollow");
                 user.setId(docRef.getId());
                 listData.add(user);
                 adapter.notifyDataSetChanged();
