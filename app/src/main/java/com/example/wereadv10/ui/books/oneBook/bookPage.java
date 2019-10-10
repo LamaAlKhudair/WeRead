@@ -44,6 +44,7 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
     public TextView add, totalRating;
     public ImageView bookCover;
     public ImageView star;
+    public ImageView filter;
     private ViewPager viewPager;
     TextView yourRating;
     private bookInfoTab infoFragment=new bookInfoTab();;
@@ -59,6 +60,17 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
         setContentView(R.layout.book_page);
         bookTitle=findViewById(R.id.bookName);
         bookCover=findViewById(R.id.bookCover);
+        filter=findViewById(R.id.filter);
+        filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popup = new PopupMenu(bookPage.this, view);
+                popup.setOnMenuItemClickListener(bookPage.this);
+                popup.inflate(R.menu.popup_menu2);
+                popup.show();
+            }
+        });
+
         add=findViewById(R.id.addToShelf);
         add.setOnClickListener(this);
         star=findViewById(R.id.ratingstar);
