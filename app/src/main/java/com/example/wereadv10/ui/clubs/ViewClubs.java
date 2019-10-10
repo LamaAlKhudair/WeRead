@@ -36,8 +36,6 @@ public class ViewClubs extends AppCompatActivity implements SearchView.OnQueryTe
 
     private RecyclerView.LayoutManager Clubs_LayoutManager;
 
-    private CardView clubCard;
-
     private List<Club> Clubs = new ArrayList<>();
 
     private com.example.wereadv10.dbSetUp dbSetUp = new dbSetUp();

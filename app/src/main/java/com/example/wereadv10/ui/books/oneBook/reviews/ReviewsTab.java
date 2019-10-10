@@ -123,6 +123,8 @@ public class ReviewsTab extends Fragment {
                                                         for (QueryDocumentSnapshot document2 : task2.getResult()) {
                                                             userName = document2.get("name").toString();
                                                             review.setUserName(document2.get("name").toString());
+                                                            review.setUserEmail(document2.get("email").toString());
+                                                            review.setUserID(document2.getId());
                                                             RevList.add(review);
                                                             System.out.println("La La Land "+ review.getUserName());
                                                             reviewsAdapter.notifyDataSetChanged();

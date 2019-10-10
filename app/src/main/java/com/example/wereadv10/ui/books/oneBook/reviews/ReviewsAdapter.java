@@ -1,6 +1,7 @@
 package com.example.wereadv10.ui.books.oneBook.reviews;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wereadv10.R;
 import com.example.wereadv10.dbSetUp;
+import com.example.wereadv10.ui.otherProfile.OtherProfileActivity;
 
 import java.util.List;
 
@@ -53,15 +55,26 @@ public class ReviewsAdapter  extends RecyclerView.Adapter<ReviewsAdapter.ViewHol
     public void clear(){
         ReviewsList.clear();
     }
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView revTxt;
         private TextView revTitle;
         private TextView userName;
+
         public ViewHolder(View itemView) {
             super(itemView);
             revTitle = itemView.findViewById(R.id.reviewTitle);
             revTxt=itemView.findViewById(R.id.text_review);
             userName=itemView.findViewById(R.id.userName);
+            userName.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(context, OtherProfileActivity.class);
+            intent.putExtra("otherUserEmail", ReviewsList.get(getAdapterPosition()).getUserEmail());
+            intent.putExtra("otherUserID", ReviewsList.get(getAdapterPosition()).getUserID());
+
+            context.startActivity(intent);
         }
     }
 

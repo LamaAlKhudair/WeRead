@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/other_profile_name"
@@ -27,6 +27,18 @@
                 android:layout_height="wrap_content"
                 android:text="name"
                 android:textSize="19sp" />
+            <Button
+                android:id="@+id/other_profile_followBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/loging_rounded_button"
+                android:text="Follow"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:textAllCaps="false"
+                android:textSize="20sp"
+                android:layout_marginStart="80dp"
+                android:layout_marginEnd="80dp"/>
         </LinearLayout>
     </RelativeLayout>
 
