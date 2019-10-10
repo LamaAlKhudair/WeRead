@@ -120,9 +120,6 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
                     }
                     if(count>=1){
                        yourRating.setText(getRate);
-                    }else{
-                       System.out.println("yourRating.setText(");
-
                     }
                 } else {
                     System.out.println( "Error getting documents: ");
