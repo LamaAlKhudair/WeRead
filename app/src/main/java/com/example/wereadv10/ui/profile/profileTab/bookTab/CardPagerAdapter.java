@@ -79,6 +79,9 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
                 intent.putExtra("AUTHOR", mData.get(position).getAuthor());
                 intent.putExtra("CATEGORY", mData.get(position).getBook_category().getCategory_name()); //generate an error
                 intent.putExtra("SUMMARY", mData.get(position).getSummary());
+                intent.putExtra("BOOK_ID", mData.get(position).getID());
+                intent.putExtra("BOOK_RATE", mData.get(position).getRate()+" ");
+
                 view.getContext().startActivity(intent);
             }
         });

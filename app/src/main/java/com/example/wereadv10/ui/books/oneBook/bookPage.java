@@ -52,6 +52,7 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
     private String Cover, userEmail, userID;
     TabsAdapter tabsAdapter;
     private dbSetUp dbSetUp = new dbSetUp();
+    private boolean hasRate=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +77,7 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
             System.out.println("No intent ");
         }
         getUserEmail();
+        getUserRate();
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         viewPager = findViewById(R.id.bookInfo_viewPager);
@@ -97,12 +99,36 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
                 i.putExtra("COVER_RATING",Cover);
                 i.putExtra("BOOK_ID",book_id);
                 i.putExtra("USER_ID", userID);
+                i.putExtra("HAS_RATE",hasRate);
                 startActivity(i);
             }
 
         });
 
 
+    }
+    private void getUserRate(){
+        dbSetUp.db
+                .collection("books").document(book_id)
+                .collection("rates").whereEqualTo("userID", userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    int count = 0;
+                    String getRate = "";
+                    for (DocumentSnapshot document : task.getResult()) {
+                        count++;
+                        getRate = document.get("rate").toString();
+                    }
+                    if(count>=1){
+                       yourRating.setText(getRate);
+                        hasRate=true;
+                    }
+                } else {
+                    System.out.println( "Error getting documents: ");
+                }
+            }
+        });
     }
 
     private void getExtras() {

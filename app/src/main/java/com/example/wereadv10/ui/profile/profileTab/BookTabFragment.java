@@ -162,7 +162,12 @@ public class BookTabFragment extends Fragment implements View.OnClickListener, C
                                 String summary = document.get("summary").toString();
                                 String author = document.get("author").toString();
                                 String bookCover = document.get("book_cover").toString();
+                                String book_id = document.getString("bookID");
 
+                                long rate = (long) document.get("book_rate");
+                                book.setRate(rate);
+
+                                book.setID(book_id);
                                 book.setBook_title(book_title);
                                 book.setSummary(summary);
                                 book.setAuthor(author);
@@ -243,7 +248,12 @@ public class BookTabFragment extends Fragment implements View.OnClickListener, C
                                 String author = document.get("author").toString();
                                 String bookCover = document.get("book_cover").toString();
 
+                                String book_id = document.getString("bookID");
 
+                                long rate = (long) document.get("book_rate");
+                                book.setRate(rate);
+
+                                book.setID(book_id);
                                 book.setBook_title(book_title);
                                 book.setSummary(summary);
                                 book.setAuthor(author);
@@ -324,7 +334,12 @@ public class BookTabFragment extends Fragment implements View.OnClickListener, C
                                 String author = document.get("author").toString();
                                 String bookCover = document.get("book_cover").toString();
 
+                                String book_id = document.getString("bookID");
 
+                                long rate = (long) document.get("book_rate");
+                                book.setRate(rate);
+
+                                book.setID(book_id);
                                 book.setBook_title(book_title);
                                 book.setSummary(summary);
                                 book.setAuthor(author);
