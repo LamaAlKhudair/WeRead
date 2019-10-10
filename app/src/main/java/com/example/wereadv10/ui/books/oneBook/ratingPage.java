@@ -27,6 +27,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -43,6 +44,7 @@ public class ratingPage extends AppCompatActivity {
     private Button ratebtn;
     private Button cancelbtn;
     private String userID, book_id;
+    private boolean hasRate;
     private com.example.wereadv10.dbSetUp dbSetUp = new dbSetUp();
 
     @Override
@@ -57,14 +59,18 @@ public class ratingPage extends AppCompatActivity {
         ratebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                ratebtn.setBackgroundColor();
                 userID=book_id ="";
                 getExtas();
                 if(ratingBar.getRating()==0)
                 return;
                 else {
                     int num = Math.round(ratingBar.getRating());
-                    rateBook(num);
+                    System.out.println("HASRATe in close "+hasRate);
+                    if(hasRate){
+                        updateUserRate(num);
+                    }else{
+                        rateBook(num);
+                    }
                     finish();
                 }
 
@@ -86,6 +92,31 @@ public class ratingPage extends AppCompatActivity {
             }
         });
     }
+    private void updateUserRate(int rateInt){
+        final Map<String, Object> rev1 = new HashMap<>();
+        rev1.put("rate",rateInt);
+        //rev1.put("userID",userID);
+        final String[] id = new String[1];
+         dbSetUp.db
+                .collection("books").document(book_id).collection("rates")
+                .whereEqualTo("userID",userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+             @Override
+             public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                 if (task.isSuccessful()) {
+                     for (DocumentSnapshot document : task.getResult()) {
+                        id[0] = document.getId();
+                     }
+                     dbSetUp.db
+                             .collection("books").document(book_id).collection("rates")
+                             .document(id[0]).update(rev1);
+                     updateBookRate();
+                 } else {
+                     System.out.println( "Error getting documents: ");
+                 }
+             }
+         });;
+
+    }
     private String getRandom(){
         return UUID.randomUUID().toString();
     }
@@ -97,6 +128,14 @@ public class ratingPage extends AppCompatActivity {
             book_id =getIntent().getExtras().getString("BOOK_ID");
         }else {
             System.out.println("No intent ");
+        }
+
+        if (getIntent().getExtras().getBoolean("HAS_RATE") != false){
+                hasRate = getIntent().getExtras().getBoolean("HAS_RATE");
+                System.out.println("HASRATe in the"+hasRate);
+        }else{
+            hasRate = false;
+            System.out.println("In else");
         }
     }
     private void rateBook(int rateInt){

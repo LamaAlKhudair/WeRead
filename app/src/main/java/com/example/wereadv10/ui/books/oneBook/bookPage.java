@@ -52,6 +52,7 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
     private String Cover, userEmail, userID;
     TabsAdapter tabsAdapter;
     private dbSetUp dbSetUp = new dbSetUp();
+    private boolean hasRate=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +99,7 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
                 i.putExtra("COVER_RATING",Cover);
                 i.putExtra("BOOK_ID",book_id);
                 i.putExtra("USER_ID", userID);
+                i.putExtra("HAS_RATE",hasRate);
                 startActivity(i);
             }
 
@@ -120,6 +122,7 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
                     }
                     if(count>=1){
                        yourRating.setText(getRate);
+                        hasRate=true;
                     }
                 } else {
                     System.out.println( "Error getting documents: ");
