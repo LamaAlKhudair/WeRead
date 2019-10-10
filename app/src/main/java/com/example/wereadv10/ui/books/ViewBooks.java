@@ -32,6 +32,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ViewBooks extends AppCompatActivity implements SearchView.OnQueryTextListener, PopupMenu.OnMenuItemClickListener {
@@ -74,8 +76,34 @@ public class ViewBooks extends AppCompatActivity implements SearchView.OnQueryTe
 
         adapter = new BooksAdapter(this,getBooks()) ;//should pass a book list to the adapter
         categoryAdapter = new CategoryAdapter(this, getCategory());
-
+filterBookHighToLow();
+    //    filterBookLowToHigh();
     }//End onCreate()
+    private void filterBookHighToLow(){
+        Collections.sort(bookList, new Comparator<Book>() {
+            @Override
+            public int compare(Book bookData, Book t1) {
+                Long idea1 = new Long(bookData.getRate());// here pass rating value.
+                Long idea2 = new Long(t1.getRate());// here pass rating value.
+                return idea1.compareTo(idea2);
+            }
+        });
+        if (adapter != null)
+            adapter.notifyDataSetChanged();
+    }
+    private void filterBookLowToHigh(){
+        Collections.sort(bookList, new Comparator<Book>() {
+            @Override
+            public int compare(Book bookData, Book t1) {
+                Long idea1 = new Long(bookData.getRate());// here pass rating value.
+                Long idea2 = new Long(t1.getRate());// here pass rating value.
+                return idea1.compareTo(idea2);
+            }
+        });
+        if (adapter != null)
+            adapter.notifyDataSetChanged();
+
+    }
 
     private List<Category> getCategory(){
         dbSetUp.db.collection("categories")
