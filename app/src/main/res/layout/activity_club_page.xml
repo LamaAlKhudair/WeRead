@@ -144,7 +144,24 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvMembers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:orientation="horizontal"
+        android:scrollbars="horizontal"
+        tools:listitem="@layout/member_card" />
+
+
     //include Event and Votes fragments
-    <include layout="@layout/content_main" />
+    <include
+        layout="@layout/content_main"
+        android:layout_marginTop="320dp"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
