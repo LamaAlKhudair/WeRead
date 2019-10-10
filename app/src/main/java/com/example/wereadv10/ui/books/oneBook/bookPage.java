@@ -76,6 +76,7 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
             System.out.println("No intent ");
         }
         getUserEmail();
+        getUserRate();
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         viewPager = findViewById(R.id.bookInfo_viewPager);
@@ -103,6 +104,31 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
         });
 
 
+    }
+    private void getUserRate(){
+        dbSetUp.db
+                .collection("books").document(book_id)
+                .collection("rates").whereEqualTo("userID", userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    int count = 0;
+                    String getRate = "";
+                    for (DocumentSnapshot document : task.getResult()) {
+                        count++;
+                        getRate = document.get("rate").toString();
+                    }
+                    if(count>=1){
+                       yourRating.setText(getRate);
+                    }else{
+                       System.out.println("yourRating.setText(");
+
+                    }
+                } else {
+                    System.out.println( "Error getting documents: ");
+                }
+            }
+        });
     }
 
     private void getExtras() {
