@@ -28,13 +28,16 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.core.OrderBy;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import com.google.firebase.firestore.Query.Direction;
 
 public class ViewBooks extends AppCompatActivity implements SearchView.OnQueryTextListener, PopupMenu.OnMenuItemClickListener {
     private RecyclerView recyclerView, catRecyclerView;
@@ -76,20 +79,67 @@ public class ViewBooks extends AppCompatActivity implements SearchView.OnQueryTe
 
         adapter = new BooksAdapter(this,getBooks()) ;//should pass a book list to the adapter
         categoryAdapter = new CategoryAdapter(this, getCategory());
-filterBookHighToLow();
-    //    filterBookLowToHigh();
+
     }//End onCreate()
     private void filterBookHighToLow(){
-        Collections.sort(bookList, new Comparator<Book>() {
-            @Override
-            public int compare(Book bookData, Book t1) {
-                Long idea1 = new Long(bookData.getRate());// here pass rating value.
-                Long idea2 = new Long(t1.getRate());// here pass rating value.
-                return idea1.compareTo(idea2);
-            }
-        });
-        if (adapter != null)
-            adapter.notifyDataSetChanged();
+        dbSetUp.db.collection("books").orderBy("book_rate", Direction.ASCENDING)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(ViewBooks.this, 2);
+                            recyclerView.setLayoutManager(mLayoutManager);
+                            recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+                            recyclerView.setItemAnimator(new DefaultItemAnimator());
+                            recyclerView.setAdapter(adapter);
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                final Book book = new Book();
+                                String book_title = document.get("book_title").toString();
+                                String summary = document.get("summary").toString();
+                                String author = document.get("author").toString();
+                                String bookCover = document.get("book_cover").toString();
+                                String book_id = document.getString("bookID");
+
+                                long rate = (long) document.get("book_rate");
+                                book.setRate(rate);
+
+                                book.setID(book_id);
+
+                                book.setBook_title(book_title);
+                                book.setSummary(summary);
+                                book.setAuthor(author);
+                                book.setCover(bookCover);
+
+                                DocumentReference doc = document.getDocumentReference("book_category");
+                                String path = doc.getPath();
+                                String col = path.substring(0, path.indexOf("/"));
+                                String doc3 = path.substring(path.indexOf("/")+1);
+                                dbSetUp.db.collection(col).whereEqualTo("category_name", doc3)
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    for (QueryDocumentSnapshot document2 : task.getResult()) {
+                                                        Category book_cat = document2.toObject(Category.class);
+                                                        book.setBook_category(book_cat);
+                                                    }
+                                                } else {
+                                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                                }
+                                                bookList.add(book);
+                                                adapter.notifyDataSetChanged();
+                                            }
+                                        });
+                            }
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+
+                    }
+                });
+
     }
     private void filterBookLowToHigh(){
         Collections.sort(bookList, new Comparator<Book>() {
@@ -212,6 +262,7 @@ filterBookHighToLow();
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
                         }
+
                     }
                 });
 
