@@ -44,6 +44,7 @@ public class ViewBooks extends AppCompatActivity implements SearchView.OnQueryTe
     private BooksAdapter adapter;
     private CategoryAdapter categoryAdapter;
     private   List<Book> bookList;
+    private List<Book> RatedBooks;
     public ImageView filter;
     private List<Category> categoryList;
     private static final String TAG = "ViewBooks";
@@ -75,6 +76,7 @@ public class ViewBooks extends AppCompatActivity implements SearchView.OnQueryTe
         catRecyclerView = (RecyclerView) findViewById(R.id.category_rv);
 
         bookList = new ArrayList<Book>();
+
         categoryList = new ArrayList<Category>();
 
         adapter = new BooksAdapter(this,getBooks()) ;//should pass a book list to the adapter
@@ -88,11 +90,11 @@ public class ViewBooks extends AppCompatActivity implements SearchView.OnQueryTe
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(ViewBooks.this, 2);
-                            recyclerView.setLayoutManager(mLayoutManager);
-                            recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
-                            recyclerView.setItemAnimator(new DefaultItemAnimator());
-                            recyclerView.setAdapter(adapter);
+//                            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(ViewBooks.this, 2);
+//                            recyclerView.setLayoutManager(mLayoutManager);
+//                            recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+//                            recyclerView.setItemAnimator(new DefaultItemAnimator());
+//                            recyclerView.setAdapter(adapter);
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 final Book book = new Book();
                                 String book_title = document.get("book_title").toString();
@@ -128,11 +130,13 @@ public class ViewBooks extends AppCompatActivity implements SearchView.OnQueryTe
                                                 } else {
                                                     Log.d(TAG, "Error getting documents: ", task.getException());
                                                 }
-                                                bookList.add(book);
-                                                adapter.notifyDataSetChanged();
+                                                RatedBooks.add(book);
+
                                             }
                                         });
                             }
+                            adapter.updateList(RatedBooks);
+                            adapter.notifyDataSetChanged();
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
                         }
@@ -275,12 +279,12 @@ public class ViewBooks extends AppCompatActivity implements SearchView.OnQueryTe
     public boolean onMenuItemClick(MenuItem menuItem) {
 
         if (menuItem.getItemId() == R.id.rateHigh) {
-           //todo filter function
+            filterBookHighToLow();
             return true;
         }
 
         if (menuItem.getItemId() == R.id.rateLow) {
-            //todo filter function
+            filterBookLowToHigh();
             return true;
         }
 
