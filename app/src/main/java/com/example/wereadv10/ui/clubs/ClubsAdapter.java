@@ -23,7 +23,7 @@ import java.util.List;
 public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.MyViewHolder>{
 
         private Context mContext;
-        private List<Club> clubsList = new ArrayList<>();
+        private List<Club> clubsList;
 
 
         public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

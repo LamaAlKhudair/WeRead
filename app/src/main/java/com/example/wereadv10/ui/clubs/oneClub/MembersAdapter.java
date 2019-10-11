@@ -25,7 +25,7 @@ import java.util.List;
 public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MyViewHolder>{
 
     private Context mContext;
-    private List<User> membersList = new ArrayList<>();
+    private List<User> membersList;
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -36,8 +36,8 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MyViewHo
 
         public MyViewHolder(View view) {
             super(view);
-            member_name =  view.findViewById(R.id.member_name);
-            member_image = view.findViewById(R.id.Members_imageView);
+            member_name  = view.findViewById(R.id.member_name);
+            member_image = view.findViewById(R.id.member_imageView);
             member_image.setOnClickListener(this);
             card = view.findViewById(R.id.member_card);
             card.setOnClickListener(this);
@@ -47,9 +47,8 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MyViewHo
         public void onClick(View view) {
 
             Intent intent = new Intent(view.getContext(), OtherProfileActivity.class);
-            intent.putExtra("ID", membersList.get(getAdapterPosition()).getId());
-            intent.putExtra("NAME", membersList.get(getAdapterPosition()).getName());
-            //intent.putExtra("IMAGE", membersList.get(getAdapterPosition()).getImage());
+            intent.putExtra("otherUserID", membersList.get(getAdapterPosition()).getId());
+            intent.putExtra("otherUserEmail", membersList.get(getAdapterPosition()).getEmail());
 
             mContext.startActivity(intent);
         }
@@ -73,9 +72,10 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        User club = membersList.get(position);
-        //Glide.with(mContext).load(club.getImage()).apply(RequestOptions.circleCropTransform()).into(holder.member_image);
-        holder.member_name.setText(club.getName());
+        User member = membersList.get(position);
+        //Glide.with(mContext).load(member.getImage()).into(holder.member_image);
+        holder.member_name.setText(member.getName());
+        holder.member_image.setImageResource(member.getImage());
     }
 
 

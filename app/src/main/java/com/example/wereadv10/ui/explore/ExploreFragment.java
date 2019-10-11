@@ -1,7 +1,6 @@
 package com.example.wereadv10.ui.explore;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,8 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.wereadv10.ui.clubs.Club;
-import com.example.wereadv10.ExploreBooksAdapter;
-import com.example.wereadv10.ExploreClubsAdapter;
 import com.example.wereadv10.R;
 import com.example.wereadv10.ui.clubs.ViewClubs;
 import com.example.wereadv10.ui.books.Book;
@@ -25,8 +22,6 @@ import com.example.wereadv10.ui.books.ViewBooks;
 import com.example.wereadv10.dbSetUp;
 import com.example.wereadv10.ui.categories.Category;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -34,7 +29,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.lang.ref.Reference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -179,6 +173,7 @@ public class ExploreFragment extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 final Club club = new Club();
 
+                                String club_id = document.get("club_id").toString();
                                 String club_name = document.get("club_name").toString();
                                 String club_owner = document.get("club_owner").toString();
                                 String club_description = document.get("club_description").toString();
@@ -198,6 +193,7 @@ public class ExploreFragment extends Fragment {
                                     }
                                 });
 
+                                club.setID(club_id);
                                 club.setClub_name(club_name);
                                 club.setClub_description(club_description);
                                 club.setClub_image(club_image);
