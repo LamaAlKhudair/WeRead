@@ -36,11 +36,11 @@ import java.util.List;
 
 public class clubPage extends AppCompatActivity {
 
-    private static final String TAG = "Members";
+    private static final String TAG = "clubPage";
 
     private com.example.wereadv10.dbSetUp dbSetUp = new dbSetUp();
 
-    public static String clubID;
+    public String clubID;
     public TextView clubName;
     public ImageView clubImage;
     public TextView clubOwner;
@@ -57,6 +57,7 @@ public class clubPage extends AppCompatActivity {
     private clubEventTab eventFragment = new clubEventTab();;
     private clubVotingTab votingTab = new clubVotingTab();
     private clubTabsAdapter clubTabsAdapter;
+    private int[] sampleImages = new int[5];
 
 
     @Override
@@ -67,13 +68,15 @@ public class clubPage extends AppCompatActivity {
         initToolBar();
         dbSetUp = new dbSetUp();
 
-
         clubName = findViewById(R.id.club_name);
         clubImage = findViewById(R.id.club_image);
         clubOwner = findViewById(R.id.club_owner);
         clubDescription = findViewById(R.id.club_description);
 
+        getExtras();
+
         // Members recycler view
+        sampleImages[0] = R.drawable.man ;
         rvMembers = findViewById(R.id.rvMembers);
         Members_LayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rvMembers.setLayoutManager ( Members_LayoutManager );
@@ -92,7 +95,6 @@ public class clubPage extends AppCompatActivity {
         BodyViewPager.setAdapter(clubTabsAdapter);
         tabLayout.setupWithViewPager(BodyViewPager);
 
-        getExtras();
         initCollapsingToolbar();
 
     }
@@ -110,6 +112,10 @@ public class clubPage extends AppCompatActivity {
                                 final User member = new User();
 
                                 String member_id = document.get("member_id").toString();
+                                member.setId(member_id);
+
+                                int member_image = sampleImages[0] ;
+                                member.setImage(member_image);
 
                                 // Get members info from users collection
                                 DocumentReference userRef = dbSetUp.db.collection("users").document(member_id);
@@ -120,12 +126,11 @@ public class clubPage extends AppCompatActivity {
                                         if(task.isSuccessful()){
                                             DocumentSnapshot doc = task.getResult();
                                             member.setName(doc.get("name").toString());
+                                            member.setEmail(doc.get("email").toString());
 
                                         }
                                     }
                                 });
-
-                                member.setId(member_id);
 
                                 Members.add(member);
 
@@ -176,7 +181,6 @@ public class clubPage extends AppCompatActivity {
         if (intent.getExtras() != null) {
 
                 clubID = intent.getExtras().getString("CLUB_ID");
-                System.out.println("CLUD _ID "+ clubID);
             if (intent.getExtras().getString("NAME") != null)
                 clubName.setText(intent.getExtras().getString("NAME"));
             if (intent.getExtras().getString("OWNER") != null)

@@ -1,4 +1,4 @@
-package com.example.wereadv10;
+package com.example.wereadv10.ui.explore;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.wereadv10.R;
 import com.example.wereadv10.ui.clubs.Club;
 import com.example.wereadv10.ui.clubs.oneClub.clubPage;
 
@@ -42,6 +43,7 @@ public class ExploreClubsAdapter extends RecyclerView.Adapter<ExploreClubsAdapte
         public void onClick(View view) {
 
             Intent intent = new Intent(view.getContext(), clubPage.class);
+            intent.putExtra("CLUB_ID", clubsList.get(getAdapterPosition()).getID());
             intent.putExtra("NAME", clubsList.get(getAdapterPosition()).getClub_name());
             intent.putExtra("IMAGE", clubsList.get(getAdapterPosition()).getClub_image());
             intent.putExtra("OWNER", clubsList.get(getAdapterPosition()).getClub_owner());
