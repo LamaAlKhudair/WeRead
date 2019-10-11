@@ -218,8 +218,22 @@ filterBookHighToLow();
         return bookList;
     }
 
+
+
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
+
+        if (menuItem.getItemId() == R.id.rateHigh) {
+           //todo filter function
+            return true;
+        }
+
+        if (menuItem.getItemId() == R.id.rateLow) {
+            //todo filter function
+            return true;
+        }
+
+        else
         return false;
     }
 
