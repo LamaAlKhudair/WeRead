@@ -97,9 +97,10 @@ public class OtherProfileFollowingTabFragment extends Fragment implements Follow
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 User user = documentSnapshot.toObject(User.class);
-                if (userF.getUid().equals(user.getId()))
-                    followBtn.setText("unFollow");
                 user.setId(docRef.getId());
+                if (userF.getUid().toString().equals(user.getId()))
+                    followBtn.setText("unFollow");
+
                 listData.add(user);
                 adapter.notifyDataSetChanged();
             }

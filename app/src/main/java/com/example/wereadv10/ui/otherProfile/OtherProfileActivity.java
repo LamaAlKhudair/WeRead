@@ -11,8 +11,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.wereadv10.R;
+import com.example.wereadv10.SignUp;
 import com.example.wereadv10.dbSetUp;
 import com.example.wereadv10.ui.profile.ProfileFragment;
 import com.example.wereadv10.ui.profile.profileTab.BookTabFragment;
@@ -42,12 +44,12 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
     private OtherProfileFollowingTabFragment followingTabFragment;
     OtherProfileFragmentAdapter fragmentAdapter;
     private TextView nameTV;
-     Button followBtn;
+    Button followBtn;
     private String TAG = ProfileFragment.class.getSimpleName();
-    private String otherUserEmail ="";
+    private String otherUserEmail = "";
     private String otherUserID = "";
     private com.example.wereadv10.dbSetUp dbSetUp;
-    private  String name="";
+    private String name = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +60,7 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
         dbSetUp = new dbSetUp();
 
         nameTV = findViewById(R.id.other_profile_name);
-        checkIsUserFollow();
+
         //to display the name
         displayName();
         initToolBar();
@@ -73,7 +75,7 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
         followingTabFragment = new OtherProfileFollowingTabFragment();
 
         fragmentAdapter = new OtherProfileFragmentAdapter(this.getSupportFragmentManager(), tabLayout.getTabCount());
-        fragmentAdapter.addFragment(bookTabFragment, name+" Library");
+        fragmentAdapter.addFragment(bookTabFragment, name + " Library");
         fragmentAdapter.addFragment(followingTabFragment, "Following");
 
         //
@@ -83,6 +85,7 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
         followBtn = findViewById(R.id.other_profile_followBtn);
         followBtn.setOnClickListener(this);
     }//end onCreate()
+
     private void displayName() {
         Source source = Source.CACHE;
         dbSetUp.db.collection("users")
@@ -107,13 +110,14 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
                     }
                 });
     }
+
     private void getExtras() {
         Intent intent = getIntent();
         if (intent.getExtras() != null) {
             if (intent.getExtras().getString("otherUserEmail") != null)
-                otherUserEmail =intent.getExtras().getString("otherUserEmail");
+                otherUserEmail = intent.getExtras().getString("otherUserEmail");
             if (intent.getExtras().getString("otherUserID") != null)
-                otherUserID =intent.getExtras().getString("otherUserID");
+                otherUserID = intent.getExtras().getString("otherUserID");
         }
     }//end getExtras()
 
@@ -132,9 +136,13 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.other_profile_followBtn:
-                followUser();
+                if (followBtn.getText().toString().equals("Follow"))
+                    followUser();
+                else {
+                    unFollowUser();
+                }
                 break;
         }//end switch
     }//end onClick
@@ -150,7 +158,7 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-followBtn.setText("UnFollow");
+                        followBtn.setText("UnFollow");
 //followBtn.setBackgroundColor();
                     }
                 })
@@ -162,7 +170,44 @@ followBtn.setText("UnFollow");
                 });
     }//end followUser()
 
-    private void checkIsUserFollow(){
+    private void unFollowUser() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        dbSetUp.db.collection("following")
+                .whereEqualTo("followed_id", otherUserID)
+                .whereEqualTo("followed_by_id", user.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                //get book id
+                                String docId = document.getId();
+                                deleteDoc(docId);
+                            }
 
-    }//end checkIsUserFollow()
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+
+                    }
+                });
+    }//end unFollowUser()
+
+    private void deleteDoc(String id) {
+        dbSetUp.db.collection("following").document(id)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        followBtn.setText("Follow");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(OtherProfileActivity.this, "pleas try again", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
 }//end class
