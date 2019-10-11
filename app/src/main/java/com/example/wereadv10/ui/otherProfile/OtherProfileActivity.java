@@ -141,7 +141,6 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
                 if (followBtn.getText().toString().equals("Follow"))
                     followUser();
                 else {
-                    Toast.makeText(OtherProfileActivity.this, "unFollow", Toast.LENGTH_SHORT).show();
                     unFollowUser();
                 }
                 break;
