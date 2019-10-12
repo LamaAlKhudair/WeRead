@@ -80,8 +80,7 @@ public class clubPage extends AppCompatActivity {
         rvMembers = findViewById(R.id.rvMembers);
         Members_LayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rvMembers.setLayoutManager ( Members_LayoutManager );
-        Members_adapter = new MembersAdapter(this, Members);
-        rvMembers.setAdapter(Members_adapter);
+
         getMembers();
 
         // Events and Votes
@@ -107,7 +106,8 @@ public class clubPage extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-
+                            Members_adapter = new MembersAdapter(clubPage.this, Members);
+                            rvMembers.setAdapter(Members_adapter);
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 final User member = new User();
 
@@ -127,6 +127,7 @@ public class clubPage extends AppCompatActivity {
                                             DocumentSnapshot doc = task.getResult();
                                             member.setName(doc.get("name").toString());
                                             member.setEmail(doc.get("email").toString());
+                                            Members_adapter.notifyDataSetChanged();
 
                                         }
                                     }
