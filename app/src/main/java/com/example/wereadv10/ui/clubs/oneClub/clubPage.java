@@ -77,6 +77,7 @@ public class clubPage extends AppCompatActivity {
 
         // Members recycler view
         sampleImages[0] = R.drawable.man ;
+        sampleImages[1] = R.drawable.girl ;
         rvMembers = findViewById(R.id.rvMembers);
         Members_LayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rvMembers.setLayoutManager ( Members_LayoutManager );
@@ -114,7 +115,12 @@ public class clubPage extends AppCompatActivity {
                                 String member_id = document.get("member_id").toString();
                                 member.setId(member_id);
 
-                                int member_image = sampleImages[0] ;
+                                int random ;
+                                if(Math.random() < 0.5)
+                                    random = 0;
+                                else random = 1;
+                                
+                                int member_image = sampleImages[random] ;
                                 member.setImage(member_image);
 
                                 // Get members info from users collection
