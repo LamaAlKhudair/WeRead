@@ -21,25 +21,27 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_marginEnd="10dp">
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
         <TextView
+            android:layout_weight="9"
             android:id="@+id/bookName"
-            android:layout_width="176dp"
-            android:layout_marginLeft="-20dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="30dp"
             android:text="bookName"
             android:textColor="@color/colorPrimaryDark"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textSize="15sp"/>
 
         <LinearLayout
+            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="-30dp"
-            android:gravity="start"
-            android:layout_marginLeft="200dp"
+            android:layout_marginEnd="5dp"
             >
             <ImageView
                 android:layout_width="30dp"
@@ -55,7 +57,7 @@
                 android:clickable="true"
                 android:textColor="@color/colorPrimaryDark" />
         </LinearLayout>
-
+</LinearLayout>
 
 
 <LinearLayout
@@ -63,7 +65,8 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="10dp"
     android:layout_marginTop="20dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <ImageView
         android:layout_width="40dp"
@@ -83,6 +86,7 @@
         android:layout_marginStart="15dp"
         android:text="Rate This"
         android:clickable="true"
+        android:textSize="12sp"
         android:textColor="@color/colorPrimaryDark" />
 </LinearLayout>
 
@@ -95,6 +99,7 @@
             android:textColor="@color/colorPrimaryDark"
             android:textStyle="bold"
             android:layout_marginLeft="10dp"
+            android:textSize="12sp"
             />
 <!--            app:layout_constraintBottom_toBottomOf="parent"-->
 <!--            app:layout_constraintEnd_toEndOf="parent" -->
@@ -106,8 +111,7 @@
         android:id="@+id/bookInfo_viewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:layout_weight="4">
+        android:layout_weight="3">
 
 
         <com.google.android.material.tabs.TabLayout
