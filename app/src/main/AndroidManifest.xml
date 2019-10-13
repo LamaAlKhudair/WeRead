@@ -8,11 +8,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.otherProfile.OtherProfileActivity"></activity>
+        <activity android:name=".ui.clubs.CreateClub"></activity>
+        <activity android:name=".ui.otherProfile.OtherProfileActivity" />
         <activity
             android:name=".ui.books.oneBook.ratingPage"
-            android:noHistory="true"
-            />
+            android:noHistory="true" />
         <activity android:name=".ui.clubs.oneClub.clubPage" />
         <activity android:name=".ui.books.oneBook.reviews.OneReview" />
         <activity android:name=".categoryPage" />
@@ -32,8 +32,7 @@
         </activity>
         <activity android:name=".LoginActivity" />
         <activity android:name=".ui.books.ViewBooks" />
-        <activity
-            android:name=".ui.books.oneBook.bookPage" />
+        <activity android:name=".ui.books.oneBook.bookPage" />
         <activity android:name=".ui.clubs.ViewClubs" />
     </application>
 
