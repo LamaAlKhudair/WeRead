@@ -62,7 +62,6 @@ public class FollowingTabFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_following_tab, container, false);
-//        rv=view.findViewById(R.id.following_recyclview);
 
         dbSetUp = new dbSetUp();
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -80,9 +79,7 @@ public class FollowingTabFragment extends Fragment {
         Following_LayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         rvFollowing.setLayoutManager(Following_LayoutManager);
         getFollowings();
-/*        rv.setHasFixedSize(true);
-        rv.setLayoutManager(new LinearLayoutManager(getContext()));
-        listData=new ArrayList<>();*/
+
         getFollowers();
 
 
@@ -90,36 +87,32 @@ public class FollowingTabFragment extends Fragment {
 
     }
 
-    //get followers
-    private void getFollowers() {
+private void getFollowers() {
 
-        String userId = user.getUid();
-        dbSetUp.db.collection("following")
-                .whereEqualTo("followed_id", userId)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            Followers_adapter = new MembersAdapter(getContext(), Followers);
-                            rvFollowers.setAdapter(Followers_adapter);
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                //get book id
+    final FirebaseUser userF = FirebaseAuth.getInstance().getCurrentUser();
 
-                                String followedByID = document.get("followed_by_id").toString();
-                                getUsers(followedByID);
-                            }
+    dbSetUp.db.collection("following")
+            .whereEqualTo("followed_id", userF.getUid())
+            .get()
+            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        Followers_adapter = new MembersAdapter(getContext(), Followers);
+                        rvFollowers.setAdapter(Followers_adapter);
 
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String followedByID = document.get("followed_by_id").toString();
+
+                            getUsers(followedByID);
                         }
-
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
                     }
-                });
-        ////
 
-    }//end getFollowers()
-
+                }
+            });
+}
     private void getUsers(String followedByID) {
         final DocumentReference docRef = dbSetUp.db.collection("users").document(followedByID);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -127,7 +120,7 @@ public class FollowingTabFragment extends Fragment {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 User user = documentSnapshot.toObject(User.class);
                 user.setId(docRef.getId());
-                int random;
+               int random;
                 if (Math.random() < 0.5)
                     random = 0;
                 else random = 1;

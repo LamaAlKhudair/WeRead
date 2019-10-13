@@ -88,7 +88,7 @@ public class OtherProfileFollowingTabFragment extends Fragment  {
             otherUserID = getActivity().getIntent().getExtras().getString("otherUserID");
 
         dbSetUp.db.collection("following")
-                .whereEqualTo("followed_id", userF.getUid())
+                .whereEqualTo("followed_by_id", otherUserID)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -99,7 +99,7 @@ public class OtherProfileFollowingTabFragment extends Fragment  {
 
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 //get book id
-                                String followedByID = document.get("followed_by_id").toString();
+                                String followedByID = document.get("followed_id").toString();
 
                                 getUsersFollowings(followedByID);
                             }
