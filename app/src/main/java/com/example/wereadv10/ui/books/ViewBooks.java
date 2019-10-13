@@ -2,6 +2,7 @@ package com.example.wereadv10.ui.books;
 
 import android.content.res.Resources;
 import android.graphics.Rect;
+import android.media.Rating;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -83,66 +84,19 @@ public class ViewBooks extends AppCompatActivity implements SearchView.OnQueryTe
         categoryAdapter = new CategoryAdapter(this, getCategory());
 
     }//End onCreate()
+    
     private void filterBookHighToLow(){
-        dbSetUp.db.collection("books").orderBy("book_rate", Direction.ASCENDING)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-//                            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(ViewBooks.this, 2);
-//                            recyclerView.setLayoutManager(mLayoutManager);
-//                            recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
-//                            recyclerView.setItemAnimator(new DefaultItemAnimator());
-//                            recyclerView.setAdapter(adapter);
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                final Book book = new Book();
-                                String book_title = document.get("book_title").toString();
-                                String summary = document.get("summary").toString();
-                                String author = document.get("author").toString();
-                                String bookCover = document.get("book_cover").toString();
-                                String book_id = document.getString("bookID");
+        Collections.sort(bookList, new Comparator<Book>() {
+            @Override
+            public int compare(Book bookData, Book t1) {
+                Long idea1 = new Long(bookData.getRate());// here pass rating value.
+                Long idea2 = new Long(t1.getRate());// here pass rating value.
+                return idea2.compareTo(idea1);
+            }
+        });
+        if (adapter != null)
+            adapter.notifyDataSetChanged();
 
-                                long rate = (long) document.get("book_rate");
-                                book.setRate(rate);
-
-                                book.setID(book_id);
-
-                                book.setBook_title(book_title);
-                                book.setSummary(summary);
-                                book.setAuthor(author);
-                                book.setCover(bookCover);
-
-                                DocumentReference doc = document.getDocumentReference("book_category");
-                                String path = doc.getPath();
-                                String col = path.substring(0, path.indexOf("/"));
-                                String doc3 = path.substring(path.indexOf("/")+1);
-                                dbSetUp.db.collection(col).whereEqualTo("category_name", doc3)
-                                        .get()
-                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                if (task.isSuccessful()) {
-                                                    for (QueryDocumentSnapshot document2 : task.getResult()) {
-                                                        Category book_cat = document2.toObject(Category.class);
-                                                        book.setBook_category(book_cat);
-                                                    }
-                                                } else {
-                                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                                }
-                                                RatedBooks.add(book);
-
-                                            }
-                                        });
-                            }
-                            adapter.updateList(RatedBooks);
-                            adapter.notifyDataSetChanged();
-                        } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
-                        }
-
-                    }
-                });
 
     }
     private void filterBookLowToHigh(){
