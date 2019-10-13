@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wereadv10.R;
 import com.example.wereadv10.dbSetUp;
+import com.example.wereadv10.ui.clubs.oneClub.MembersAdapter;
 import com.example.wereadv10.ui.profile.profileTab.User;
 import com.example.wereadv10.ui.profile.profileTab.adapter.FollowingAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,64 +33,149 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OtherProfileFollowingTabFragment extends Fragment implements FollowingAdapter.OnFollowListener{
-    private List<User> listData;
-    private RecyclerView rv;
-    private FollowingAdapter adapter;
+public class OtherProfileFollowingTabFragment extends Fragment  {
+
+    private int[] sampleImages = new int[5];
+    // Followers recycler view
+    private RecyclerView rvFollowers;
+    private MembersAdapter Followers_adapter;
+    private RecyclerView.LayoutManager Followers_LayoutManager;
+    private List<User> Followers = new ArrayList<>();
+    // Following recycler view
+    private RecyclerView rvFollowing;
+    private MembersAdapter Following_adapter;
+    private RecyclerView.LayoutManager Following_LayoutManager;
+    private List<User> Followings = new ArrayList<>();
+
+    //followings and followers num
+    TextView followingNumTV,followersNumTV;
     private com.example.wereadv10.dbSetUp dbSetUp;
     private String TAG = OtherProfileFollowingTabFragment.class.getSimpleName();
     Button followBtn;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_other_profile_following_tab, container, false);
-        rv=view.findViewById(R.id.other_profile_following_recyclview);
-        followBtn =((OtherProfileActivity)getActivity()).followBtn;
-
+        followBtn = ((OtherProfileActivity) getActivity()).followBtn;
+        //followings and followers num
+        followersNumTV = view.findViewById(R.id.other_profile_followers_num);
+        followingNumTV = view.findViewById(R.id.other_profile_following_num);
 
         dbSetUp = new dbSetUp();
-        rv.setHasFixedSize(true);
-        rv.setLayoutManager(new LinearLayoutManager(getContext()));
-        listData=new ArrayList<>();
-        getFollowers();
 
+        sampleImages[0] = R.drawable.man;
+        sampleImages[1] = R.drawable.girl;
+        //followers
+        rvFollowers = view.findViewById(R.id.other_profile_followers_recyclerview);
+        Followers_LayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        rvFollowers.setLayoutManager(Followers_LayoutManager);
+        getFollowers();
+        //followings
+        rvFollowing = view.findViewById(R.id.other_profile_followings_recyclerview);
+        Following_LayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        rvFollowing.setLayoutManager(Following_LayoutManager);
+        getFollowings();
         return view;
 
     }
+    //get following user
+    private void getFollowings() {
+        final FirebaseUser userF = FirebaseAuth.getInstance().getCurrentUser();
+
+        String otherUserID = "";
+        if (getActivity().getIntent().getExtras().getString("otherUserID") != null)
+            otherUserID = getActivity().getIntent().getExtras().getString("otherUserID");
+
+        dbSetUp.db.collection("following")
+                .whereEqualTo("followed_id", userF.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Following_adapter = new MembersAdapter(getContext(), Followings);
+                            rvFollowing.setAdapter(Following_adapter);
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                //get book id
+                                String followedByID = document.get("followed_by_id").toString();
+
+                                getUsersFollowings(followedByID);
+                            }
+//                            followingNumTV.setText(Followings.size());
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+
+                    }
+                });
+        ////
+
+    }//end getFollowings()
+
+    private void getUsersFollowings(String followedByID) {
+
+        final DocumentReference docRef = dbSetUp.db.collection("users").document(followedByID);
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                User user = documentSnapshot.toObject(User.class);
+                user.setId(docRef.getId());
+                int random;
+                if (Math.random() < 0.5)
+                    random = 0;
+                else random = 1;
+
+                int member_image = sampleImages[random];
+                user.setImage(member_image);
+/*                if (userF.getUid().toString().equals(user.getId()))
+                    followBtn.setText("unFollow");*/
+
+                Followings.add(user);
+                int number = Followings.size();
+                String numberST= "("+number+")";
+                followingNumTV.setText( numberST);
+                Following_adapter.notifyDataSetChanged();
+            }
+        });
+    }//end getUsersFollowings()
+
 
     //get followers user
     private void getFollowers() {
 
         String otherUserID = "";
-        if (getActivity().getIntent().getExtras().getString("otherUserID")!=null)
+        if (getActivity().getIntent().getExtras().getString("otherUserID") != null)
             otherUserID = getActivity().getIntent().getExtras().getString("otherUserID");
 
-            dbSetUp.db.collection("following")
-                    .whereEqualTo("followed_id", otherUserID)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                adapter = new FollowingAdapter(getContext(), listData, OtherProfileFollowingTabFragment.this);
-                                rv.setAdapter(adapter);
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    //get book id
-                                    String followedByID = document.get("followed_by_id").toString();
+        dbSetUp.db.collection("following")
+                .whereEqualTo("followed_id", otherUserID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Followers_adapter = new MembersAdapter(getContext(), Followers);
+                            rvFollowers.setAdapter(Followers_adapter);
 
-                                    getUsers(followedByID);
-                                }
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                //get book id
+                                String followedByID = document.get("followed_by_id").toString();
 
-                            } else {
-                                Log.d(TAG, "Error getting documents: ", task.getException());
+                                getUsersFollowers(followedByID);
                             }
-
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
                         }
-                    });
-            ////
+
+                    }
+                });
+        ////
 
     }//end getFollowers()
-    private void getUsers(String followedByID){
+
+    private void getUsersFollowers(String followedByID) {
         final FirebaseUser userF = FirebaseAuth.getInstance().getCurrentUser();
 
         final DocumentReference docRef = dbSetUp.db.collection("users").document(followedByID);
@@ -98,21 +184,24 @@ public class OtherProfileFollowingTabFragment extends Fragment implements Follow
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 User user = documentSnapshot.toObject(User.class);
                 user.setId(docRef.getId());
+                int random;
+                if (Math.random() < 0.5)
+                    random = 0;
+                else random = 1;
+
+                int member_image = sampleImages[random];
+                user.setImage(member_image);
                 if (userF.getUid().toString().equals(user.getId()))
                     followBtn.setText("unFollow");
 
-                listData.add(user);
-                adapter.notifyDataSetChanged();
+                Followers.add(user);
+                int number = Followers.size();
+                String numberST= "("+number+")";
+                followersNumTV.setText( numberST);
+
+                Followers_adapter.notifyDataSetChanged();
             }
         });
-    }//end getUsers()
+    }//end getUsersFollowers()
 
-    @Override
-    public void onFollowUserClick(String userID,String userEmail) {
-        Intent intent = new Intent(getActivity(), OtherProfileActivity.class);
-        intent.putExtra("otherUserEmail", userEmail);
-        intent.putExtra("otherUserID", userID);
-
-        startActivity(intent);
-    }
 }
