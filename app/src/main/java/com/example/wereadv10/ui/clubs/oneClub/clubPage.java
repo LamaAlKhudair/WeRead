@@ -119,7 +119,7 @@ public class clubPage extends AppCompatActivity {
                                 if(Math.random() < 0.5)
                                     random = 0;
                                 else random = 1;
-                                
+
                                 int member_image = sampleImages[random] ;
                                 member.setImage(member_image);
 
