@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -103,7 +104,7 @@ public class ExploreFragment extends Fragment {
     private List<Book> getFiveBooks(){
 
         CollectionReference bookRef = dbSetUp.db.collection("books");
-        bookRef.limit(5).get()
+        bookRef.orderBy("book_rate", Query.Direction.DESCENDING).limit(5).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
