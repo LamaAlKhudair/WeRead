@@ -73,7 +73,7 @@ public class FollowingTabFragment extends Fragment {
         rvFollowers = view.findViewById(R.id.profile_followers_recyclerview);
         Followers_LayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         rvFollowers.setLayoutManager(Followers_LayoutManager);
-        getFollowers();
+
         //followings
         rvFollowing = view.findViewById(R.id.profile_followings_recyclerview);
         Following_LayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -98,6 +98,7 @@ private void getFollowers() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
+                        int count =0;
                         Followers_adapter = new MembersAdapter(getContext(), Followers);
                         rvFollowers.setAdapter(Followers_adapter);
 
@@ -105,6 +106,7 @@ private void getFollowers() {
                             String followedByID = document.get("followed_by_id").toString();
 
                             getUsers(followedByID);
+                            System.out.println(document.getString("followed_by_id")+ "\t LAMA+" + count++);
                         }
                     } else {
                         Log.d(TAG, "Error getting documents: ", task.getException());
