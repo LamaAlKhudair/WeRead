@@ -106,7 +106,6 @@ private void getFollowers() {
                             String followedByID = document.get("followed_by_id").toString();
 
                             getUsers(followedByID);
-                            System.out.println(document.getString("followed_by_id")+ "\t LAMA+" + count++);
                         }
                     } else {
                         Log.d(TAG, "Error getting documents: ", task.getException());
