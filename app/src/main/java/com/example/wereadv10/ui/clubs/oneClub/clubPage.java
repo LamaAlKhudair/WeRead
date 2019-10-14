@@ -9,8 +9,11 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.wereadv10.R;
@@ -19,11 +22,15 @@ import com.example.wereadv10.ui.clubs.oneClub.events.clubEventTab;
 import com.example.wereadv10.ui.clubs.oneClub.votes.clubVotingTab;
 import com.example.wereadv10.ui.profile.profileTab.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -31,10 +38,13 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 
-public class clubPage extends AppCompatActivity {
+public class clubPage extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "clubPage";
 
@@ -45,6 +55,8 @@ public class clubPage extends AppCompatActivity {
     public ImageView clubImage;
     public TextView clubOwner;
     public TextView clubDescription;
+    private Button joinBtn;
+    private String userID;
 
     // Members recycler view
     private RecyclerView rvMembers;
@@ -72,6 +84,9 @@ public class clubPage extends AppCompatActivity {
         clubImage = findViewById(R.id.club_image);
         clubOwner = findViewById(R.id.club_owner);
         clubDescription = findViewById(R.id.club_description);
+        joinBtn = findViewById(R.id.join_button);
+        joinBtn.setOnClickListener(this);
+
 
         getExtras();
 
@@ -83,6 +98,7 @@ public class clubPage extends AppCompatActivity {
         rvMembers.setLayoutManager ( Members_LayoutManager );
 
         getMembers();
+        getUserID();
 
         // Events and Votes
         BodyViewPager = findViewById(R.id.clubEvent_viewPager);
@@ -99,6 +115,94 @@ public class clubPage extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.join_button:
+                if (joinBtn.getText().toString().equalsIgnoreCase("join club")){
+                    joinClub();
+                    joinBtn.setText("Leave club");
+                }else {
+                    leaveClub();
+                }
+                break;
+        }//end switch
+    }//end onClick
+    private void leaveClub(){
+        dbSetUp.db.collection("club_members")
+                .whereEqualTo("member_id", userID)
+                .whereEqualTo("club_id", clubID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String docId = document.getId();
+                                deleteDoc(docId);
+                            }
+
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+
+                    }
+                });
+    }
+    private void deleteDoc(String id) {
+        dbSetUp.db.collection("club_members").document(id)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        joinBtn.setText("JOIN CLUB");
+
+                        Toast.makeText(getApplicationContext(),"You left the group now :( ",Toast.LENGTH_SHORT).show();
+                         Members.clear();
+                         getMembers();   
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(clubPage.this, "please try again", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+    private void joinClub(){
+
+        final Map<String, Object> joinMember = new HashMap<>();
+        joinMember.put("member_id", userID);
+        joinMember.put("club_id", clubID);
+        dbSetUp.db.collection("club_members")
+                .document(getRandom())
+                .set(joinMember).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Members.clear();
+                getMembers();
+                Toast.makeText(getApplicationContext(),"Welcome with us in "+clubName.getText().toString()+"!",Toast.LENGTH_SHORT).show();
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Error writing document", e);
+                        Toast.makeText(getApplicationContext(),"You Cannot writing This Empty!",Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+    private String getRandom(){
+        return UUID.randomUUID().toString();
+    }
+
+    private void getUserID() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            userID = user.getUid();
+
+        }
+    }
     private List<User> getMembers() {
 
         CollectionReference MemberRef = dbSetUp.db.collection("club_members");
