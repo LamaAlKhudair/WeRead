@@ -35,9 +35,17 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.core.OrderBy;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
+
 import com.google.firebase.firestore.Query.Direction;
 
 public class ViewBooks extends AppCompatActivity implements SearchView.OnQueryTextListener, PopupMenu.OnMenuItemClickListener {
@@ -51,6 +59,8 @@ public class ViewBooks extends AppCompatActivity implements SearchView.OnQueryTe
     private static final String TAG = "ViewBooks";
     private com.example.wereadv10.dbSetUp dbSetUp = new dbSetUp();
 
+    int placeCurrent =0;
+    int placeComplate =0;
 
 
     @Override
@@ -112,7 +122,118 @@ public class ViewBooks extends AppCompatActivity implements SearchView.OnQueryTe
             adapter.notifyDataSetChanged();
 
     }
+    private void filterCurrentRead(){
+        final Map<String, Integer> currentRead =new HashMap<>();
+        dbSetUp.db.collection("current_read_book")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String book_id = document.getString("bookID");
 
+                                if (currentRead.containsKey(book_id)){
+                                    currentRead.put(book_id, currentRead.get(book_id) + 1);
+
+                                }else{
+                                    currentRead.put(book_id, 1);
+
+                                }
+                            }
+
+                            Object[] a2 = currentRead.entrySet().toArray();
+                            Arrays.sort(a2, new Comparator() {
+                                public int compare(Object o1, Object o2) {
+                                    return ((Map.Entry<String, Integer>) o2).getValue()
+                                            .compareTo(((Map.Entry<String, Integer>) o1).getValue());
+                                }
+                            });
+//                            for(int i=currentRead.size()-1; i>=0;i--) {
+                            for(int i=0; i<currentRead.size();i++) {
+                                System.out.println(a2[i]+"\t LAMMA");
+                                String bb_id = a2[i].toString().substring(0, a2[i].toString().indexOf("="));
+                                System.out.println(bb_id);
+                                sortBooksBasedOnId(bb_id, placeCurrent++);
+                            }
+                            adapter.notifyDataSetChanged();
+
+                        }
+                    }
+                });
+
+    }
+
+    private void filterComplatedBooks(){
+        final Map<String, Integer> complatedBook =new HashMap<>();
+        dbSetUp.db.collection("complete_read_book")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String book_id = document.getString("bookID");
+
+                                if (complatedBook.containsKey(book_id)){
+                                   complatedBook.put(book_id, complatedBook.get(book_id) + 1);
+
+                                }else{
+                                    complatedBook.put(book_id, 1);
+
+                                }
+                            }
+
+                            Object[] a = complatedBook.entrySet().toArray();
+                            Arrays.sort(a, new Comparator() {
+                                public int compare(Object o1, Object o2) {
+                                    return ((Map.Entry<String, Integer>) o2).getValue()
+                                            .compareTo(((Map.Entry<String, Integer>) o1).getValue());
+                                }
+                            });
+                            //ArrayList<String> keys = new ArrayList<String>(a.keySet());
+
+                            for(int i=0; i<complatedBook.size();i++) {
+                                System.out.println(a[i]+"\t LAMMA");
+                                String bb_id = a[i].toString().substring(0, a[i].toString().indexOf("="));
+                                System.out.println(bb_id);
+                                sortBooksBasedOnId(bb_id, placeComplate++);
+                            }
+//
+                            adapter.notifyDataSetChanged();
+
+                        }
+                    }
+                });
+
+    }
+
+
+    private void sortBooksBasedOnId(String id, int place){
+
+        int pos =0;
+        for (Book book : bookList){
+            String book_id = book.getID();
+            if (book_id.equalsIgnoreCase(id)){
+                pos = bookList.indexOf(book);
+                break;
+            }
+        }
+//        for (int i = 0; i < bookList.size(); i++) {
+//            if (i < bookList.size() - 1) {
+//                Book j = bookList.get(i+1);
+//                bookList.remove(i);
+//                bookList.add(i, bookList.get(i));
+//                bookList.remove(i + 1);
+//                bookList.add(j);
+//            }
+//        }
+        Collections.swap(bookList, pos, place);
+        adapter.notifyDataSetChanged();
+
+
+
+    }
     private List<Category> getCategory(){
         dbSetUp.db.collection("categories")
                 .get()
@@ -241,7 +362,14 @@ public class ViewBooks extends AppCompatActivity implements SearchView.OnQueryTe
             filterBookLowToHigh();
             return true;
         }
-
+        if ( menuItem.getItemId() == R.id.completedBook){
+            filterComplatedBooks();
+            return true;
+        }
+        if (menuItem.getItemId() == R.id.currently_Reading){
+            filterCurrentRead();
+            return true;
+        }
         else
         return false;
     }

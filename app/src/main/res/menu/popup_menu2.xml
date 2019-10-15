@@ -8,5 +8,13 @@
     <item android:id="@+id/rateLow"
         android:title="Rate: Low to high" />
 
+    <item android:id="@+id/completedBook"
+        android:title="Completed books" />
+
+    <item android:id="@+id/currently_Reading"
+        android:title="Most current reading books" />
+
+
+
 
 </menu>
