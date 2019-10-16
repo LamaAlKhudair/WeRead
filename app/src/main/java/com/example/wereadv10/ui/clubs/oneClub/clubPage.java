@@ -205,6 +205,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
         }
     }
     private List<User> getMembers() {
+
         CollectionReference MemberRef = dbSetUp.db.collection("club_members");
         MemberRef.whereEqualTo("club_id", clubID).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -218,6 +219,9 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
                                 final User member = new User();
                                 numOfMember++;
                                 String member_id = document.get("member_id").toString();
+                                if(member_id.equalsIgnoreCase(userID)){
+                                    joinBtn.setText("Leave Club");
+                                }
                                 member.setId(member_id);
 
                                 int random ;
