@@ -24,6 +24,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -56,7 +57,7 @@ public class ReviewsTab extends Fragment {
         book_title = getActivity().getIntent().getExtras().getString("TITLE");
 //        ButtonAdd=view.findViewById(R.id.addButton);
         addFloatBtn = view.findViewById(R.id.fab_T);
-        RevList = getRevList() ;
+  //     RevList = getRevList() ;
         addFloatBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -147,6 +148,39 @@ public class ReviewsTab extends Fragment {
         return RevList;
     }
 
+    
+    @Override
+    public void onResume() {
+        super.onResume();
+        RevList.clear();
+        getRevList();
+/*        dbSetUp.db.collection("reviews")
+                .whereEqualTo("book", book_title)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot snapshots,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w(TAG, "listen:error", e);
+                            return;
+                        }
 
+                        for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                            switch (dc.getType()) {
+                                case ADDED:
+                                    Log.d(TAG, "New city: " + dc.getDocument().getData());
+                                    dc.getDocument().getData().
+                                    break;
+                                case MODIFIED:
+                                    Log.d(TAG, "Modified city: " + dc.getDocument().getData());
+                                    break;
+                                case REMOVED:
+                                    Log.d(TAG, "Removed city: " + dc.getDocument().getData());
+                                    break;
+                            }
+                        }
 
+                    }
+                });*/
+    }
 }

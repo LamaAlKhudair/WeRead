@@ -191,7 +191,7 @@ public class OtherProfileFollowingTabFragment extends Fragment  {
 
                 int member_image = sampleImages[random];
                 user.setImage(member_image);
-                if (userF.getUid().toString().equals(user.getId()))
+                if (userF.getUid().equals(user.getId()))
                     followBtn.setText("unFollow");
 
                 Followers.add(user);
