@@ -144,7 +144,6 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
                                     count++;
                                 }
                             }
-                            System.out.println("num of rev LOOP\t"+count );
                             numOfReview = "("+count+")";
 
                         } else {
@@ -155,8 +154,6 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
                     }
 
                 });
-        System.out.println("num of rev \t"+numOfReview );
-
     }
     private void getUserRate(){
         dbSetUp.db
