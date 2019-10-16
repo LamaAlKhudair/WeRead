@@ -299,5 +299,10 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
         return UUID.randomUUID().toString();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getUserRate();
+    }
 }
 
