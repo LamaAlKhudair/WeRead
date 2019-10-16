@@ -51,7 +51,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
     private com.example.wereadv10.dbSetUp dbSetUp = new dbSetUp();
 
     public String clubID;
-    public TextView clubName;
+    public TextView clubName, membersNum;
     public ImageView clubImage;
     public TextView clubOwner;
     public TextView clubDescription;
@@ -86,7 +86,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
         clubDescription = findViewById(R.id.club_description);
         joinBtn = findViewById(R.id.join_button);
         joinBtn.setOnClickListener(this);
-
+        membersNum = findViewById(R.id.membersNum);
 
         getExtras();
 
@@ -94,6 +94,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
         sampleImages[0] = R.drawable.man ;
         sampleImages[1] = R.drawable.girl ;
         rvMembers = findViewById(R.id.rvMembers);
+
         Members_LayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rvMembers.setLayoutManager ( Members_LayoutManager );
 
@@ -211,12 +212,16 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            int numOfMember = 0;
                             Members_adapter = new MembersAdapter(clubPage.this, Members);
                             rvMembers.setAdapter(Members_adapter);
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 final User member = new User();
-
+                                numOfMember++;
                                 String member_id = document.get("member_id").toString();
+                                if(member_id.equalsIgnoreCase(userID)){
+                                    joinBtn.setText("Leave Club");
+                                }
                                 member.setId(member_id);
 
                                 int random ;
@@ -246,6 +251,8 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
                                 Members.add(member);
 
                                 Members_adapter.notifyDataSetChanged();
+                                membersNum.setText("Members("+numOfMember+")");
+
                             }
 
                         } else Log.w(TAG, "Error getting documents.", task.getException());

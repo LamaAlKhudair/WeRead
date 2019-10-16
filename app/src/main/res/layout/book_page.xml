@@ -43,11 +43,27 @@
             android:orientation="vertical"
             android:layout_marginEnd="5dp"
             >
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginEnd="5dp"
+                >
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/star"/>
 
+                <TextView
+                    android:id="@+id/numOfTotal"
+                    android:layout_width="40dp"
+                    android:layout_height="20dp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="10dp"
+                    android:clickable="true"
+                    android:textColor="@color/colorPrimaryDark" />
+            </LinearLayout>
             <TextView
                 android:id="@+id/totalRating"
                 android:layout_width="40dp"

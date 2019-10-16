@@ -180,7 +180,6 @@ public class ratingPage extends AppCompatActivity {
                     rev1.put("book_rate",(ave/count));
                     dbSetUp.db
                             .collection("books").document(book_id).update(rev1);
-                    System.out.println("DONE :)");
                 } else {
                     System.out.println( "Error getting documents: ");
                 }

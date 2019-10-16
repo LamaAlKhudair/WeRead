@@ -158,7 +158,7 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        followBtn.setText("UnFollow");
+                        followBtn.setText("Unfollow");
 //followBtn.setBackgroundColor();
                     }
                 })
