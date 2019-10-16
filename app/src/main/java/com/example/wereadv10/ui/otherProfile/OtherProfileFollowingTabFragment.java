@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OtherProfileFollowingTabFragment extends Fragment  {
-
+    private  FirebaseUser userF;
     private int[] sampleImages = new int[5];
     // Followers recycler view
     private RecyclerView rvFollowers;
@@ -58,6 +58,9 @@ public class OtherProfileFollowingTabFragment extends Fragment  {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_other_profile_following_tab, container, false);
         followBtn = ((OtherProfileActivity) getActivity()).followBtn;
+        userF= FirebaseAuth.getInstance().getCurrentUser();
+
+
         //followings and followers num
         followersNumTV = view.findViewById(R.id.other_profile_followers_num);
         followingNumTV = view.findViewById(R.id.other_profile_following_num);
@@ -81,7 +84,6 @@ public class OtherProfileFollowingTabFragment extends Fragment  {
     }
     //get following user
     private void getFollowings() {
-        final FirebaseUser userF = FirebaseAuth.getInstance().getCurrentUser();
 
         String otherUserID = "";
         if (getActivity().getIntent().getExtras().getString("otherUserID") != null)
@@ -176,7 +178,6 @@ public class OtherProfileFollowingTabFragment extends Fragment  {
     }//end getFollowers()
 
     private void getUsersFollowers(String followedByID) {
-        final FirebaseUser userF = FirebaseAuth.getInstance().getCurrentUser();
 
         final DocumentReference docRef = dbSetUp.db.collection("users").document(followedByID);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {

@@ -13,12 +13,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.wereadv10.MySharedPreference;
 import com.example.wereadv10.R;
 import com.example.wereadv10.SignUp;
 import com.example.wereadv10.dbSetUp;
 import com.example.wereadv10.ui.profile.ProfileFragment;
 import com.example.wereadv10.ui.profile.profileTab.BookTabFragment;
 import com.example.wereadv10.ui.profile.profileTab.FollowingTabFragment;
+import com.example.wereadv10.ui.profile.profileTab.ProfileSettingActivity;
 import com.example.wereadv10.ui.profile.profileTab.adapter.FollowingAdapter;
 import com.example.wereadv10.ui.profile.profileTab.adapter.FragmentAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -50,12 +52,15 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
     private String otherUserID = "";
     private com.example.wereadv10.dbSetUp dbSetUp;
     private String name = "";
+    private  FirebaseUser userF;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_other_profile);
         getExtras();
+        userF= FirebaseAuth.getInstance().getCurrentUser();
+
 
         dbSetUp = new dbSetUp();
 
@@ -84,6 +89,10 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
 //
         followBtn = findViewById(R.id.other_profile_followBtn);
         followBtn.setOnClickListener(this);
+        if (userF.getUid().equals(otherUserID)){
+            followBtn.setVisibility(View.GONE);
+        }
+
     }//end onCreate()
 
     private void displayName() {
@@ -144,6 +153,7 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
                     unFollowUser();
                 }
                 break;
+
         }//end switch
     }//end onClick
 
@@ -210,4 +220,5 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
                     }
                 });
     }
+
 }//end class
