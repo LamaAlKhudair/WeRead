@@ -44,7 +44,7 @@
             android:id="@+id/clubDescription"
             android:layout_width="314dp"
             android:layout_height="82dp"
-            android:layout_marginTop="dp"
+            android:layout_marginTop="5dp"
             android:hint="Club Description"
             android:maxLength="200" />
 
