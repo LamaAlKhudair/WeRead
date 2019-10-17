@@ -8,14 +8,20 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="544dp"
         android:layout_margin="20dp"
         android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         android:gravity="center"
         android:orientation="vertical">
 
+
+        <ImageView
+            android:id="@+id/UploadImageView"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:src="@drawable/ic_upload_image" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/clubName"
@@ -28,50 +34,72 @@
             android:id="@+id/textView1"
             android:layout_width="78dp"
             android:layout_height="wrap_content"
-            android:text="*"
-            android:layout_marginTop="-40dp"
             android:layout_marginLeft="150dp"
+            android:layout_marginTop="-40dp"
+            android:text="*"
             android:textColor="#FF0000" />
 
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/clubDescription"
             android:layout_width="314dp"
-            android:layout_height="61dp"
-            android:layout_marginTop="20dp"
-            android:maxLength="200"
-            android:hint="Club Description" />
+            android:layout_height="82dp"
+            android:layout_marginTop="dp"
+            android:hint="Club Description"
+            android:maxLength="200" />
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="78dp"
             android:layout_height="wrap_content"
-            android:text="*"
-            android:layout_marginTop="-40dp"
             android:layout_marginLeft="150dp"
+            android:layout_marginTop="-40dp"
+            android:text="*"
             android:textColor="#FF0000" />
 
-
-        <Button
-            android:id="@+id/singup_registerBtn"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:background="@drawable/loging_rounded_button"
-            android:text="Create Club"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:textAllCaps="false"
-            android:textSize="20sp"
-            android:enabled="false"/>
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
 
+            <Button
+                android:id="@+id/cancelCreate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/create_club_button"
+                android:enabled="false"
+                android:padding="5dp"
+                android:text="Cancel"
+                android:textAllCaps="false"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/CreateClub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/loging_rounded_button"
+                android:enabled="false"
+                android:padding="5dp"
+                android:text="Create Club"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#FF0000"
-            android:text="@string/fui_required_field" />
+            android:layout_marginLeft="20dp"
+            android:text="@string/fui_required_field"
+            android:textColor="#FF0000" />
 
     </LinearLayout>
 
