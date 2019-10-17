@@ -18,7 +18,7 @@
 
 
         <ImageView
-            android:id="@+id/UploadImageView"
+            android:id="@+id/UploadClubImage"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:src="@drawable/ic_upload_image" />
@@ -44,7 +44,7 @@
             android:id="@+id/clubDescription"
             android:layout_width="314dp"
             android:layout_height="82dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="20dp"
             android:hint="Club Description"
             android:maxLength="200" />
 
@@ -69,7 +69,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:background="@drawable/create_club_button"
-                android:enabled="false"
                 android:padding="5dp"
                 android:text="Cancel"
                 android:textAllCaps="false"
@@ -78,7 +77,7 @@
                 android:textStyle="bold" />
 
             <Button
-                android:id="@+id/CreateClub"
+                android:id="@+id/createClub"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
