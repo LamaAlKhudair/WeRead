@@ -13,12 +13,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.wereadv10.MySharedPreference;
 import com.example.wereadv10.R;
 import com.example.wereadv10.SignUp;
 import com.example.wereadv10.dbSetUp;
 import com.example.wereadv10.ui.profile.ProfileFragment;
 import com.example.wereadv10.ui.profile.profileTab.BookTabFragment;
 import com.example.wereadv10.ui.profile.profileTab.FollowingTabFragment;
+import com.example.wereadv10.ui.profile.profileTab.ProfileSettingActivity;
 import com.example.wereadv10.ui.profile.profileTab.adapter.FollowingAdapter;
 import com.example.wereadv10.ui.profile.profileTab.adapter.FragmentAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,7 +40,7 @@ import com.google.firebase.firestore.Source;
 import java.util.HashMap;
 import java.util.Map;
 
-public class OtherProfileActivity extends AppCompatActivity implements View.OnClickListener {
+public class OtherProfileActivity extends AppCompatActivity  {
     private ViewPager viewPager;
     private OtherProfileBookTabFragment bookTabFragment;
     private OtherProfileFollowingTabFragment followingTabFragment;
@@ -50,12 +52,15 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
     private String otherUserID = "";
     private com.example.wereadv10.dbSetUp dbSetUp;
     private String name = "";
+    private  FirebaseUser userF;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_other_profile);
         getExtras();
+        userF= FirebaseAuth.getInstance().getCurrentUser();
+
 
         dbSetUp = new dbSetUp();
 
@@ -83,7 +88,10 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
         tabLayout.setupWithViewPager(viewPager);
 //
         followBtn = findViewById(R.id.other_profile_followBtn);
-        followBtn.setOnClickListener(this);
+        if (userF.getUid().equals(otherUserID)){
+            followBtn.setVisibility(View.GONE);
+        }
+
     }//end onCreate()
 
     private void displayName() {
@@ -134,80 +142,6 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }//end initToolBar()
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.other_profile_followBtn:
-                if (followBtn.getText().toString().equals("Follow"))
-                    followUser();
-                else {
-                    unFollowUser();
-                }
-                break;
-        }//end switch
-    }//end onClick
 
-    private void followUser() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        final Map<String, Object> follow = new HashMap<>();
-        follow.put("followed_by_id", user.getUid());//uerId
-        follow.put("followed_id", otherUserID);//otherUser
-        dbSetUp.db.collection("following")
-                .add(follow)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        followBtn.setText("Unfollow");
-//followBtn.setBackgroundColor();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
-                    }
-                });
-    }//end followUser()
-
-    private void unFollowUser() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        dbSetUp.db.collection("following")
-                .whereEqualTo("followed_id", otherUserID)
-                .whereEqualTo("followed_by_id", user.getUid())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                //get book id
-                                String docId = document.getId();
-                                deleteDoc(docId);
-                            }
-
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-
-                    }
-                });
-    }//end unFollowUser()
-
-    private void deleteDoc(String id) {
-        dbSetUp.db.collection("following").document(id)
-                .delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        followBtn.setText("Follow");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(OtherProfileActivity.this, "pleas try again", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
 }//end class
