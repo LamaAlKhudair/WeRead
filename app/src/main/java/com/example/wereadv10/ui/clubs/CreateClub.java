@@ -75,7 +75,7 @@ public class CreateClub extends AppCompatActivity {
                 addClub();
             }
         });
-
+        initToolBar();
         cancelClub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -220,5 +220,17 @@ public class CreateClub extends AppCompatActivity {
 
         }
     }//end onActivityResult
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+
+    private void initToolBar() {
+        setTitle("Create Club");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
 }
