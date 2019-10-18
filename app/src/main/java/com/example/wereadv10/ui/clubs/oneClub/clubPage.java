@@ -1,17 +1,23 @@
 package com.example.wereadv10.ui.clubs.oneClub;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,6 +63,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
     public TextView clubDescription;
     private Button joinBtn;
     private String userID;
+    private ImageView Share;
 
     // Members recycler view
     private RecyclerView rvMembers;
@@ -87,6 +94,8 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
         joinBtn = findViewById(R.id.join_button);
         joinBtn.setOnClickListener(this);
         membersNum = findViewById(R.id.membersNum);
+        Share=findViewById(R.id.shareIcon);
+        Share.setOnClickListener(this);
 
         getExtras();
 
@@ -116,6 +125,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
 
     }
 
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -127,8 +137,58 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
                     leaveClub();
                 }
                 break;
+
+            case R.id.shareIcon:
+                initdialog();
+                break;
+
+            default:
+                break;
         }//end switch
     }//end onClick
+
+
+
+
+
+    private void initdialog() {
+
+        final AlertDialog dialogBuilder = new AlertDialog.Builder(clubPage.this).create();
+        LayoutInflater inflater =getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.custom_dialog, null);
+
+        final EditText editText = (EditText) dialogView.findViewById(R.id.inviteEmail);
+        final EditText editText2 = (EditText) dialogView.findViewById(R.id.inviteMssg);
+        editText2.setText("Hey there!\nJoin us at "+getIntent().getExtras().getString("NAME")+" after downloading weRead App..\nLooking forward to see you there <3");
+        Button button1 = (Button) dialogView.findViewById(R.id.buttonSubmit);
+        Button button2 = (Button) dialogView.findViewById(R.id.buttonCancel);
+
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogBuilder.dismiss();
+            }
+        });
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent it = new Intent(Intent.ACTION_SEND);
+                it.putExtra(Intent.EXTRA_EMAIL, new String[]{editText.getText().toString()});
+                it.putExtra(Intent.EXTRA_TEXT,editText2.getText());
+                it.setType("message/rfc822");
+                startActivity(Intent.createChooser(it,"Choose Mail App"));
+                dialogBuilder.dismiss();
+            }
+        });
+
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.show();
+
+
+    }
+
+
+
     private void leaveClub(){
         dbSetUp.db.collection("club_members")
                 .whereEqualTo("member_id", userID)
@@ -158,7 +218,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
                     public void onSuccess(Void aVoid) {
                         joinBtn.setText("JOIN CLUB");
 
-                        Toast.makeText(getApplicationContext(),"You left the group now :( ",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"You left the club now :( ",Toast.LENGTH_SHORT).show();
                          Members.clear();
                          getMembers();   
                     }

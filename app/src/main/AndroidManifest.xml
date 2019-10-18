@@ -13,8 +13,11 @@
         <activity
             android:name=".ui.books.oneBook.ratingPage"
             android:noHistory="true" />
-        <activity android:name=".ui.clubs.oneClub.clubPage" />
-        <activity android:name=".ui.books.oneBook.reviews.OneReview" />
+
+
+
+
+    <activity android:name=".ui.books.oneBook.reviews.OneReview" />
         <activity android:name=".categoryPage" />
         <activity android:name=".ui.profile.profileTab.ChangePasswordActivity" />
         <activity android:name=".ui.profile.profileTab.ProfileSettingActivity" />
@@ -34,6 +37,18 @@
         <activity android:name=".ui.books.ViewBooks" />
         <activity android:name=".ui.books.oneBook.bookPage" />
         <activity android:name=".ui.clubs.ViewClubs" />
+
+
+        <activity android:name=".ui.clubs.oneClub.clubPage">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="message/rfc822"/>
+                <data android:host="*" />
+            </intent-filter>
+        </activity>
+
+
     </application>
 
 </manifest>

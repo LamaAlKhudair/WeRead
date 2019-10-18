@@ -315,7 +315,7 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w("Error writing document", e);
+                        Log.w("Error writing document", e); //todo
                     }
                 });
         return true;
