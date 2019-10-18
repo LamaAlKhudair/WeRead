@@ -78,9 +78,9 @@ public class FollowingTabFragment extends Fragment {
         rvFollowing = view.findViewById(R.id.profile_followings_recyclerview);
         Following_LayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         rvFollowing.setLayoutManager(Following_LayoutManager);
-        getFollowings();
-
-        getFollowers();
+//        getFollowings();
+//
+//        getFollowers();
 
 
         return view;
@@ -191,4 +191,12 @@ private void getFollowers() {
         });
     }//end getUsersFollowings()
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Followings.clear();
+        getFollowings();
+Followers.clear();
+        getFollowers();
+    }
 }
