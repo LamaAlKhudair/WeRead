@@ -123,6 +123,7 @@ public class ViewBooks extends AppCompatActivity implements SearchView.OnQueryTe
 
   }
   private void filterCurrentRead(){
+
     final Map<String, Integer> currentRead =new HashMap<>();
     dbSetUp.db.collection("current_read_book")
             .get()
@@ -151,11 +152,11 @@ public class ViewBooks extends AppCompatActivity implements SearchView.OnQueryTe
                   });
 //                            for(int i=currentRead.size()-1; i>=0;i--) {
                   for(int i=0; i<currentRead.size();i++) {
-                    System.out.println(a2[i]+"\t LAMMA");
                     String bb_id = a2[i].toString().substring(0, a2[i].toString().indexOf("="));
-                    System.out.println(bb_id);
-                    sortBooksBasedOnId(bb_id, placeCurrent++);
+                    sortBooksBasedOnId(bb_id, placeCurrent);
+                    placeCurrent++;
                   }
+                  placeCurrent =0;
                   adapter.notifyDataSetChanged();
 
                 }
@@ -194,12 +195,11 @@ public class ViewBooks extends AppCompatActivity implements SearchView.OnQueryTe
                   //ArrayList<String> keys = new ArrayList<String>(a.keySet());
 
                   for(int i=0; i<complatedBook.size();i++) {
-                    System.out.println(a[i]+"\t LAMMA");
                     String bb_id = a[i].toString().substring(0, a[i].toString().indexOf("="));
-                    System.out.println(bb_id);
-                    sortBooksBasedOnId(bb_id, placeComplate++);
+                    sortBooksBasedOnId(bb_id, placeComplate);
+                    placeComplate++;
                   }
-//
+                  placeComplate =0;
                   adapter.notifyDataSetChanged();
 
                 }
@@ -219,16 +219,8 @@ public class ViewBooks extends AppCompatActivity implements SearchView.OnQueryTe
         break;
       }
     }
-//        for (int i = 0; i < bookList.size(); i++) {
-//            if (i < bookList.size() - 1) {
-//                Book j = bookList.get(i+1);
-//                bookList.remove(i);
-//                bookList.add(i, bookList.get(i));
-//                bookList.remove(i + 1);
-//                bookList.add(j);
-//            }
-//        }
-    Collections.swap(bookList, pos, place);
+    if(place != pos )
+       Collections.swap(bookList, pos, place);
     adapter.notifyDataSetChanged();
 
 
