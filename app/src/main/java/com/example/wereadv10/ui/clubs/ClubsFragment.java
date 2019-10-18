@@ -104,7 +104,6 @@ public class ClubsFragment extends Fragment implements View.OnClickListener{
                                                                     }
                                                                 }
                                                             });
-                                                            System.out.println("LAMA \t" + club_name);
                                                             club.setID(club_id);
                                                             club.setClub_name(club_name);
                                                             club.setClub_description(club_description);
