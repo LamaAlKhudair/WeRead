@@ -190,7 +190,6 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
             if (intent.getExtras().getString("BOOK_RATE") != null){
                 String rate = intent.getExtras().getString("BOOK_RATE");
                 totalRating.setText(rate+"/5");
-                System.out.println(totalRating+" Test total rate");
             }else{
                 System.out.println("NO rate ;(");
             }

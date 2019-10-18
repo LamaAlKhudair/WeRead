@@ -176,7 +176,6 @@ public class ExploreFragment extends Fragment {
 
                                 String club_name = document.get("club_name").toString();
                                 String club_owner = document.get("club_owner").toString();
-                                System.out.println("Rima \t"+club_name);
                                 String club_id = document.get("club_id").toString();
                                 String club_description = document.get("club_description").toString();
                                 String club_image = document.get("club_image").toString();

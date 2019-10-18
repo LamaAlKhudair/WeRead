@@ -65,7 +65,6 @@ public class ratingPage extends AppCompatActivity {
                 return;
                 else {
                     int num = Math.round(ratingBar.getRating());
-                    System.out.println("HASRATe in close "+hasRate);
                     if(hasRate){
                         updateUserRate(num);
                     }else{
@@ -132,10 +131,8 @@ public class ratingPage extends AppCompatActivity {
 
         if (getIntent().getExtras().getBoolean("HAS_RATE") != false){
                 hasRate = getIntent().getExtras().getBoolean("HAS_RATE");
-                System.out.println("HASRATe in the"+hasRate);
         }else{
             hasRate = false;
-            System.out.println("In else");
         }
     }
     private void rateBook(int rateInt){

@@ -127,7 +127,6 @@ public class ReviewsTab extends Fragment {
                                                             review.setUserEmail(document2.get("email").toString());
                                                             review.setUserID(document2.getId());
                                                             RevList.add(review);
-                                                            System.out.println("La La Land "+ review.getUserName());
                                                             reviewsAdapter.notifyDataSetChanged();
                                                         }
                                                     } else {
