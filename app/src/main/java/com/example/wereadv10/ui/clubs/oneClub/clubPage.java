@@ -159,7 +159,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
 
         final EditText editText = (EditText) dialogView.findViewById(R.id.inviteEmail);
         final EditText editText2 = (EditText) dialogView.findViewById(R.id.inviteMssg);
-        editText2.setText("Hey there!\nJoin us at "+getIntent().getExtras().getString("NAME")+" after downloading weRead App..\nLooking forward to see you there <3");
+        editText2.setText("Hey there!\nJoin us at "+getIntent().getExtras().getString("NAME")+" after downloading WeRead App..\nLooking forward to see you there <3");
         Button button1 = (Button) dialogView.findViewById(R.id.buttonSubmit);
         Button button2 = (Button) dialogView.findViewById(R.id.buttonCancel);
 
