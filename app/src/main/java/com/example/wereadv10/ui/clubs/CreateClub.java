@@ -5,14 +5,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,11 +26,20 @@ import android.widget.Toast;
 
 import com.example.wereadv10.R;
 import com.example.wereadv10.dbSetUp;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -40,6 +52,7 @@ public class CreateClub extends AppCompatActivity {
     private EditText clubName, clubDescription;
     private ImageView clubImage;
     private Button createClub, cancelClub;
+    private  String image_url = "https://firebasestorage.googleapis.com/v0/b/we-read-a8fd8.appspot.com/o/clubs_images%2Flogo.png?alt=media&token=cdc06ad3-eed9-42e8-977c-32b425bcb98b";
 
     private static final int GALLERY = 1;
     private boolean ImgSet = false;
@@ -99,6 +112,50 @@ public class CreateClub extends AppCompatActivity {
 
     }
 
+    private void uploadImage() {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        BitmapDrawable drawable = (BitmapDrawable) clubImage.getDrawable();
+        Bitmap bitmap = drawable.getBitmap();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+        byte[] bytes = baos.toByteArray();
+        String base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
+        final StorageReference ref = dbSetUp.storageRef.child("/clubs_images/"+clubName.getText().toString());
+
+        final UploadTask uploadTask = ref.putBytes(bytes);
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(CreateClub.this, "Uploaded", Toast.LENGTH_SHORT).show();
+
+                uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                    @Override
+                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                        if (!task.isSuccessful()) {
+                            throw task.getException();
+                        }
+                        return ref.getDownloadUrl();
+                    }
+                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+
+                        if (task.isSuccessful()) {
+                            Uri downUri  = task.getResult();
+                            image_url = downUri .toString();
+                            Log.d("Final URL", "onComplete: Url: " + downUri.toString());
+                        }
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(CreateClub.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
 
     private TextWatcher loginTextWatcher = new TextWatcher() {
         @Override
@@ -160,25 +217,65 @@ public class CreateClub extends AppCompatActivity {
             club.put("club_description", clubDescription.getText().toString());
             club.put("club_owner", ownerId);
             club.put("club_id", clubId);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            BitmapDrawable drawable = (BitmapDrawable) clubImage.getDrawable();
+            Bitmap bitmap = drawable.getBitmap();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+            byte[] bytes = baos.toByteArray();
+            String base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
+            final StorageReference ref = dbSetUp.storageRef.child("/clubs_images/"+clubName.getText().toString());
 
-            dbSetUp.db.collection("clubs").document(clubId)
-                    .set(club)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+            final UploadTask uploadTask = ref.putBytes(bytes);
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                         @Override
-                        public void onSuccess(Void aVoid) {
-                            //Add club ID
-                            Toast.makeText(CreateClub.this, "Club Created Successfully", Toast.LENGTH_LONG).show();
-
+                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                            if (!task.isSuccessful()) {
+                                throw task.getException();
+                            }
+                            return ref.getDownloadUrl();
                         }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
+                    }).addOnCompleteListener(new OnCompleteListener<Uri>() {
                         @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.w("Error writing document", e);
+                        public void onComplete(@NonNull Task<Uri> task) {
+
+                            if (task.isSuccessful()) {
+                                Uri downUri  = task.getResult();
+                                image_url = downUri .toString();
+                                club.put("club_image", image_url);
+                                Log.d("Final URL", "onComplete: Url: " + downUri.toString());
+                                dbSetUp.db.collection("clubs").document(clubId)
+                                        .set(club)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                //Add club ID
+                                                Toast.makeText(CreateClub.this, "Club Created Successfully", Toast.LENGTH_LONG).show();
+
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w("Error writing document", e);
+                                            }
+                                        });
+
+                                finish();
+                            }
                         }
                     });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                }
+            });
 
-            finish();
+
 
         }
         else{
