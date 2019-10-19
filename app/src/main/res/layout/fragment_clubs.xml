@@ -12,8 +12,19 @@
     <Button
         android:id="@+id/createClub"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Create Club" />
+        android:text="Create Club"
+        android:background="@drawable/loging_rounded_button"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        android:layout_marginStart="80dp"
+        android:layout_marginEnd="80dp"
+        android:layout_height="45dp"
+        android:layout_gravity="right"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="15dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
