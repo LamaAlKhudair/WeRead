@@ -150,7 +150,7 @@ private TextInputLayout emailIL;
         {
             // email is not verified, so just prompt the message to the user and restart this activity.
             // NOTE: don't forget to log out the user.
-            Toast.makeText(LoginActivity.this, "check the email link verified", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, "check the email link to verify account", Toast.LENGTH_SHORT).show();
 
             FirebaseAuth.getInstance().signOut();
 

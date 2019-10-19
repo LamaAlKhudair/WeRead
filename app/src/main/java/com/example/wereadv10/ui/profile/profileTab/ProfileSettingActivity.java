@@ -114,6 +114,7 @@ public class ProfileSettingActivity extends AppCompatActivity implements View.On
         if (mAuth.getCurrentUser() == null) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
+            finish();
         }
         // [END auth_sign_out]
     }
