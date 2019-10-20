@@ -133,12 +133,7 @@
 
             </RelativeLayout>
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/club_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
 
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
