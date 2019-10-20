@@ -146,8 +146,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
-    //include Event and Votes fragments
-    <include
+<include
         layout="@layout/content_main"
        />
 
