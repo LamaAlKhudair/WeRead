@@ -63,6 +63,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
     public TextView clubDescription;
     private Button joinBtn;
     private String userID;
+    private String userEmail;
     private ImageView Share;
 
     // Members recycler view
@@ -157,11 +158,11 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
         LayoutInflater inflater =getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.custom_dialog, null);
 
-        final EditText editText = (EditText) dialogView.findViewById(R.id.inviteEmail);
-        final EditText editText2 = (EditText) dialogView.findViewById(R.id.inviteMssg);
-        editText2.setText("Hey there!\nJoin us at "+getIntent().getExtras().getString("NAME")+" after downloading WeRead App..\nLooking forward to see you there <3");
-        Button button1 = (Button) dialogView.findViewById(R.id.buttonSubmit);
-        Button button2 = (Button) dialogView.findViewById(R.id.buttonCancel);
+        final EditText receiverEmailEditText = dialogView.findViewById(R.id.inviteEmail);
+        final EditText messageEditText = dialogView.findViewById(R.id.inviteMssg);
+        messageEditText.setText("Hey there!\nJoin us at "+getIntent().getExtras().getString("NAME")+" after downloading WeRead App..\nLooking forward to see you there <3");
+        Button button1 =  dialogView.findViewById(R.id.buttonSubmit);
+        Button button2 =  dialogView.findViewById(R.id.buttonCancel);
 
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,11 +173,16 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent it = new Intent(Intent.ACTION_SEND);
-                it.putExtra(Intent.EXTRA_EMAIL, new String[]{editText.getText().toString()});
-                it.putExtra(Intent.EXTRA_TEXT,editText2.getText());
-                it.setType("message/rfc822");
-                startActivity(Intent.createChooser(it,"Choose Mail App"));
+//                Intent it = new Intent(Intent.ACTION_SEND);
+//                it.putExtra(Intent.EXTRA_EMAIL, new String[]{receiverEmailEditText.getText().toString()});
+//                it.putExtra(Intent.EXTRA_TEXT,messageEditText.getText());
+//                it.setType("message/rfc822");
+//                startActivity(Intent.createChooser(it,"Choose Mail App"));
+                Intent mailIntent = new Intent(Intent.ACTION_VIEW);
+                Uri data = Uri.parse("mailto:?subject=" + "Join Club  WeRead application" + "&body=" + (messageEditText.getText().toString())+ "&to=" + receiverEmailEditText.getText().toString());
+                mailIntent.setData(data);
+                startActivity(Intent.createChooser(mailIntent, "Send mail..."));
+                finish();
                 dialogBuilder.dismiss();
             }
         });
@@ -186,7 +192,6 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
 
 
     }
-
 
 
     private void leaveClub(){
@@ -261,7 +266,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             userID = user.getUid();
-
+            userEmail= user.getEmail();
         }
     }
     private List<User> getMembers() {
