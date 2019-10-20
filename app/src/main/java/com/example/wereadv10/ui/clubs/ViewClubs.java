@@ -46,7 +46,6 @@ public class ViewClubs extends AppCompatActivity implements SearchView.OnQueryTe
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_clubs);
-        setTitle("Clubs");
 
         SearchView searchView = findViewById(R.id.search_club);
         searchView.setOnQueryTextListener(this);
@@ -61,7 +60,7 @@ public class ViewClubs extends AppCompatActivity implements SearchView.OnQueryTe
         rvClubs.setAdapter(Clubs_adapter);
 
         dbSetUp = new dbSetUp();
-
+        initToolBar();
         getClubs();
 
     }
@@ -135,4 +134,15 @@ public class ViewClubs extends AppCompatActivity implements SearchView.OnQueryTe
         Clubs_adapter.notifyDataSetChanged();
         return true;
     }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }//end onSupportNavigateUp
+
+    private void initToolBar() {
+        setTitle("Clubs");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }//end initToolBar()
 }
