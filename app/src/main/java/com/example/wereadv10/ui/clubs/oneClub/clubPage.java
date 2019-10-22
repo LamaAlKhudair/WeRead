@@ -148,20 +148,17 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
     }//end onClick
 
 
-
-
-
     private void initdialog() {
 
         final AlertDialog dialogBuilder = new AlertDialog.Builder(clubPage.this).create();
-        LayoutInflater inflater =getLayoutInflater();
+        LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.custom_dialog, null);
 
-        final EditText editText = (EditText) dialogView.findViewById(R.id.inviteEmail);
-        final EditText editText2 = (EditText) dialogView.findViewById(R.id.inviteMssg);
+        final EditText editText = dialogView.findViewById(R.id.inviteEmail);
+        final EditText editText2 = dialogView.findViewById(R.id.inviteMssg);
         editText2.setText("Hey there!\nJoin us at "+getIntent().getExtras().getString("NAME")+" after downloading WeRead App..\nLooking forward to see you there <3");
-        Button button1 = (Button) dialogView.findViewById(R.id.buttonSubmit);
-        Button button2 = (Button) dialogView.findViewById(R.id.buttonCancel);
+        Button button1 = dialogView.findViewById(R.id.buttonSubmit);
+        Button button2 = dialogView.findViewById(R.id.buttonCancel);
 
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,7 +170,9 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
             @Override
             public void onClick(View view) {
                 Intent it = new Intent(Intent.ACTION_SEND);
+
                 it.putExtra(Intent.EXTRA_EMAIL, new String[]{editText.getText().toString()});
+                it.putExtra(Intent.EXTRA_SUBJECT, "Join us in WeRead clubs !");
                 it.putExtra(Intent.EXTRA_TEXT,editText2.getText());
                 it.setType("message/rfc822");
                 startActivity(Intent.createChooser(it,"Choose Mail App"));
@@ -186,7 +185,6 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
 
 
     }
-
 
 
     private void leaveClub(){
@@ -210,6 +208,8 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
                     }
                 });
     }
+
+
     private void deleteDoc(String id) {
         dbSetUp.db.collection("club_members").document(id)
                 .delete()
@@ -218,7 +218,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
                     public void onSuccess(Void aVoid) {
                         joinBtn.setText("JOIN CLUB");
 
-                        Toast.makeText(getApplicationContext(),"You left the club now :( ",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"You left the club :(",Toast.LENGTH_SHORT).show();
                          Members.clear();
                          getMembers();   
                     }
@@ -230,6 +230,8 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
                     }
                 });
     }
+
+
     private void joinClub(){
 
         final Map<String, Object> joinMember = new HashMap<>();
@@ -253,9 +255,12 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
                     }
                 });
     }
+
+
     private String getRandom(){
         return UUID.randomUUID().toString();
     }
+
 
     private void getUserID() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -264,6 +269,8 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
 
         }
     }
+
+
     private List<User> getMembers() {
 
         CollectionReference MemberRef = dbSetUp.db.collection("club_members");
@@ -311,7 +318,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
                                 Members.add(member);
 
                                 Members_adapter.notifyDataSetChanged();
-                                membersNum.setText("Members("+numOfMember+")");
+                                membersNum.setText("Members ("+numOfMember+")");
 
                             }
 
@@ -379,7 +386,6 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
 
 
     private void initToolBar() {
-        setTitle("Club");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
