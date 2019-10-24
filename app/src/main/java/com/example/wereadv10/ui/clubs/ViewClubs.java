@@ -84,6 +84,8 @@ public class ViewClubs extends AppCompatActivity implements SearchView.OnQueryTe
                                 String club_description = document.get("club_description").toString();
                                 String club_image = document.get("club_image").toString();
 
+                                club.setOwnerID(club_owner);
+
                                 //get club owner name
                                 DocumentReference userRef = dbSetUp.db.collection("users").document(club_owner);
                                 userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

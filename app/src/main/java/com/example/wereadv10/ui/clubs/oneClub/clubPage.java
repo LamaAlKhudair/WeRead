@@ -60,6 +60,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
     public TextView clubName, membersNum;
     public ImageView clubImage;
     public TextView clubOwner;
+    public String clubOwnerID;
     public TextView clubDescription;
     private Button joinBtn;
     private String userID;
@@ -99,6 +100,12 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
         Share.setOnClickListener(this);
 
         getExtras();
+        getUserID();
+
+        /*Hide join/leave button to club owner
+         *Display (add event) and (add vote) buttons to club owner*/
+        ownerView();
+
 
         // Members recycler view
         sampleImages[0] = R.drawable.man ;
@@ -109,7 +116,6 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
         rvMembers.setLayoutManager ( Members_LayoutManager );
 
         getMembers();
-        getUserID();
 
         // Events and Votes
         BodyViewPager = findViewById(R.id.clubEvent_viewPager);
@@ -123,6 +129,16 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
         tabLayout.setupWithViewPager(BodyViewPager);
 
         initCollapsingToolbar();
+
+    }
+
+    private void ownerView() {
+
+        if ( clubOwnerID.equals(userID) ){
+        joinBtn.setVisibility(View.GONE);
+
+        //Display add event and vote floating button
+            }
 
     }
 
@@ -149,9 +165,6 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
     }//end onClick
 
 
-
-
-
     private void initdialog() {
 
         final AlertDialog dialogBuilder = new AlertDialog.Builder(clubPage.this).create();
@@ -173,11 +186,6 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent it = new Intent(Intent.ACTION_SEND);
-//                it.putExtra(Intent.EXTRA_EMAIL, new String[]{receiverEmailEditText.getText().toString()});
-//                it.putExtra(Intent.EXTRA_TEXT,messageEditText.getText());
-//                it.setType("message/rfc822");
-//                startActivity(Intent.createChooser(it,"Choose Mail App"));
                 Intent mailIntent = new Intent(Intent.ACTION_VIEW);
                 Uri data = Uri.parse("mailto:?subject=" + "Join Club  WeRead application" + "&body=" + (messageEditText.getText().toString())+ "&to=" + receiverEmailEditText.getText().toString());
                 mailIntent.setData(data);
@@ -235,6 +243,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
                     }
                 });
     }
+    
     private void joinClub(){
 
         final Map<String, Object> joinMember = new HashMap<>();
@@ -258,6 +267,8 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
                     }
                 });
     }
+
+
     private String getRandom(){
         return UUID.randomUUID().toString();
     }
@@ -266,9 +277,11 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             userID = user.getUid();
-            userEmail= user.getEmail();
+            userEmail = user.getEmail();
         }
     }
+
+
     private List<User> getMembers() {
 
         CollectionReference MemberRef = dbSetUp.db.collection("club_members");
@@ -316,7 +329,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
                                 Members.add(member);
 
                                 Members_adapter.notifyDataSetChanged();
-                                membersNum.setText("Members("+numOfMember+")");
+                                membersNum.setText("Members ("+numOfMember+")");
 
                             }
 
@@ -368,6 +381,8 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
                 clubName.setText(intent.getExtras().getString("NAME"));
             if (intent.getExtras().getString("OWNER") != null)
                 clubOwner.setText(intent.getExtras().getString("OWNER"));
+            if (intent.getExtras().getString("OWNER_ID") != null)
+                clubOwnerID = intent.getExtras().getString("OWNER_ID");
             if (intent.getExtras().getString("DESCRIPTION") != null)
                 clubDescription.setText(intent.getExtras().getString("DESCRIPTION"));
             if (intent.getExtras().getString("IMAGE") != null)
@@ -384,7 +399,6 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
 
 
     private void initToolBar() {
-        setTitle("Club");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }

@@ -51,6 +51,7 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.MyViewHolder
             intent.putExtra("NAME", clubsList.get(getAdapterPosition()).getClub_name());
             intent.putExtra("IMAGE", clubsList.get(getAdapterPosition()).getClub_image());
             intent.putExtra("OWNER", clubsList.get(getAdapterPosition()).getClub_owner());
+            intent.putExtra("OWNER_ID",clubsList.get(getAdapterPosition()).getOwnerID());
             intent.putExtra("DESCRIPTION", clubsList.get(getAdapterPosition()).getClub_description());
 
             mContext.startActivity(intent);
