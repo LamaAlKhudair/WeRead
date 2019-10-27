@@ -56,6 +56,7 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
     private dbSetUp dbSetUp = new dbSetUp();
     private boolean hasRate=false;
     private String book_title;
+    private boolean bookInComplate, bookInCurrent , bookInToRead = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +96,7 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
         getExtras();
         getTotalReviews();
         getTotalRater();
-
+        checkBook();
 
         tabLayout.setupWithViewPager(viewPager);
 
@@ -232,26 +233,20 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
     public boolean onMenuItemClick(MenuItem item) {
         if (item.getItemId() == R.id.Currently_Reading) {
             if( addToCurrent())
-            Toast.makeText(this, "The book has been added successfully", Toast.LENGTH_SHORT).show();
-            else
-                Toast.makeText(this, "The book has not been added,try again", Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(this, "The book has been added successfully", Toast.LENGTH_SHORT).show();
             return true;
         }
 
         if (item.getItemId() == R.id.to_read) {
             if(addToRead())
-            Toast.makeText(this, "The book has been added successfully", Toast.LENGTH_SHORT).show();
-            else
-                Toast.makeText(this, "The book has not been added,try again", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "The book has been added successfully", Toast.LENGTH_SHORT).show();
             return true;
         }
 
         if (item.getItemId() == R.id.completed) {
             if(addToComplate())
-            Toast.makeText(this, "The book has been added successfully", Toast.LENGTH_SHORT).show();
-            else
-                Toast.makeText(this, "The book has not been added,try again", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "The book has been added successfully", Toast.LENGTH_SHORT).show();
+
             return true;
         }
         if (item.getItemId() == R.id.cancel) {
@@ -276,70 +271,156 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
         popup.show();
     }
 
+    private void checkBook(){
+        dbSetUp.db.collection("to_read_book")
+                .whereEqualTo("userID", userID)
+                .whereEqualTo("bookID", book_id)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (DocumentSnapshot document : task.getResult()) {
+                        bookInToRead = true;
+                        System.out.println("FOUND in to-read");
+
+                    }
+                } else {
+                    System.out.println( "Error getting documents: ");
+                }
+            }
+        });
+        dbSetUp.db.collection("current_read_book")
+                .whereEqualTo("userID", userID)
+                .whereEqualTo("bookID", book_id)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (DocumentSnapshot document : task.getResult()) {
+                        bookInCurrent = true;
+                        System.out.println("FOUND in current");
+
+                    }
+                } else {
+                    System.out.println( "Error getting documents: ");
+                }
+            }
+        });
+        dbSetUp.db.collection("complete_read_book")
+                .whereEqualTo("userID", userID)
+                .whereEqualTo("bookID", book_id)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (DocumentSnapshot document : task.getResult()) {
+                        bookInComplate = true;
+                        System.out.println("FOUND in complate");
+
+                    }
+                } else {
+                    System.out.println( "Error getting documents: ");
+                }
+            }
+        });
+
+    }
 
     private boolean addToCurrent(){
-        final Map<String, Object> addBook = new HashMap<>();
-        addBook.put("userID", userID);
-        addBook.put("bookID", book_id);
-        dbSetUp.db.collection("current_read_book").document(getRandom())
-                .set(addBook)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        System.out.println("DocumentSnapshot successfully written!");
+        if (bookInCurrent){
+            Toast.makeText(getApplicationContext(),"This book already in your current list",Toast.LENGTH_SHORT).show();
+        }else if( bookInComplate ){
+            Toast.makeText(getApplicationContext(),"This book already in your completed list",Toast.LENGTH_SHORT).show();
+        }else if( bookInToRead ){
+            Toast.makeText(getApplicationContext(),"This book already in your to read list",Toast.LENGTH_SHORT).show();
+        }
+        else {
+            final Map<String, Object> addBook = new HashMap<>();
+            addBook.put("userID", userID);
+            addBook.put("bookID", book_id);
+            dbSetUp.db.collection("current_read_book").document(getRandom())
+                    .set(addBook)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            System.out.println("DocumentSnapshot successfully written!");
 
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("Error writing document", e);
-                    }
-                });
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w("Error writing document", e);
+                        }
+                    });
             return true;
+        }
+         return false;
     }
     private boolean addToRead(){
-        final Map<String, Object> addBook = new HashMap<>();
-        addBook.put("userID", userID);
-        addBook.put("bookID", book_id);
-        dbSetUp.db.collection("to_read_book").document(getRandom())
-                .set(addBook)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        System.out.println("DocumentSnapshot successfully written!");
+        if (bookInCurrent){
+            Toast.makeText(getApplicationContext(),"This book already in your current list",Toast.LENGTH_SHORT).show();
+        }else if( bookInComplate ){
+            Toast.makeText(getApplicationContext(),"This book already in your completed list",Toast.LENGTH_SHORT).show();
+        }else if( bookInToRead ){
+            Toast.makeText(getApplicationContext(),"This book already in your to read list",Toast.LENGTH_SHORT).show();
+        }
+        else {
+            final Map<String, Object> addBook = new HashMap<>();
+            addBook.put("userID", userID);
+            addBook.put("bookID", book_id);
+            dbSetUp.db.collection("to_read_book").document(getRandom())
+                    .set(addBook)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            System.out.println("DocumentSnapshot successfully written!");
 
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("Error writing document", e); //todo
-                    }
-                });
-        return true;
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w("Error writing document", e); //todo
+                        }
+                    });
+            return true;
+        }
+        return false;
     }
+
     //complete_read_book
     private boolean addToComplate(){
-        final Map<String, Object> addBook = new HashMap<>();
-        addBook.put("userID", userID);
-        addBook.put("bookID", book_id);
-        dbSetUp.db.collection("complete_read_book").document(getRandom())
-                .set(addBook)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        System.out.println("DocumentSnapshot successfully written!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("Error writing document", e);
-                        Toast.makeText(getApplicationContext(),"You Cannot writing This Empty!",Toast.LENGTH_SHORT).show();
-                    }
-                });
-        return true;    }
+        if (bookInCurrent){
+            Toast.makeText(getApplicationContext(),"This book already in your current list",Toast.LENGTH_SHORT).show();
+        }else if( bookInComplate ){
+            Toast.makeText(getApplicationContext(),"This book already in your completed list",Toast.LENGTH_SHORT).show();
+        }else if( bookInToRead ){
+            Toast.makeText(getApplicationContext(),"This book already in your to read list",Toast.LENGTH_SHORT).show();
+        }
+        else {
+            final Map<String, Object> addBook = new HashMap<>();
+            addBook.put("userID", userID);
+            addBook.put("bookID", book_id);
+            dbSetUp.db.collection("complete_read_book").document(getRandom())
+                    .set(addBook)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            System.out.println("DocumentSnapshot successfully written!");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w("Error writing document", e);
+                            Toast.makeText(getApplicationContext(), "You Cannot writing This Empty!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+            return true;
+        }
+        return false;
+    }
     private void getUserEmail() {
         //to display the name
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
