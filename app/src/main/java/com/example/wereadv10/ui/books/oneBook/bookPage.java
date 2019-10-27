@@ -1,6 +1,7 @@
 package com.example.wereadv10.ui.books.oneBook;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
@@ -328,11 +330,53 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
 
     private boolean addToCurrent(){
         if (bookInCurrent){
-            Toast.makeText(getApplicationContext(),"This book already in your current list",Toast.LENGTH_SHORT).show();
-        }else if( bookInComplate ){
-            Toast.makeText(getApplicationContext(),"This book already in your completed list",Toast.LENGTH_SHORT).show();
-        }else if( bookInToRead ){
-            Toast.makeText(getApplicationContext(),"This book already in your to read list",Toast.LENGTH_SHORT).show();
+             Toast.makeText(getApplicationContext(),"This book already in your current list",Toast.LENGTH_SHORT).show();
+        }
+        else if( bookInComplate ){
+            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(bookPage.this);
+            //set dialog msg
+            alertDialog.setMessage("This book in your current list do you want to add it to: completed book list?");
+            //set Yes Btn
+            alertDialog.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int i) {
+                            System.out.println("Edit ()");
+                        }//end of OnClick
+                    }//end of OnClickListener
+            );//end setPositiveButton
+
+            alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int i) {
+                            dialog.cancel();
+                        }//end onClick
+                    }//end OnClickListener
+            );//end setNegativeButton
+
+            //show dialog
+            alertDialog.show();
+        }
+        else if( bookInToRead ){
+            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(bookPage.this);
+            //set dialog msg
+            alertDialog.setMessage("This book in your current list do you want to add it to: to-read book list?");
+            //set Yes Btn
+            alertDialog.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int i) {
+                            System.out.println("Edit ()");
+                        }//end of OnClick
+                    }//end of OnClickListener
+            );//end setPositiveButton
+
+            alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int i) {
+                            dialog.cancel();
+                        }//end onClick
+                    }//end OnClickListener
+            );//end setNegativeButton
+
+            //show dialog
+            alertDialog.show();
         }
         else {
             final Map<String, Object> addBook = new HashMap<>();
@@ -359,11 +403,54 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
     }
     private boolean addToRead(){
         if (bookInCurrent){
-            Toast.makeText(getApplicationContext(),"This book already in your current list",Toast.LENGTH_SHORT).show();
-        }else if( bookInComplate ){
-            Toast.makeText(getApplicationContext(),"This book already in your completed list",Toast.LENGTH_SHORT).show();
-        }else if( bookInToRead ){
-            Toast.makeText(getApplicationContext(),"This book already in your to read list",Toast.LENGTH_SHORT).show();
+            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(bookPage.this);
+            //set dialog msg
+            alertDialog.setMessage("This book in your current list do you want to add it to: current book list?");
+            //set Yes Btn
+            alertDialog.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int i) {
+                            System.out.println("Edit ()");
+                        }//end of OnClick
+                    }//end of OnClickListener
+            );//end setPositiveButton
+
+            alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int i) {
+                            dialog.cancel();
+                        }//end onClick
+                    }//end OnClickListener
+            );//end setNegativeButton
+
+            //show dialog
+            alertDialog.show();
+        }
+        else if( bookInComplate ){
+            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(bookPage.this);
+            //set dialog msg
+            alertDialog.setMessage("This book in your current list do you want to add it to: completed book list?");
+            //set Yes Btn
+            alertDialog.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int i) {
+                            System.out.println("Edit ()");
+                        }//end of OnClick
+                    }//end of OnClickListener
+            );//end setPositiveButton
+
+            alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int i) {
+                            dialog.cancel();
+                        }//end onClick
+                    }//end OnClickListener
+            );//end setNegativeButton
+
+            //show dialog
+            alertDialog.show();
+        }
+        else if( bookInToRead ){
+            Toast.makeText(getApplicationContext(),"This book already in your to-read list",Toast.LENGTH_SHORT).show();
+
         }
         else {
             final Map<String, Object> addBook = new HashMap<>();
@@ -392,11 +479,54 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
     //complete_read_book
     private boolean addToComplate(){
         if (bookInCurrent){
-            Toast.makeText(getApplicationContext(),"This book already in your current list",Toast.LENGTH_SHORT).show();
-        }else if( bookInComplate ){
-            Toast.makeText(getApplicationContext(),"This book already in your completed list",Toast.LENGTH_SHORT).show();
-        }else if( bookInToRead ){
-            Toast.makeText(getApplicationContext(),"This book already in your to read list",Toast.LENGTH_SHORT).show();
+            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(bookPage.this);
+            //set dialog msg
+            alertDialog.setMessage("This book in your current list do you want to add it to: current book list?");
+            //set Yes Btn
+            alertDialog.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int i) {
+                            System.out.println("Edit ()");
+                        }//end of OnClick
+                    }//end of OnClickListener
+            );//end setPositiveButton
+
+            alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int i) {
+                            dialog.cancel();
+                        }//end onClick
+                    }//end OnClickListener
+            );//end setNegativeButton
+
+            //show dialog
+            alertDialog.show();
+        }
+        else if( bookInComplate ){
+            Toast.makeText(getApplicationContext(),"This book already in your to-read list",Toast.LENGTH_SHORT).show();
+
+        }
+        else if( bookInToRead ){
+            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(bookPage.this);
+            //set dialog msg
+            alertDialog.setMessage("This book in your current list do you want to add it to: to-read book list?");
+            //set Yes Btn
+            alertDialog.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int i) {
+                            System.out.println("Edit ()");
+                        }//end of OnClick
+                    }//end of OnClickListener
+            );//end setPositiveButton
+
+            alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int i) {
+                            dialog.cancel();
+                        }//end onClick
+                    }//end OnClickListener
+            );//end setNegativeButton
+
+            //show dialog
+            alertDialog.show();
         }
         else {
             final Map<String, Object> addBook = new HashMap<>();
