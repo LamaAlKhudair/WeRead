@@ -7,15 +7,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +35,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -64,7 +69,10 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
     private String userID;
     private String userEmail;
     private ImageView Share;
-    private Button creatEvent;
+    private boolean isFABOpen;
+    FloatingActionButton addButton, addEvent_button, addVote_button;
+    TextView TV_addEvent, TV_addVote;
+    private Animation fab_clock, fab_anticlock;
 
     // Members recycler view
     private RecyclerView rvMembers;
@@ -97,8 +105,19 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
         membersNum = findViewById(R.id.membersNum);
         Share=findViewById(R.id.shareIcon);
         Share.setOnClickListener(this);
-        creatEvent= findViewById(R.id.tempcreate);
-        creatEvent.setOnClickListener(this);
+        addButton = findViewById(R.id.AddButton);
+        addEvent_button = findViewById(R.id.addEvent_button);
+        addVote_button = findViewById(R.id.addVote_button);
+        TV_addEvent = findViewById(R.id.TV_addEvent);
+        TV_addVote = findViewById(R.id.TV_addVote);
+        isFABOpen = false;
+        addButton.setOnClickListener(this);
+        addEvent_button.setOnClickListener(this);
+        addVote_button.setOnClickListener(this);
+        fab_clock = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_rotate_clock);
+        fab_anticlock = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_rotate_anticlock);
+
+
         getExtras();
         getUserID();
 
@@ -137,8 +156,11 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
         if ( clubOwnerID.equals(userID) ){
         joinBtn.setVisibility(View.GONE);
 
-        //Display add event and vote floating button
-            }
+            addButton.show();
+            addEvent_button.show();
+            addVote_button.show();
+
+        }
 
     }
 
@@ -159,18 +181,51 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
                 initdialog();
                 break;
 
-            case R.id.tempcreate:
-               Intent i = new Intent(this, createEvent.class);
-               i.putExtra("CLUB_ID",getIntent().getExtras().getString("CLUB_ID"));
-               startActivity(i);
+            case R.id.AddButton:
+                if(!isFABOpen){
+                    showFABMenu();
+                }else{
+                    closeFABMenu();
+                }
                 break;
 
+            case R.id.addEvent_button:
+                Intent i = new Intent(this, createEvent.class);
+                i.putExtra("CLUB_ID",getIntent().getExtras().getString("CLUB_ID"));
+                startActivity(i);
+                break;
+
+            case R.id.addVote_button:
+                //direct the user to add vote page
+                break;
 
             default:
                 break;
         }//end switch
     }//end onClick
 
+
+    private void showFABMenu(){
+        isFABOpen = true;
+        addButton.startAnimation(fab_clock);
+        addEvent_button.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
+        addVote_button.animate().translationY(-getResources().getDimension(R.dimen.standard_105));
+        TV_addEvent.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
+        TV_addVote.animate().translationY(-getResources().getDimension(R.dimen.standard_105));
+        TV_addEvent.setVisibility(View.VISIBLE);
+        TV_addVote.setVisibility(View.VISIBLE);
+    }
+
+    private void closeFABMenu(){
+        isFABOpen = false;
+        addButton.startAnimation(fab_anticlock);
+        TV_addEvent.setVisibility(View.INVISIBLE);
+        TV_addVote.setVisibility(View.INVISIBLE);
+        addEvent_button.animate().translationY(0);
+        addVote_button.animate().translationY(0);
+        TV_addEvent.animate().translationY(0);
+        TV_addVote.animate().translationY(0);
+    }
 
     private void initdialog() {
 
@@ -279,6 +334,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
     private String getRandom(){
         return UUID.randomUUID().toString();
     }
+
 
     private void getUserID() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

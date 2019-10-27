@@ -114,20 +114,6 @@
                     android:onClick="onClick"
                     app:srcCompat="@drawable/share_invite" />
 
-                <Button
-                    android:id="@+id/tempcreate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="160dp"
-                    android:layout_marginRight="100dp"
-                    android:elevation="5dp"
-                    android:padding="10dp"
-                    android:text="Create event"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="15dp"
-                    android:textStyle="bold"/>
 
                 <Button
                     android:id="@+id/join_button"
@@ -157,8 +143,15 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
-<include
+    <include
         layout="@layout/content_main"
        />
+
+    <include
+        layout="@layout/add_event_vote_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
