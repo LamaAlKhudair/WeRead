@@ -8,7 +8,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.clubs.oneClub.createEvent"></activity>
+        <activity android:name=".ui.clubs.oneClub.events.EventPage"></activity>
+        <activity android:name=".ui.clubs.oneClub.createEvent" />
         <activity android:name=".ui.clubs.CreateClub" />
         <activity android:name=".ui.otherProfile.OtherProfileActivity" />
         <activity

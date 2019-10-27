@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wereadv10.R;
@@ -21,14 +22,13 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
     private Context mcontext;
     private List<Event> EventsList;
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView event_name;
         private TextView event_date;
-        private TextView event_desc;
         private TextView event_location;
         private TextView event_time;
 
-        private LinearLayout card;
+        private CardView card;
 
 
         public MyViewHolder(View itemView) {
@@ -36,23 +36,24 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
             event_name = itemView.findViewById(R.id.event_name);
             event_date = itemView.findViewById(R.id.event_date);
             event_time = itemView.findViewById(R.id.event_time);
-            event_desc = itemView.findViewById(R.id.event_description);
             event_location = itemView.findViewById(R.id.event_location);
-            card = itemView.findViewById(R.id.card_club);
+            card = itemView.findViewById(R.id.event_card);
+            card.setOnClickListener(this);
+
         }
 
-/*
-    @Override
-    public void onClick(View view) {
+        @Override
+        public void onClick(View view) {
 
-        Intent intent = new Intent(view.getContext(), clubPage.class);
-        intent.putExtra("NAME", clubsList.get(getAdapterPosition()).getClub_name());
-        intent.putExtra("IMAGE", clubsList.get(getAdapterPosition()).getClub_image());
-        intent.putExtra("OWNER", clubsList.get(getAdapterPosition()).getClub_owner());
-        intent.putExtra("DESCRIPTION", clubsList.get(getAdapterPosition()).getClub_description());
+        Intent intent = new Intent(view.getContext(), EventPage.class);
+        intent.putExtra("Event_name", EventsList.get(getAdapterPosition()).getEvent_name());
+        intent.putExtra("Event_location", EventsList.get(getAdapterPosition()).getEvent_location());
+        intent.putExtra("Event_desc", EventsList.get(getAdapterPosition()).getEvent_desc());
+        intent.putExtra("Event_time", EventsList.get(getAdapterPosition()).getEvent_time());
+        intent.putExtra("Event_date", EventsList.get(getAdapterPosition()).getEvent_date());
 
-        mContext.startActivity(intent);
-    }*/
+        mcontext.startActivity(intent);
+    }
 
 }//End MyViewHolder Class
 
@@ -74,7 +75,6 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         Event event = EventsList.get(position);
         holder.event_name.setText(event.getEvent_name());
-        holder.event_desc.setText(event.getEvent_desc());
         holder.event_date.setText(event.getEvent_date());
         holder.event_time.setText(event.getEvent_time());
         holder.event_location.setText(event.getEvent_location());
