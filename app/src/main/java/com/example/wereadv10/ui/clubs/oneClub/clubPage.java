@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,7 +16,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,6 +64,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
     private String userID;
     private String userEmail;
     private ImageView Share;
+    private Button creatEvent;
 
     // Members recycler view
     private RecyclerView rvMembers;
@@ -98,7 +97,8 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
         membersNum = findViewById(R.id.membersNum);
         Share=findViewById(R.id.shareIcon);
         Share.setOnClickListener(this);
-
+        creatEvent= findViewById(R.id.tempcreate);
+        creatEvent.setOnClickListener(this);
         getExtras();
         getUserID();
 
@@ -158,6 +158,13 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
             case R.id.shareIcon:
                 initdialog();
                 break;
+
+            case R.id.tempcreate:
+               Intent i = new Intent(this, createEvent.class);
+               i.putExtra("CLUB_ID",getIntent().getExtras().getString("CLUB_ID"));
+               startActivity(i);
+                break;
+
 
             default:
                 break;
