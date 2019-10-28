@@ -23,7 +23,9 @@ public class EventPage extends AppCompatActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_page);
-
+        setTitle("Event's details");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         event_name = findViewById(R.id.Title);
         event_date = findViewById(R.id.Date);
@@ -67,5 +69,13 @@ public class EventPage extends AppCompatActivity implements View.OnClickListener
 
         }
     }
+
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
 
 }
