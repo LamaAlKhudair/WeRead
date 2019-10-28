@@ -18,6 +18,7 @@ import com.example.wereadv10.LoginActivity;
 import com.example.wereadv10.MySharedPreference;
 import com.example.wereadv10.R;
 import com.example.wereadv10.SignUp;
+import com.example.wereadv10.notification.Token;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,7 +28,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProfileSettingActivity extends AppCompatActivity implements View.OnClickListener {
     private LinearLayout nameLL, passwordLL, logoutLL;
@@ -109,14 +114,37 @@ public class ProfileSettingActivity extends AppCompatActivity implements View.On
     }//end onClick
 
     public void signOut() {
-        // [START auth_sign_out]
-        mAuth.signOut();
-        if (mAuth.getCurrentUser() == null) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-        }
-        // [END auth_sign_out]
+        // to delete the token after logout to not send him notification if he is logout
+        DocumentReference userTokenDR = FirebaseFirestore.getInstance().collection("Tokens").document(mAuth.getUid());
+        Token mToken = new Token("");
+        final Map<String, Object> tokenh = new HashMap<>();
+        tokenh.put("token",mToken);
+// Set the "isCapital" field of the city 'DC'
+        userTokenDR
+                .update("token", "")
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // [START auth_sign_out]
+                        mAuth.signOut();
+                        if (mAuth.getCurrentUser() == null) {
+                            Intent intent = new Intent(ProfileSettingActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                        // [END auth_sign_out]
+                        Log.d(TAG, "DocumentSnapshot successfully updated!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error updating document", e);
+
+
+                    }
+                });
+
     }
 
     public void logoutDialog() {

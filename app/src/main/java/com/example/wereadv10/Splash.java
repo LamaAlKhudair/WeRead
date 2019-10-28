@@ -1,13 +1,22 @@
 package com.example.wereadv10;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.example.wereadv10.notification.Token;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -16,6 +25,7 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
     Timer timer;
     boolean click = false;
     private FirebaseAuth mAuth;
+    private String TAG = Splash.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

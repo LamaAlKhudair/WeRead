@@ -64,10 +64,13 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.View
             String userID = listData.get(getAdapterPosition()).getId();
             //  onFollowListener.onDepartmentClick(name, departmentList.get(getAdapterPosition()).getId());
             onFollowListener.onFollowUserClick(userID,email);
+
         }//end onClick
     }
 
     public interface OnFollowListener {
         void onFollowUserClick(String userID,String userEmail);
     }//end interface
+    //todo: 1-position find(userid), 2- deleteUser(userid) and call find(userid) notify adapter
+    //todo:1- addUser(userId) notify adapter
 }

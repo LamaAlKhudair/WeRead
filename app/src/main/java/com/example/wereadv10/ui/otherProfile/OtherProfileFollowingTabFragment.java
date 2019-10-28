@@ -16,8 +16,17 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.wereadv10.R;
 import com.example.wereadv10.dbSetUp;
+import com.example.wereadv10.notification.Data;
+import com.example.wereadv10.notification.Sender;
+import com.example.wereadv10.notification.Token;
 import com.example.wereadv10.ui.clubs.oneClub.MembersAdapter;
 import com.example.wereadv10.ui.profile.profileTab.User;
 import com.example.wereadv10.ui.profile.profileTab.adapter.FollowingAdapter;
@@ -29,8 +38,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,13 +53,13 @@ import java.util.List;
 import java.util.Map;
 
 public class OtherProfileFollowingTabFragment extends Fragment {
-    private  FirebaseUser userF;
+    private FirebaseUser userF;
     private int[] sampleImages = new int[5];
     // Followers recycler view
     private RecyclerView rvFollowers;
-     MembersAdapter Followers_adapter;
+    MembersAdapter Followers_adapter;
     private RecyclerView.LayoutManager Followers_LayoutManager;
-     List<User> Followers = new ArrayList<>();
+    List<User> Followers = new ArrayList<>();
     // Following recycler view
     private RecyclerView rvFollowing;
     private MembersAdapter Following_adapter;
@@ -52,19 +67,23 @@ public class OtherProfileFollowingTabFragment extends Fragment {
     private List<User> Followings = new ArrayList<>();
 
     //followings and followers num
-    TextView followingNumTV,followersNumTV;
+    TextView followingNumTV, followersNumTV;
     private com.example.wereadv10.dbSetUp dbSetUp = new dbSetUp();
     private String TAG = OtherProfileFollowingTabFragment.class.getSimpleName();
     Button followBtn;
     String otherUserID = "";
+
+    //volley
+    private RequestQueue requestQueue;
+    private boolean notify = false;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_other_profile_following_tab, container, false);
         followBtn = ((OtherProfileActivity) getActivity()).followBtn;
-        userF= FirebaseAuth.getInstance().getCurrentUser();
-
+        userF = FirebaseAuth.getInstance().getCurrentUser();
+        requestQueue = Volley.newRequestQueue(getContext().getApplicationContext());
 
         if (getActivity().getIntent().getExtras().getString("otherUserID") != null)
             otherUserID = getActivity().getIntent().getExtras().getString("otherUserID");
@@ -90,9 +109,10 @@ public class OtherProfileFollowingTabFragment extends Fragment {
         followBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (followBtn.getText().toString().equals("Follow"))
+                if (followBtn.getText().toString().equals("Follow")) {
+                    notify = true;
                     followUser();
-                else {
+                } else {
                     unFollowUser();
                 }
             }
@@ -100,7 +120,37 @@ public class OtherProfileFollowingTabFragment extends Fragment {
         return view;
 
     }
+
     private void followUser() {
+        //to send notification when user follow other user
+
+        final DocumentReference docRef = dbSetUp.db.collection("users").document(userF.getUid());
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e);
+                    return;
+                }
+
+                if (snapshot != null && snapshot.exists()) {
+                    Log.d(TAG, "Current data: " + snapshot.getData());
+                    String userName = snapshot.getString("name");
+                    if (notify) {
+                        sendNotification(otherUserID, userName);
+                    }
+                    notify = false;
+
+                } else {
+                    Log.d(TAG, "Current data: null");
+                }
+            }
+
+
+        });
+
+        ///
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         final Map<String, Object> follow = new HashMap<>();
@@ -114,8 +164,7 @@ public class OtherProfileFollowingTabFragment extends Fragment {
                         followBtn.setText("Unfollow");
                         Followers.clear();
                         getFollowers();
-                        //   followingTabFragment.updateFollowersList(otherUserID);
-//followBtn.setBackgroundColor();
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -125,6 +174,66 @@ public class OtherProfileFollowingTabFragment extends Fragment {
                     }
                 });
     }//end followUser()
+
+
+    private void sendNotification(final String otherUserID, final String userName) {
+///
+
+        dbSetUp.db.collection("Tokens")
+                .document(otherUserID)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.getString("token") != null) {
+                            //  cities.add(doc.getString("name"));
+                            Token token = new Token(documentSnapshot.getString("token"));
+                            Data data = new Data(userF.getUid(), userName + ":" + "is now follow you", "New followers", otherUserID, R.drawable.logo);
+
+                            Sender sender = new Sender(data, token.getToken());
+                            //from json object request
+                            try {
+                                JSONObject senderJsonObj = new JSONObject(new Gson().toJson(sender));
+                                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest("https://fcm.googleapis.com/fcm/send", senderJsonObj,
+                                        new Response.Listener<JSONObject>() {
+                                            @Override
+                                            public void onResponse(JSONObject response) {
+                                                //respose of the request
+                                                Log.d("JSON_RESPONSE", "onResponse: " + response.toString());
+
+                                            }
+                                        }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Log.d("JSON_RESPONSE", "onResponse: " + error.toString());
+
+                                    }
+                                }) {
+                                    @Override
+                                    public Map<String, String> getHeaders() throws AuthFailureError {
+                                        //put params
+                                        Map<String, String> headers = new HashMap<>();
+                                        headers.put("Content-Type", "application/json");
+                                        headers.put("Authorization", "key=AAAAyQvrTlo:APA91bGN0XRUWpYsynAYyOkiEzP1tmR9pgWsm2lloHhfTxYim3QblFBGLmIP6An9mDA67hX451si1b7O3kLnspv9shwmj7PrJidrtiY4cmov_67uevHeNnrxGxyFmnoOACNVmB3znBQT");
+
+
+                                        return headers;
+                                    }
+                                };
+                                //add the request to queue
+                                requestQueue.add(jsonObjectRequest);
+
+
+                            } catch (JSONException ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                    }
+
+                });
+
+
+    }//end sendNotification
 
     private void unFollowUser() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -171,6 +280,7 @@ public class OtherProfileFollowingTabFragment extends Fragment {
                     }
                 });
     }
+
     //get following user
     private void getFollowings() {
 
@@ -222,8 +332,8 @@ public class OtherProfileFollowingTabFragment extends Fragment {
 
                 Followings.add(user);
                 int number = Followings.size();
-                String numberST= "("+number+")";
-                followingNumTV.setText( numberST);
+                String numberST = "(" + number + ")";
+                followingNumTV.setText(numberST);
                 Following_adapter.notifyDataSetChanged();
             }
         });
@@ -283,8 +393,8 @@ public class OtherProfileFollowingTabFragment extends Fragment {
 
                 Followers.add(user);
                 int number = Followers.size();
-                String numberST= "("+number+")";
-                followersNumTV.setText( numberST);
+                String numberST = "(" + number + ")";
+                followersNumTV.setText(numberST);
 
                 Followers_adapter.notifyDataSetChanged();
             }
@@ -319,9 +429,10 @@ public class OtherProfileFollowingTabFragment extends Fragment {
         ////
 
     }//end getFollowers()
-public void updateFollowersList(String otherUserID){
-    Followers.clear();
-    getFollowers(otherUserID);
-}//end updateFollowersList()
+
+    public void updateFollowersList(String otherUserID) {
+        Followers.clear();
+        getFollowers(otherUserID);
+    }//end updateFollowersList()
 
 }
