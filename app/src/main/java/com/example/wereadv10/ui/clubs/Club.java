@@ -6,6 +6,7 @@ public class Club {
     private String club_name;
     private String club_owner;
     private String club_description;
+    private String ownerID;
     private String club_image;
 
 
@@ -58,6 +59,15 @@ public class Club {
     public void setClub_image(String club_image) {
         this.club_image = club_image;
     }
+
+    public String getOwnerID() {
+        return ownerID;
+    }
+
+    public void setOwnerID(String ownerID) {
+        this.ownerID = ownerID;
+    }
+
 
 
 }
