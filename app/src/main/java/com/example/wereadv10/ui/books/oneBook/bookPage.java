@@ -317,7 +317,7 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
                 if (task.isSuccessful()) {
                     for (DocumentSnapshot document : task.getResult()) {
                         bookInComplate = true;
-                        System.out.println("FOUND in complate");
+                        System.out.println("FOUND in complete");
 
                     }
                 } else {
@@ -335,7 +335,7 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
         else if( bookInComplate ){
             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(bookPage.this);
             //set dialog msg
-            alertDialog.setMessage("This book in your current list do you want to add it to: completed book list?");
+            alertDialog.setMessage("This book in your complete list do you want to add it to: current book list?");
             //set Yes Btn
             alertDialog.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int i) {
@@ -358,7 +358,7 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
         else if( bookInToRead ){
             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(bookPage.this);
             //set dialog msg
-            alertDialog.setMessage("This book in your current list do you want to add it to: to-read book list?");
+            alertDialog.setMessage("This book in your to-read list do you want to add it to: current book list?");
             //set Yes Btn
             alertDialog.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int i) {
@@ -405,7 +405,7 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
         if (bookInCurrent){
             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(bookPage.this);
             //set dialog msg
-            alertDialog.setMessage("This book in your current list do you want to add it to: current book list?");
+            alertDialog.setMessage("This book in your current list do you want to add it to: to-read book list?");
             //set Yes Btn
             alertDialog.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int i) {
@@ -428,7 +428,7 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
         else if( bookInComplate ){
             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(bookPage.this);
             //set dialog msg
-            alertDialog.setMessage("This book in your current list do you want to add it to: completed book list?");
+            alertDialog.setMessage("This book in your complete list do you want to add it to: to-read book list?");
             //set Yes Btn
             alertDialog.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int i) {
@@ -481,7 +481,7 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
         if (bookInCurrent){
             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(bookPage.this);
             //set dialog msg
-            alertDialog.setMessage("This book in your current list do you want to add it to: current book list?");
+            alertDialog.setMessage("This book in your current list do you want to add it to: complete book list?");
             //set Yes Btn
             alertDialog.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int i) {
@@ -508,7 +508,7 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
         else if( bookInToRead ){
             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(bookPage.this);
             //set dialog msg
-            alertDialog.setMessage("This book in your current list do you want to add it to: to-read book list?");
+            alertDialog.setMessage("This book in your to-read list do you want to add it to: complete book list?");
             //set Yes Btn
             alertDialog.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int i) {
