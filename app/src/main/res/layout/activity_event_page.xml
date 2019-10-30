@@ -172,6 +172,19 @@
             android:elevation="20dp"
             android:clickable="true"
             />
+    <Button
+        android:id="@+id/edit_event_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:text="Edit Event"
+        android:layout_alignParentBottom="true"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:elevation="20dp"
+        android:clickable="true"
+        />
 
 
 </RelativeLayout>

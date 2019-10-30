@@ -51,6 +51,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
         intent.putExtra("Event_desc", EventsList.get(getAdapterPosition()).getEvent_desc());
         intent.putExtra("Event_time", EventsList.get(getAdapterPosition()).getEvent_time());
         intent.putExtra("Event_date", EventsList.get(getAdapterPosition()).getEvent_date());
+        intent.putExtra("ClubID", EventsList.get(getAdapterPosition()).getClub_id());
 
         mcontext.startActivity(intent);
     }
