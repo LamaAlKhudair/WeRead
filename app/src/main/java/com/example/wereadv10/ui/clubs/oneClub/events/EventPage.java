@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.wereadv10.R;
 import com.example.wereadv10.dbSetUp;
+import com.example.wereadv10.ui.clubs.oneClub.createEvent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,8 +28,8 @@ public class EventPage extends AppCompatActivity implements View.OnClickListener
     private TextView event_location;
     private TextView event_time;
     private Button joinEventBtn, editEventBtn;
-    private String clubOwnerID, userID, clubID;
-    private com.example.wereadv10.dbSetUp dbSetUp = new dbSetUp();
+    private String clubOwnerID, userID, clubID, eventID;
+    private dbSetUp dbSetUp = new dbSetUp();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,13 +68,24 @@ public class EventPage extends AppCompatActivity implements View.OnClickListener
                 break;
             case R.id.edit_event_btn:
                 System.out.println("EDIT CLICKED ");
+                editFunc();
                 // edit
                 break;
             default:
                 break;
         }//end switch
     }//end onclick
+    private void editFunc(){
+        Intent i = new Intent(this, EditEventActivity.class);
+        i.putExtra("EventID",eventID);
+        i.putExtra("Event_name", event_name.getText());
+        i.putExtra("Event_location",event_location.getText());
+        i.putExtra("Event_desc", event_desc.getText());
+        i.putExtra("Event_time",event_time.getText());
+        i.putExtra("Event_date", event_date.getText());
 
+        startActivity(i);
+    }
     private void ownerView() {
 
         if ( clubOwnerID.equals(userID) ){
