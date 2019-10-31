@@ -53,16 +53,40 @@ public class EventPage extends AppCompatActivity implements View.OnClickListener
         event_location = findViewById(R.id.Location);
         event_time = findViewById(R.id.Time);
         joinEventBtn = findViewById(R.id.join_event_btn);
+        joinEventBtn.setVisibility(View.GONE);
         joinEventBtn.setOnClickListener(this);
         editEventBtn = findViewById(R.id.edit_event_btn);
+        editEventBtn.setVisibility(View.GONE);
         editEventBtn.setOnClickListener(this);
         getUserID();
         getExtras();
+        memberView();
         attendeeView(); // display leave button when member already joined the event
 
 
 
     }
+
+    private void memberView() {
+
+        CollectionReference MemberRef = dbSetUp.db.collection("club_members");
+        MemberRef.whereEqualTo("club_id", clubID).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String member_id = document.get("member_id").toString();
+                                if (member_id.equalsIgnoreCase(userID)) {
+                                    joinEventBtn.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        }
+                    }
+                });
+    }
+
     private void getUserID() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
