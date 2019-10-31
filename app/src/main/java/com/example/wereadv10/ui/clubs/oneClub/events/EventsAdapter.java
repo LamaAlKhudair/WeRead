@@ -46,6 +46,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
         public void onClick(View view) {
 
         Intent intent = new Intent(view.getContext(), EventPage.class);
+        intent.putExtra("Event_id", EventsList.get(getAdapterPosition()).getEvent_id());
         intent.putExtra("Event_name", EventsList.get(getAdapterPosition()).getEvent_name());
         intent.putExtra("Event_location", EventsList.get(getAdapterPosition()).getEvent_location());
         intent.putExtra("Event_desc", EventsList.get(getAdapterPosition()).getEvent_desc());

@@ -263,7 +263,6 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
 
     }
 
-
     private void leaveClub(){
         dbSetUp.db.collection("club_members")
                 .whereEqualTo("member_id", userID)

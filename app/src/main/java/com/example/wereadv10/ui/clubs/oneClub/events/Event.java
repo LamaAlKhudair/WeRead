@@ -3,6 +3,7 @@ package com.example.wereadv10.ui.clubs.oneClub.events;
 public class Event {
 
     private String club_id;
+    private String event_id;
     private String event_name;
     private String event_location;
     private String event_date;
@@ -18,6 +19,14 @@ public class Event {
         this.event_date = event_date;
         this.event_time = event_time;
         this.event_desc = event_desc;
+    }
+
+    public String getEvent_id() {
+        return event_id;
+    }
+
+    public void setEvent_id(String event_id) {
+        this.event_id = event_id;
     }
 
     public String getClub_id() {

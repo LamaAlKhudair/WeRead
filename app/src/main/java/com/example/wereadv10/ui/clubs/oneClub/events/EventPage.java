@@ -9,15 +9,22 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.wereadv10.R;
 import com.example.wereadv10.dbSetUp;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class EventPage extends AppCompatActivity implements View.OnClickListener{
 
@@ -27,7 +34,7 @@ public class EventPage extends AppCompatActivity implements View.OnClickListener
     private TextView event_location;
     private TextView event_time;
     private Button joinEventBtn, editEventBtn;
-    private String clubOwnerID, userID, clubID;
+    private String clubOwnerID, userID, clubID, event_id;
     private com.example.wereadv10.dbSetUp dbSetUp = new dbSetUp();
 
     @Override
@@ -59,20 +66,98 @@ public class EventPage extends AppCompatActivity implements View.OnClickListener
             userID = user.getUid();
         }
     }
+
     @Override
     public void onClick(View view){
         switch (view.getId()) {
             case R.id.join_event_btn:
-                //add code here
+                if (joinEventBtn.getText().toString().equalsIgnoreCase("Join event")){
+                    joinEvent();
+                    joinEventBtn.setText("Leave event");
+                }else {
+                    leaveEvent();
+                }
                 break;
+
             case R.id.edit_event_btn:
                 System.out.println("EDIT CLICKED ");
                 // edit
                 break;
+
             default:
                 break;
         }//end switch
     }//end onclick
+
+    private void joinEvent(){
+
+        final Map<String, Object> joinMember = new HashMap<>();
+        joinMember.put("member_id", userID);
+        joinMember.put("event_id", event_id);
+        dbSetUp.db.collection("event_attendees")
+                .document(getRandom())
+                .set(joinMember).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+/*                Members.clear();
+                getMembers();*/
+                Toast.makeText(getApplicationContext(),"See you there!",Toast.LENGTH_SHORT).show();
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Error writing document", e);
+                        Toast.makeText(getApplicationContext(),"You Cannot writing This Empty!",Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void leaveEvent(){
+        dbSetUp.db.collection("event_attendees")
+                .whereEqualTo("member_id", userID)
+                .whereEqualTo("event_id", event_id)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String docId = document.getId();
+                                deleteDoc(docId);
+                            }
+
+                        }
+
+                    }
+                });
+    }
+
+    private void deleteDoc(String id) {
+        dbSetUp.db.collection("event_attendees").document(id)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        joinEventBtn.setText("JOIN EVENT");
+
+                        Toast.makeText(getApplicationContext(),"You left the event",Toast.LENGTH_SHORT).show();
+/*                        Members.clear();
+                        getMembers();*/
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(), "please try again", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private String getRandom(){
+
+        return UUID.randomUUID().toString();
+    }
 
     private void ownerView() {
 
@@ -85,11 +170,14 @@ public class EventPage extends AppCompatActivity implements View.OnClickListener
         }
 
     }
+
     private void getExtras() {
 
         Intent intent = getIntent();
         if (intent.getExtras() != null) {
 
+            if (intent.getExtras().getString("Event_id") != null)
+                event_id = intent.getExtras().getString("Event_id");
             if (intent.getExtras().getString("Event_name") != null)
                 event_name.setText(intent.getExtras().getString("Event_name"));
             if (intent.getExtras().getString("Event_date") != null)
