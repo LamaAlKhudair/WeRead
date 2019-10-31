@@ -131,6 +131,7 @@ public class createEvent extends AppCompatActivity implements View.OnClickListen
             event.put("event_time", eventTimeEt.getText().toString());
             event.put("event_location", eventLocationEt.getText().toString());
             event.put("club_id",getIntent().getExtras().getString("CLUB_ID"));
+            event.put("event_id",getRandom());
 
             dbSetUp.db.collection("events").document(getRandom())
                     .set(event)
@@ -160,6 +161,7 @@ public class createEvent extends AppCompatActivity implements View.OnClickListen
     private String getRandom(){
         return UUID.randomUUID().toString();
     }
+
 
 }
 
