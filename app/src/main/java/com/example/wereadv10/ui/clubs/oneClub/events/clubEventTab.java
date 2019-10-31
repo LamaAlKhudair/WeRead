@@ -84,6 +84,7 @@ public class clubEventTab extends Fragment {
                                 event.setEvent_location(event_location);
                                 event.setEvent_time(event_time);
                                 event.setEvent_desc(event_desc);
+                                event.setClub_id(clubID);
 
                                 AllEvents.add(event);
 

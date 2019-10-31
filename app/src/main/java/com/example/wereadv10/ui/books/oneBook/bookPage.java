@@ -235,20 +235,16 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
     public boolean onMenuItemClick(MenuItem item) {
         if (item.getItemId() == R.id.Currently_Reading) {
             if( addToCurrent())
-                Toast.makeText(this, "The book has been added successfully", Toast.LENGTH_SHORT).show();
             return true;
         }
 
         if (item.getItemId() == R.id.to_read) {
             if(addToRead())
-                Toast.makeText(this, "The book has been added successfully", Toast.LENGTH_SHORT).show();
             return true;
         }
 
         if (item.getItemId() == R.id.completed) {
             if(addToComplate())
-                Toast.makeText(this, "The book has been added successfully", Toast.LENGTH_SHORT).show();
-
             return true;
         }
         if (item.getItemId() == R.id.cancel) {
@@ -283,8 +279,6 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
                 if (task.isSuccessful()) {
                     for (DocumentSnapshot document : task.getResult()) {
                         bookInToRead = true;
-                        System.out.println("FOUND in to-read");
-
                     }
                 } else {
                     System.out.println( "Error getting documents: ");
@@ -300,8 +294,6 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
                 if (task.isSuccessful()) {
                     for (DocumentSnapshot document : task.getResult()) {
                         bookInCurrent = true;
-                        System.out.println("FOUND in current");
-
                     }
                 } else {
                     System.out.println( "Error getting documents: ");
@@ -317,8 +309,6 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
                 if (task.isSuccessful()) {
                     for (DocumentSnapshot document : task.getResult()) {
                         bookInComplate = true;
-                        System.out.println("FOUND in complate");
-
                     }
                 } else {
                     System.out.println( "Error getting documents: ");
@@ -328,6 +318,8 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
 
     }
 
+
+    // Edit not complete
     private boolean addToCurrent(){
         if (bookInCurrent){
              Toast.makeText(getApplicationContext(),"This book already in your current list",Toast.LENGTH_SHORT).show();
@@ -335,11 +327,12 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
         else if( bookInComplate ){
             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(bookPage.this);
             //set dialog msg
-            alertDialog.setMessage("This book in your current list do you want to add it to: completed book list?");
+            alertDialog.setMessage("This book in your complete list do you want to add it to: current book list?");
             //set Yes Btn
             alertDialog.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int i) {
-                            System.out.println("Edit ()");
+                            bookInComplate =false;
+                            editBook("complete_read_book", "current_read_book");
                         }//end of OnClick
                     }//end of OnClickListener
             );//end setPositiveButton
@@ -355,14 +348,16 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
             //show dialog
             alertDialog.show();
         }
+
         else if( bookInToRead ){
             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(bookPage.this);
             //set dialog msg
-            alertDialog.setMessage("This book in your current list do you want to add it to: to-read book list?");
+            alertDialog.setMessage("This book in your to-read list do you want to add it to: current book list?");
             //set Yes Btn
             alertDialog.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int i) {
-                            System.out.println("Edit ()");
+                            bookInToRead =false;
+                            editBook("to_read_book", "current_read_book");
                         }//end of OnClick
                     }//end of OnClickListener
             );//end setPositiveButton
@@ -397,19 +392,24 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
                             Log.w("Error writing document", e);
                         }
                     });
+            Toast.makeText(this, "The book has been added successfully", Toast.LENGTH_SHORT).show();
+
             return true;
         }
          return false;
     }
+
+    // Edit complete
     private boolean addToRead(){
         if (bookInCurrent){
             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(bookPage.this);
             //set dialog msg
-            alertDialog.setMessage("This book in your current list do you want to add it to: current book list?");
+            alertDialog.setMessage("This book in your current list do you want to add it to: to-read book list?");
             //set Yes Btn
             alertDialog.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int i) {
-                            System.out.println("Edit ()");
+                            bookInCurrent =false;
+                            editBook("current_read_book", "to_read_book");
                         }//end of OnClick
                     }//end of OnClickListener
             );//end setPositiveButton
@@ -428,11 +428,12 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
         else if( bookInComplate ){
             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(bookPage.this);
             //set dialog msg
-            alertDialog.setMessage("This book in your current list do you want to add it to: completed book list?");
+            alertDialog.setMessage("This book in your complete list do you want to add it to: to-read book list?");
             //set Yes Btn
             alertDialog.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int i) {
-                            System.out.println("Edit ()");
+                            bookInComplate =false;
+                            editBook("complete_read_book", "to_read_book");
                         }//end of OnClick
                     }//end of OnClickListener
             );//end setPositiveButton
@@ -471,21 +472,24 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
                             Log.w("Error writing document", e); //todo
                         }
                     });
+            Toast.makeText(this, "The book has been added successfully", Toast.LENGTH_SHORT).show();
             return true;
         }
         return false;
     }
 
     //complete_read_book
+    // EDIT complete
     private boolean addToComplate(){
         if (bookInCurrent){
             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(bookPage.this);
             //set dialog msg
-            alertDialog.setMessage("This book in your current list do you want to add it to: current book list?");
+            alertDialog.setMessage("This book in your current list do you want to add it to: complete book list?");
             //set Yes Btn
             alertDialog.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int i) {
-                            System.out.println("Edit ()");
+                            bookInCurrent =false;
+                            editBook("current_read_book", "complete_read_book");
                         }//end of OnClick
                     }//end of OnClickListener
             );//end setPositiveButton
@@ -508,11 +512,12 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
         else if( bookInToRead ){
             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(bookPage.this);
             //set dialog msg
-            alertDialog.setMessage("This book in your current list do you want to add it to: to-read book list?");
+            alertDialog.setMessage("This book in your to-read list do you want to add it to: complete book list?");
             //set Yes Btn
             alertDialog.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int i) {
-                            System.out.println("Edit ()");
+                            bookInToRead =false;
+                            editBook("to_read_book", "complete_read_book");
                         }//end of OnClick
                     }//end of OnClickListener
             );//end setPositiveButton
@@ -547,9 +552,47 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
                             Toast.makeText(getApplicationContext(), "You Cannot writing This Empty!", Toast.LENGTH_SHORT).show();
                         }
                     });
+            Toast.makeText(this, "The book has been added successfully", Toast.LENGTH_SHORT).show();
+
             return true;
         }
         return false;
+    }
+
+    // found : collection name
+    // moveTo : collection name
+    private void editBook(final String found, final String moveTo){
+        dbSetUp.db.collection(found).whereEqualTo("bookID", book_id)
+                .whereEqualTo("userID",userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    String docID;
+                    for (DocumentSnapshot document : task.getResult()) {
+                        docID = document.getId();
+                        final Map<String, Object> rev1 = new HashMap<>();
+                    dbSetUp.db
+                            .collection(found).document(docID).delete();
+                    }
+
+                    if (moveTo.equalsIgnoreCase("current_read_book")){
+                        addToCurrent();
+                    }else if( moveTo.equalsIgnoreCase("to_read_book")){
+                        addToRead();
+
+                    }else if (moveTo.equalsIgnoreCase("complete_read_book")){
+                        addToComplate();
+                    }else {
+                        System.out.println("Error in collection name ");
+                    }
+
+                }
+                else {
+                    System.out.println( "Error getting documents: ");
+                }
+
+            }
+        });
     }
     private void getUserEmail() {
         //to display the name
