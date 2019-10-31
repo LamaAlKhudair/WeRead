@@ -79,7 +79,6 @@ public class EventPage extends AppCompatActivity implements View.OnClickListener
                 }
                 break;
             case R.id.edit_event_btn:
-                System.out.println("EDIT CLICKED ");
                 editFunc();
                 // edit
                 break;
@@ -96,9 +95,11 @@ public class EventPage extends AppCompatActivity implements View.OnClickListener
         i.putExtra("Event_desc", event_desc.getText());
         i.putExtra("Event_time", event_time.getText());
         i.putExtra("Event_date", event_date.getText());
-
+        i.putExtra("CLUB_ID", clubID);
         startActivity(i);
+        finish();
     }
+
 
     private void joinEvent(){
 

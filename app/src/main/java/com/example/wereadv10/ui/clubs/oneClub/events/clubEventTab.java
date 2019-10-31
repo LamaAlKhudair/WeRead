@@ -51,17 +51,23 @@ public class clubEventTab extends Fragment {
         rvEvents_LayoutManager = new LinearLayoutManager(clubEventTab.this.getContext());
         rvEvents.setLayoutManager ( rvEvents_LayoutManager );
         rvEvents_adapter = new EventsAdapter(getContext(), AllEvents);
-
         rvEvents.setAdapter(rvEvents_adapter);
-
         dbSetUp = new dbSetUp();
 
+        AllEvents.clear();
         getAllEvent();
 
         return root;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+//        getAllEvent();
+    }
+
     private List<Event> getAllEvent() {
+        AllEvents.clear();
 
         final CollectionReference eventRef = dbSetUp.db.collection("events");
         eventRef.whereEqualTo("club_id", clubID).get()

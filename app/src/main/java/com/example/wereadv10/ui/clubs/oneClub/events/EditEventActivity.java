@@ -4,18 +4,29 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.wereadv10.R;
 import com.example.wereadv10.dbSetUp;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EditEventActivity extends AppCompatActivity implements View.OnClickListener  {
     private Button editBtn,selectTime,selectDate;
@@ -32,7 +43,7 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        editBtn = findViewById(R.id.create_event_button);
+        editBtn = findViewById(R.id.edit_event_button);
         DateEt = findViewById(R.id.DateEt);
         eventLocationEt= findViewById(R.id.eventLocationEt);
         EventNameEt = findViewById(R.id.EventNameEt);
@@ -55,7 +66,7 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()) {
 
-            case R.id.create_event_button:
+            case R.id.edit_event_button:
                 editEvent();
                 break;
 
@@ -128,5 +139,42 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
             }
         }
     }
-    private void editEvent(){}
+    private void editEvent(){
+        if(!EventNameEt.getText().toString().equals("")&&!EventdesEt.getText().toString().equals("")&&!DateEt.getText().toString().equals("")
+                &&!eventTimeEt.getText().toString().equals("")&&!eventLocationEt.getText().toString().equals(""))
+        {
+            final Map<String, Object> event = new HashMap<>();
+            event.put("event_name", EventNameEt.getText().toString());
+            event.put("event_desc", EventdesEt.getText().toString());
+            event.put("event_date", DateEt.getText().toString());
+            event.put("event_time", eventTimeEt.getText().toString());
+            event.put("event_location", eventLocationEt.getText().toString());
+
+            dbSetUp.db.collection("events").whereEqualTo("event_id", eventID)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (DocumentSnapshot document : task.getResult()) {
+                            String id = document.getId();
+                            dbSetUp.db
+                                    .collection("events")
+                                    .document(id).update(event);
+                        }
+                        Toast.makeText(getApplicationContext(),"Edit event information completed",Toast.LENGTH_SHORT).show();
+
+
+                    } else {
+                        System.out.println( "Error getting documents: ");
+                    }
+                }
+            });
+
+            finish();
+        }
+        else{
+            Toast.makeText(getApplicationContext(),"You Cannot Leave This Empty!",Toast.LENGTH_SHORT).show();
+        }
+    }
 }
