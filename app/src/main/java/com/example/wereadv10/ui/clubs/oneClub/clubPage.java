@@ -170,7 +170,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.join_button:
-                if (joinBtn.getText().toString().equalsIgnoreCase("join club")){
+                if (joinBtn.getText().toString().equalsIgnoreCase("Join club")){
                     joinClub();
                     joinBtn.setText("Leave club");
                 }else {
