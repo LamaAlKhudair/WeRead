@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -57,6 +58,7 @@ public class EventPage extends AppCompatActivity implements View.OnClickListener
         editEventBtn.setOnClickListener(this);
         getUserID();
         getExtras();
+        attendeeView(); // display leave button when member already joined the event
 
 
 
@@ -168,6 +170,26 @@ public class EventPage extends AppCompatActivity implements View.OnClickListener
     private String getRandom(){
 
         return UUID.randomUUID().toString();
+    }
+
+    private void attendeeView(){
+
+        CollectionReference MemberRef = dbSetUp.db.collection("event_attendees");
+        MemberRef.whereEqualTo("event_id", event_id).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String member_id = document.get("member_id").toString();
+                                if (member_id.equalsIgnoreCase(userID)) {
+                                    joinEventBtn.setText("Leave event");
+                                }
+                            }
+                        }
+                    }
+                });
     }
 
     private void ownerView() {
