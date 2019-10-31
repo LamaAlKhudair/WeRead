@@ -196,7 +196,9 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
                 break;
 
             case R.id.addVote_button:
-                //direct the user to add vote page
+                Intent intent = new Intent(this, createVote.class);
+                intent.putExtra("CLUB_ID",getIntent().getExtras().getString("CLUB_ID"));
+                startActivity(intent);
                 break;
 
             default:
