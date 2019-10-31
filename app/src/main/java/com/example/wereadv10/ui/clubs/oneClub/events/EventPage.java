@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.wereadv10.R;
 import com.example.wereadv10.dbSetUp;
+import com.example.wereadv10.ui.clubs.oneClub.createEvent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -66,7 +67,6 @@ public class EventPage extends AppCompatActivity implements View.OnClickListener
             userID = user.getUid();
         }
     }
-
     @Override
     public void onClick(View view){
         switch (view.getId()) {
@@ -78,16 +78,27 @@ public class EventPage extends AppCompatActivity implements View.OnClickListener
                     leaveEvent();
                 }
                 break;
-
             case R.id.edit_event_btn:
                 System.out.println("EDIT CLICKED ");
+                editFunc();
                 // edit
                 break;
-
             default:
                 break;
         }//end switch
     }//end onclick
+
+    private void editFunc() {
+        Intent i = new Intent(this, EditEventActivity.class);
+        i.putExtra("EventID", event_id);
+        i.putExtra("Event_name", event_name.getText());
+        i.putExtra("Event_location", event_location.getText());
+        i.putExtra("Event_desc", event_desc.getText());
+        i.putExtra("Event_time", event_time.getText());
+        i.putExtra("Event_date", event_date.getText());
+
+        startActivity(i);
+    }
 
     private void joinEvent(){
 
@@ -171,28 +182,29 @@ public class EventPage extends AppCompatActivity implements View.OnClickListener
 
     }
 
-    private void getExtras() {
+    private void getExtras(){
 
-        Intent intent = getIntent();
-        if (intent.getExtras() != null) {
+            Intent intent = getIntent();
+            if (intent.getExtras() != null) {
 
-            if (intent.getExtras().getString("Event_id") != null)
-                event_id = intent.getExtras().getString("Event_id");
-            if (intent.getExtras().getString("Event_name") != null)
-                event_name.setText(intent.getExtras().getString("Event_name"));
-            if (intent.getExtras().getString("Event_date") != null)
-                event_date.setText(intent.getExtras().getString("Event_date"));
-            if (intent.getExtras().getString("Event_time") != null)
-                event_time.setText(intent.getExtras().getString("Event_time"));
-            if (intent.getExtras().getString("Event_desc") != null)
-                event_desc.setText(intent.getExtras().getString("Event_desc"));
-            if (intent.getExtras().getString("Event_location") != null)
-                event_location.setText(intent.getExtras().getString("Event_location"));
-            if (intent.getExtras().getString("ClubID") != null ){
-                clubID = intent.getExtras().getString("ClubID");
-                getOwnerID();
+                if (intent.getExtras().getString("Event_id") != null)
+                    event_id = intent.getExtras().getString("Event_id");
+                if (intent.getExtras().getString("Event_name") != null)
+                    event_name.setText(intent.getExtras().getString("Event_name"));
+                if (intent.getExtras().getString("Event_date") != null)
+                    event_date.setText(intent.getExtras().getString("Event_date"));
+                if (intent.getExtras().getString("Event_time") != null)
+                    event_time.setText(intent.getExtras().getString("Event_time"));
+                if (intent.getExtras().getString("Event_desc") != null)
+                    event_desc.setText(intent.getExtras().getString("Event_desc"));
+                if (intent.getExtras().getString("Event_location") != null)
+                    event_location.setText(intent.getExtras().getString("Event_location"));
+                if (intent.getExtras().getString("ClubID") != null) {
+                    clubID = intent.getExtras().getString("ClubID");
+                    getOwnerID();
+                }
             }
-        }
+
     }
 
     private void getOwnerID(){

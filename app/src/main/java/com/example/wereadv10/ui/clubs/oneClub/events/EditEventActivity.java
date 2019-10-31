@@ -1,44 +1,38 @@
-package com.example.wereadv10.ui.clubs.oneClub;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+package com.example.wereadv10.ui.clubs.oneClub.events;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
-import android.widget.Toast;
-import com.example.wereadv10.dbSetUp;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.wereadv10.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.example.wereadv10.dbSetUp;
 
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
-public class createEvent extends AppCompatActivity implements View.OnClickListener {
-
-    private Button create,selectTime,selectDate;
+public class EditEventActivity extends AppCompatActivity implements View.OnClickListener  {
+    private Button editBtn,selectTime,selectDate;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private EditText DateEt,eventTimeEt,EventNameEt,EventdesEt,eventLocationEt;
     private com.example.wereadv10.dbSetUp dbSetUp = new dbSetUp();
-    private String am_pm = "";
+    private String eventID ,am_pm = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_creat_event);
-        setTitle("Create Event");
+        setContentView(R.layout.activity_edit_event);
+        setTitle("Edit Event");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        create = findViewById(R.id.create_event_button);
+
+        editBtn = findViewById(R.id.create_event_button);
         DateEt = findViewById(R.id.DateEt);
         eventLocationEt= findViewById(R.id.eventLocationEt);
         EventNameEt = findViewById(R.id.EventNameEt);
@@ -46,27 +40,23 @@ public class createEvent extends AppCompatActivity implements View.OnClickListen
         eventTimeEt = findViewById(R.id.eventTimeEt);
         selectDate = findViewById(R.id.btn_date);
         selectTime = findViewById(R.id.btn_time);
-        create.setOnClickListener(this);
+        getExtra();
+        editBtn.setOnClickListener(this);
         selectTime.setOnClickListener(this);
         selectDate.setOnClickListener(this);
-
-
     }
-
 
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
-
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
 
             case R.id.create_event_button:
-                addEvent();
+                editEvent();
                 break;
 
 
@@ -115,53 +105,28 @@ public class createEvent extends AppCompatActivity implements View.OnClickListen
 
                 break;
 
-                default: break;
+            default: break;
 
         }
     }
+    private void getExtra(){
+        Intent intent = getIntent();
+        if (intent.getExtras() != null) {
 
-    private void addEvent() {
-        if(!EventNameEt.getText().toString().equals("")&&!EventdesEt.getText().toString().equals("")&&!DateEt.getText().toString().equals("")
-        &&!eventTimeEt.getText().toString().equals("")&&!eventLocationEt.getText().toString().equals(""))
-        {
-            final Map<String, Object> event = new HashMap<>();
-            event.put("event_name", EventNameEt.getText().toString());
-            event.put("event_desc", EventdesEt.getText().toString());
-            event.put("event_date", DateEt.getText().toString());
-            event.put("event_time", eventTimeEt.getText().toString());
-            event.put("event_location", eventLocationEt.getText().toString());
-            event.put("club_id",getIntent().getExtras().getString("CLUB_ID"));
-            event.put("event_id",getRandom());
-
-            dbSetUp.db.collection("events").document(getRandom())
-                    .set(event)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            System.out.println("DocumentSnapshot successfully written!");
-
-
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.w("Error writing document", e);
-                        }
-                    });
-            finish();
+            if (intent.getExtras().getString("Event_name") != null)
+                EventNameEt.setText(intent.getExtras().getString("Event_name"));
+            if (intent.getExtras().getString("Event_date") != null)
+                DateEt.setText(intent.getExtras().getString("Event_date"));
+            if (intent.getExtras().getString("Event_time") != null)
+                eventTimeEt.setText(intent.getExtras().getString("Event_time"));
+            if (intent.getExtras().getString("Event_desc") != null)
+                EventdesEt.setText(intent.getExtras().getString("Event_desc"));
+            if (intent.getExtras().getString("Event_location") != null)
+                eventLocationEt.setText(intent.getExtras().getString("Event_location"));
+            if (intent.getExtras().getString("EventID") != null ){
+                eventID = intent.getExtras().getString("EventID");
+            }
         }
-        else{
-            Toast.makeText(getApplicationContext(),"You Cannot Leave This Empty!",Toast.LENGTH_SHORT).show();
-        }
-
-        }
-
-
-    private String getRandom(){
-        return UUID.randomUUID().toString();
     }
-
-
+    private void editEvent(){}
 }
-

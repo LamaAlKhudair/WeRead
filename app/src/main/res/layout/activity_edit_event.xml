@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_gravity="center"
+    android:layout_marginTop="30dp"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/EventName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="50dp"
+        android:text="Event name:"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/EventNameEt"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="130dp"
+        android:layout_marginTop="-30dp"
+        android:inputType="textPersonName"
+
+        />
+
+    <TextView
+        android:id="@+id/Eventdes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:textStyle="bold"
+        android:layout_marginTop="30dp"
+        android:text="Event description:" />
+
+    <EditText
+        android:id="@+id/EventdesEt"
+        android:layout_width="250dp"
+        android:inputType="textMultiLine"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-5dp"
+        android:layout_marginLeft="30dp"
+        >
+
+    </EditText>
+
+    <Button
+        android:id="@+id/btn_date"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="end"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="180dp"
+        android:background="@drawable/loging_rounded_button"
+        android:text="Select date"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/DateEt"
+        android:layout_width="110dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="-40dp"
+        android:layout_marginLeft="30dp"
+        android:ems="10"
+        android:inputType="date" />
+
+    <Button
+        android:id="@+id/btn_time"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_gravity="end"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="180dp"
+        android:background="@drawable/loging_rounded_button"
+        android:text="Select time"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+
+
+
+    <EditText
+        android:id="@+id/eventTimeEt"
+        android:layout_width="110dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="-50dp"
+        android:ems="10"
+        android:inputType="time" />
+
+    <TextView
+        android:id="@+id/eventLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="50dp"
+        android:textStyle="bold"
+        android:text="Event location:" />
+
+    <EditText
+        android:id="@+id/eventLocationEt"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="-50dp"
+        android:layout_marginLeft="150dp"
+        android:inputType="textPersonName">
+
+    </EditText>
+
+    <Button
+        android:id="@+id/create_event_button"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_gravity="end"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="170dp"
+        android:background="@drawable/loging_rounded_button"
+        android:text="Create"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+
+</LinearLayout>
