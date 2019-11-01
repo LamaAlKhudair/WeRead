@@ -28,29 +28,29 @@
                 android:background="#F5F5F5"
                 android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/vote_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="2dp"
-                android:paddingRight="10dp"
-                android:gravity="center"
-                android:textColor="@color/colorPrimaryDark"
-                android:text="Vote title"
-                android:textSize="20sp" />
+                <TextView
+                    android:id="@+id/vote_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="2dp"
+                    android:paddingRight="10dp"
+                    android:gravity="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:text="Vote title"
+                    android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/vote_desc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="2dp"
-                android:paddingRight="10dp"
-                android:gravity="center"
-                android:textColor="@color/colorPrimaryDark"
-                android:text="Description"
-                android:textSize="15sp" />
+                <TextView
+                    android:id="@+id/vote_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="2dp"
+                    android:paddingRight="10dp"
+                    android:gravity="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:text="Description"
+                    android:textSize="15sp" />
 
             </LinearLayout>
 
@@ -79,6 +79,96 @@
                     android:layout_margin="5dp"
                     android:text="Option two" />
 
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#F5F5F5"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_total_results"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="Total results:"
+                    android:textSize="15dp"></TextView>
+
+                <TextView
+                    android:id="@+id/tv_total_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="0"
+                    android:textSize="15dp"></TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#F5F5F5"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_op1_res"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="Option 1:"
+                    android:textSize="15dp"
+                    android:layout_weight="1"></TextView>
+                <ProgressBar
+                    android:id="@+id/op1_PB"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:paddingTop="5dp"
+                    android:layout_weight="1"/>
+                <TextView
+                    android:id="@+id/tv_op1_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="0"
+                    android:textSize="15dp"
+                    android:layout_weight="1"></TextView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#F5F5F5"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_op2_res"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="Option 2:"
+                    android:textSize="15dp"
+                    android:layout_weight="1"></TextView>
+
+                <ProgressBar
+                    android:id="@+id/op2_PB"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:paddingTop="8dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/tv_op2_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="0"
+                    android:textSize="15dp"
+                    android:layout_weight="1"></TextView>
 
             </LinearLayout>
 
