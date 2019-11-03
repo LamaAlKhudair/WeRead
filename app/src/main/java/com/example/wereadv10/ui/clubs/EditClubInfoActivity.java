@@ -9,15 +9,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.wereadv10.MySharedPreference;
@@ -25,6 +28,7 @@ import com.example.wereadv10.R;
 import com.example.wereadv10.dbSetUp;
 import com.example.wereadv10.ui.clubs.oneClub.clubPage;
 import com.example.wereadv10.ui.profile.profileTab.ProfileSettingActivity;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -34,21 +38,27 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EditClubInfoActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText clubNameET, clubDescriptionET;
     private ImageView clubImage;
     private Button editClubBtn, cancelClubBtn;
-    private  String image_url = "https://firebasestorage.googleapis.com/v0/b/we-read-a8fd8.appspot.com/o/clubs_images%2Flogo.png?alt=media&token=cdc06ad3-eed9-42e8-977c-32b425bcb98b";
-String clubID,clubOwnerID,clubName,clubDesc;
+    private String image_url = "https://firebasestorage.googleapis.com/v0/b/we-read-a8fd8.appspot.com/o/clubs_images%2Flogo.png?alt=media&token=cdc06ad3-eed9-42e8-977c-32b425bcb98b";
+    String clubID, clubOwnerID, clubName, clubDesc;
     private static final int GALLERY = 1;
     private boolean ImgSet = false;
     private FirebaseAuth mAuth;
     private String TAG = EditClubInfoActivity.class.getSimpleName();
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private com.example.wereadv10.dbSetUp dbSetUp = new dbSetUp();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +78,7 @@ String clubID,clubOwnerID,clubName,clubDesc;
         cancelClubBtn.setOnClickListener(this);
         getExtras();
     }//end onCreate()
+
     private TextWatcher EditTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -79,7 +90,7 @@ String clubID,clubOwnerID,clubName,clubDesc;
             String clubNameS = clubNameET.getText().toString().trim();
             String clubDescriptionS = clubDescriptionET.getText().toString().trim();
 
-            editClubBtn.setEnabled(!clubNameS.equals("") && !clubDescriptionS.equals("") && (ImgSet == true) );
+            editClubBtn.setEnabled(!clubNameS.equals("") && !clubDescriptionS.equals(""));
         }
 
         @Override
@@ -87,6 +98,7 @@ String clubID,clubOwnerID,clubName,clubDesc;
 
         }
     };
+
     private void showPictureDialog() {
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
         //title
@@ -112,6 +124,7 @@ String clubID,clubOwnerID,clubName,clubDesc;
         galleryIntent.setType("image/*");
         startActivityForResult(galleryIntent, GALLERY);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -140,6 +153,7 @@ String clubID,clubOwnerID,clubName,clubDesc;
 
         }
     }//end onActivityResult
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -155,13 +169,13 @@ String clubID,clubOwnerID,clubName,clubDesc;
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.edit_club_ClubImage:
                 showPictureDialog();
                 break;
 
             case R.id.edit_club_editClub:
-
+                updateClubInfo();
                 break;
             case R.id.edit_club_cancelCreate:
                 AlertDialog alertDialog = new AlertDialog.Builder(EditClubInfoActivity.this).create();
@@ -184,6 +198,7 @@ String clubID,clubOwnerID,clubName,clubDesc;
 
         }//end switch
     }
+
     private void getExtras() {
 
         Intent intent = getIntent();
@@ -206,46 +221,85 @@ String clubID,clubOwnerID,clubName,clubDesc;
         }
     }//end getExtras()
 
-    public void updateClubInfo(final String name) {
-        DocumentReference userName = db.collection("clubs").document(clubID);
-       // final android.app.AlertDialog.Builder dialog = new android.app.AlertDialog.Builder(ProfileSettingActivity.this);
+    public void updateClubInfo() {
+        // final android.app.AlertDialog.Builder dialog = new android.app.AlertDialog.Builder(ProfileSettingActivity.this);
+        final Map<String, Object> club = new HashMap<>();
+        club.put("club_name", clubNameET.getText().toString());
+        club.put("club_description", clubDescriptionET.getText().toString());
+//
+        if (ImgSet) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            BitmapDrawable drawable = (BitmapDrawable) clubImage.getDrawable();
+            Bitmap bitmap = drawable.getBitmap();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+            byte[] bytes = baos.toByteArray();
+            String base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
+            final StorageReference ref = dbSetUp.storageRef.child("/clubs_images/" + clubName);
 
-// Set the "isCapital" field of the city 'DC'
-        userName
-                .update("club_name", name)
+            final UploadTask uploadTask = ref.putBytes(bytes);
+
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                        @Override
+                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                            if (!task.isSuccessful()) {
+                                throw task.getException();
+                            }
+                            return ref.getDownloadUrl();
+                        }
+                    }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+
+                            if (task.isSuccessful()) {
+
+                                Uri downUri = task.getResult();
+                                image_url = downUri.toString();
+                                club.put("club_image", image_url);
+                                update(club);
+                            }
+                        }
+                    });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                }
+            });
+        }else{
+            update(club);
+        }
+//
+
+    }// updateClubInfo()
+
+    private void update(Map<String, Object> club) {
+        DocumentReference userClubInfo = dbSetUp.db.collection("clubs").document(clubID);
+
+        userClubInfo
+                .update(club)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        //update FirebaseUser profile
 
-                        FirebaseUser userf = mAuth.getCurrentUser();
-                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
-                        userf.updateProfile(profileUpdates)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Log.d(TAG, "User profile updated.");
-/*                                            nameTV.setText(name);
-                                            MySharedPreference.putString(ProfileSettingActivity.this, "userName", name);
-                                            dialog.setMessage("the name is update");
-                                            dialog.setPositiveButton("ok", null);
-                                            dialog.show();*/
-                                        }
-                                    }
-                                });
+                        Toast.makeText(getApplicationContext(), "the club information has been update successfully  ", Toast.LENGTH_SHORT).show();
+
                         Log.d(TAG, "DocumentSnapshot successfully updated!");
+                        finish();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w(TAG, "Error updating document", e);
-/*                        dialog.setMessage("can't update the name now please try again");
-                        dialog.setPositiveButton("ok", null);
-                        dialog.show();*/
+                        Toast.makeText(getApplicationContext(), "can't update the club now please try again", Toast.LENGTH_SHORT).show();
 
-                    }
-                });
-    }// updateName()
+
+                     }
+                 });
+    }//end update()
+
 }//end class
