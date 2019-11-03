@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wereadv10.R;
 import com.example.wereadv10.dbSetUp;
+import com.example.wereadv10.ui.books.Book;
 import com.example.wereadv10.ui.explore.ExploreClubsAdapter;
 import com.example.wereadv10.ui.explore.ExploreFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -50,8 +51,7 @@ public class ClubsFragment extends Fragment implements View.OnClickListener{
         View root = inflater.inflate(R.layout.fragment_clubs, container, false);
         rvClubs = root.findViewById(R.id.rvVertical);
         rvMyClubs = root.findViewById(R.id.rv2Vertical);
-        getMyClubs();
-        getMyOwnClubs();
+
 
 
 
@@ -202,4 +202,12 @@ public class ClubsFragment extends Fragment implements View.OnClickListener{
         }//end switch
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        myClubs.clear();
+        myOwnClubs.clear();
+        getMyClubs();
+        getMyOwnClubs();
+    }
 }

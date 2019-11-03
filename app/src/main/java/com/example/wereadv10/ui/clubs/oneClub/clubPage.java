@@ -68,6 +68,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
     public TextView clubDescription;
     private Button joinBtn;
     private String userID;
+    private String clubNameString, clubDesc, clubImg;
     private String userEmail;
     private ImageView Share, settingImg;
     private boolean isFABOpen;
@@ -95,7 +96,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_club_page);
-        initToolBar();
+
         dbSetUp = new dbSetUp();
 
         clubName = findViewById(R.id.club_name);
@@ -152,7 +153,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
         tabLayout.setupWithViewPager(BodyViewPager);
 
         initCollapsingToolbar();
-
+        initToolBar();
     }
 
     private void ownerView() {
@@ -173,15 +174,14 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
     }
 
 
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.join_button:
-                if (joinBtn.getText().toString().equalsIgnoreCase("Join club")){
+                if (joinBtn.getText().toString().equalsIgnoreCase("Join club")) {
                     joinClub();
                     joinBtn.setText("Leave club");
-                }else {
+                } else {
                     leaveClub();
                 }
                 break;
@@ -206,18 +206,19 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
 
             case R.id.addVote_button:
                 Intent intent = new Intent(this, createVote.class);
-                intent.putExtra("CLUB_ID",getIntent().getExtras().getString("CLUB_ID"));
+                intent.putExtra("CLUB_ID", getIntent().getExtras().getString("CLUB_ID"));
                 startActivity(intent);
                 break;
             case R.id.club_settingImg:
                 Intent intentEdit = new Intent(this, EditClubInfoActivity.class);
+//clubNameString, clubDesc,clubImg
 
                 intentEdit.putExtra("CLUB_ID", getIntent().getExtras().getString("CLUB_ID"));
-                intentEdit.putExtra("NAME", getIntent().getExtras().getString("NAME"));
+                intentEdit.putExtra("NAME", clubNameString);
                 intentEdit.putExtra("OWNER", getIntent().getExtras().getString("OWNER"));
                 intentEdit.putExtra("OWNER_ID", getIntent().getExtras().getString("OWNER_ID"));
-                intentEdit.putExtra("DESCRIPTION", getIntent().getExtras().getString("DESCRIPTION"));
-                intentEdit.putExtra("IMAGE", getIntent().getExtras().getString("IMAGE"));
+                intentEdit.putExtra("DESCRIPTION", clubDesc);
+                intentEdit.putExtra("IMAGE", clubImg);
 
                 startActivity(intentEdit);
                 break;
@@ -285,7 +286,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
 
     }
 
-    private void leaveClub(){
+    private void leaveClub() {
         dbSetUp.db.collection("club_members")
                 .whereEqualTo("member_id", userID)
                 .whereEqualTo("club_id", clubID)
@@ -353,8 +354,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
     }
 
 
-
-    private String getRandom(){
+    private String getRandom() {
 
         return UUID.randomUUID().toString();
     }
@@ -462,19 +462,24 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
 
         Intent intent = getIntent();
         if (intent.getExtras() != null) {
-
             clubID = intent.getExtras().getString("CLUB_ID");
-            if (intent.getExtras().getString("NAME") != null)
-                clubName.setText(intent.getExtras().getString("NAME"));
+            if (intent.getExtras().getString("NAME") != null) {
+                clubNameString = intent.getExtras().getString("NAME");
+                clubName.setText(clubNameString);
+            }
             if (intent.getExtras().getString("OWNER") != null)
                 clubOwner.setText(intent.getExtras().getString("OWNER"));
             if (intent.getExtras().getString("OWNER_ID") != null)
                 clubOwnerID = intent.getExtras().getString("OWNER_ID");
-            if (intent.getExtras().getString("DESCRIPTION") != null)
-                clubDescription.setText(intent.getExtras().getString("DESCRIPTION"));
-            if (intent.getExtras().getString("IMAGE") != null)
-                Glide.with(clubPage.this).load(intent.getExtras().getString("IMAGE")).into(clubImage);
+            if (intent.getExtras().getString("DESCRIPTION") != null) {
+                clubDesc = intent.getExtras().getString("DESCRIPTION");
+                clubDescription.setText(clubDesc);
+            }
+            if (intent.getExtras().getString("IMAGE") != null) {
+                clubImg = intent.getExtras().getString("IMAGE");
+                Glide.with(clubPage.this).load(clubImg).into(clubImage);
 
+            }
         }
     }
 
@@ -488,11 +493,35 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
     private void initToolBar() {
         Intent intent = getIntent();
         if (intent.getExtras() != null) {
-            setTitle(intent.getExtras().getString("NAME"));
+            setTitle(clubNameString);
         }
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //
+        // Get members info from users collection
+        DocumentReference clubRef = dbSetUp.db.collection("clubs").document(clubID);
+        clubRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
-}
+                if (task.isSuccessful()) {
+                    DocumentSnapshot doc = task.getResult();
+                    clubNameString = doc.get("club_name").toString();
+                    clubName.setText(clubNameString);
+                    clubDesc = doc.get("club_description").toString();
+                    clubDescription.setText(clubDesc);
+                    setTitle(clubNameString);
+                    clubImg = doc.get("club_image").toString();
+                    Glide.with(clubPage.this).load(clubImg).into(clubImage);
+
+                }
+            }
+        });
+        //
+    }//end onResume()
+}//end class
