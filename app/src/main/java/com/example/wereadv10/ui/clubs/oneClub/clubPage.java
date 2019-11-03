@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.wereadv10.R;
 import com.example.wereadv10.dbSetUp;
+import com.example.wereadv10.ui.clubs.EditClubInfoActivity;
 import com.example.wereadv10.ui.clubs.oneClub.events.clubEventTab;
 import com.example.wereadv10.ui.clubs.oneClub.votes.clubVotingTab;
 import com.example.wereadv10.ui.profile.profileTab.User;
@@ -67,8 +68,9 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
     public TextView clubDescription;
     private Button joinBtn;
     private String userID;
+    private String clubNameString, clubDesc, clubImg;
     private String userEmail;
-    private ImageView Share;
+    private ImageView Share, settingImg;
     private boolean isFABOpen;
     FloatingActionButton addButton, addEvent_button, addVote_button;
     TextView TV_addEvent, TV_addVote;
@@ -82,7 +84,8 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
 
     // Events and Votes
     private ViewPager BodyViewPager;
-    private clubEventTab eventFragment = new clubEventTab();;
+    private clubEventTab eventFragment = new clubEventTab();
+    ;
     private clubVotingTab votingTab = new clubVotingTab();
     private clubTabsAdapter clubTabsAdapter;
     private int[] sampleImages = new int[5];
@@ -93,7 +96,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_club_page);
-        initToolBar();
+
         dbSetUp = new dbSetUp();
 
         clubName = findViewById(R.id.club_name);
@@ -103,8 +106,10 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
         joinBtn = findViewById(R.id.join_button);
         joinBtn.setOnClickListener(this);
         membersNum = findViewById(R.id.membersNum);
-        Share=findViewById(R.id.shareIcon);
+        Share = findViewById(R.id.shareIcon);
         Share.setOnClickListener(this);
+        settingImg = findViewById(R.id.club_settingImg);
+        settingImg.setOnClickListener(this);
         addButton = findViewById(R.id.AddButton);
         addEvent_button = findViewById(R.id.addEvent_button);
         addVote_button = findViewById(R.id.addVote_button);
@@ -127,12 +132,12 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
 
 
         // Members recycler view
-        sampleImages[0] = R.drawable.man ;
-        sampleImages[1] = R.drawable.girl ;
+        sampleImages[0] = R.drawable.man;
+        sampleImages[1] = R.drawable.girl;
         rvMembers = findViewById(R.id.rvMembers);
 
         Members_LayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        rvMembers.setLayoutManager ( Members_LayoutManager );
+        rvMembers.setLayoutManager(Members_LayoutManager);
 
         getMembers();
 
@@ -148,32 +153,35 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
         tabLayout.setupWithViewPager(BodyViewPager);
 
         initCollapsingToolbar();
-
+        initToolBar();
     }
 
     private void ownerView() {
 
-        if ( clubOwnerID.equals(userID) ){
-        joinBtn.setVisibility(View.GONE);
+        if (clubOwnerID.equals(userID)) {
+            joinBtn.setVisibility(View.GONE);
 
             addButton.show();
             addEvent_button.show();
             addVote_button.show();
 
         }
+        if (!clubOwnerID.equals(userID)) {
+            settingImg.setVisibility(View.GONE);
+        }
+
 
     }
-
 
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.join_button:
-                if (joinBtn.getText().toString().equalsIgnoreCase("Join club")){
+                if (joinBtn.getText().toString().equalsIgnoreCase("Join club")) {
                     joinClub();
                     joinBtn.setText("Leave club");
-                }else {
+                } else {
                     leaveClub();
                 }
                 break;
@@ -183,32 +191,44 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
                 break;
 
             case R.id.AddButton:
-                if(!isFABOpen){
+                if (!isFABOpen) {
                     showFABMenu();
-                }else{
+                } else {
                     closeFABMenu();
                 }
                 break;
 
             case R.id.addEvent_button:
                 Intent i = new Intent(this, createEvent.class);
-                i.putExtra("CLUB_ID",getIntent().getExtras().getString("CLUB_ID"));
+                i.putExtra("CLUB_ID", getIntent().getExtras().getString("CLUB_ID"));
                 startActivity(i);
                 break;
 
             case R.id.addVote_button:
                 Intent intent = new Intent(this, createVote.class);
-                intent.putExtra("CLUB_ID",getIntent().getExtras().getString("CLUB_ID"));
+                intent.putExtra("CLUB_ID", getIntent().getExtras().getString("CLUB_ID"));
                 startActivity(intent);
                 break;
+            case R.id.club_settingImg:
+                Intent intentEdit = new Intent(this, EditClubInfoActivity.class);
+//clubNameString, clubDesc,clubImg
 
+                intentEdit.putExtra("CLUB_ID", getIntent().getExtras().getString("CLUB_ID"));
+                intentEdit.putExtra("NAME", clubNameString);
+                intentEdit.putExtra("OWNER", getIntent().getExtras().getString("OWNER"));
+                intentEdit.putExtra("OWNER_ID", getIntent().getExtras().getString("OWNER_ID"));
+                intentEdit.putExtra("DESCRIPTION", clubDesc);
+                intentEdit.putExtra("IMAGE", clubImg);
+
+                startActivity(intentEdit);
+                break;
             default:
                 break;
         }//end switch
     }//end onClick
 
 
-    private void showFABMenu(){
+    private void showFABMenu() {
         isFABOpen = true;
         addButton.startAnimation(fab_clock);
         addEvent_button.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
@@ -219,7 +239,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
         TV_addVote.setVisibility(View.VISIBLE);
     }
 
-    private void closeFABMenu(){
+    private void closeFABMenu() {
         isFABOpen = false;
         addButton.startAnimation(fab_anticlock);
         TV_addEvent.setVisibility(View.INVISIBLE);
@@ -233,14 +253,14 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
     private void initdialog() {
 
         final AlertDialog dialogBuilder = new AlertDialog.Builder(clubPage.this).create();
-        LayoutInflater inflater =getLayoutInflater();
+        LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.custom_dialog, null);
 
         final EditText receiverEmailEditText = dialogView.findViewById(R.id.inviteEmail);
         final EditText messageEditText = dialogView.findViewById(R.id.inviteMssg);
-        messageEditText.setText("Hey there!\nJoin us at "+getIntent().getExtras().getString("NAME")+" after downloading WeRead App..\nLooking forward to see you there <3");
-        Button button1 =  dialogView.findViewById(R.id.buttonSubmit);
-        Button button2 =  dialogView.findViewById(R.id.buttonCancel);
+        messageEditText.setText("Hey there!\nJoin us at " + getIntent().getExtras().getString("NAME") + " after downloading WeRead App..\nLooking forward to see you there <3");
+        Button button1 = dialogView.findViewById(R.id.buttonSubmit);
+        Button button2 = dialogView.findViewById(R.id.buttonCancel);
 
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -252,7 +272,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
             @Override
             public void onClick(View view) {
                 Intent mailIntent = new Intent(Intent.ACTION_VIEW);
-                Uri data = Uri.parse("mailto:?subject=" + "Join Club  WeRead application" + "&body=" + (messageEditText.getText().toString())+ "&to=" + receiverEmailEditText.getText().toString());
+                Uri data = Uri.parse("mailto:?subject=" + "Join Club  WeRead application" + "&body=" + (messageEditText.getText().toString()) + "&to=" + receiverEmailEditText.getText().toString());
                 mailIntent.setData(data);
                 startActivity(Intent.createChooser(mailIntent, "Send mail..."));
                 finish();
@@ -266,7 +286,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
 
     }
 
-    private void leaveClub(){
+    private void leaveClub() {
         dbSetUp.db.collection("club_members")
                 .whereEqualTo("member_id", userID)
                 .whereEqualTo("club_id", clubID)
@@ -287,6 +307,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
                     }
                 });
     }
+
     private void deleteDoc(String id) {
         dbSetUp.db.collection("club_members").document(id)
                 .delete()
@@ -295,9 +316,9 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
                     public void onSuccess(Void aVoid) {
                         joinBtn.setText("JOIN CLUB");
 
-                        Toast.makeText(getApplicationContext(),"You left the club now :( ",Toast.LENGTH_SHORT).show();
-                         Members.clear();
-                         getMembers();   
+                        Toast.makeText(getApplicationContext(), "You left the club now :( ", Toast.LENGTH_SHORT).show();
+                        Members.clear();
+                        getMembers();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -307,8 +328,8 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
                     }
                 });
     }
-    
-    private void joinClub(){
+
+    private void joinClub() {
 
         final Map<String, Object> joinMember = new HashMap<>();
         joinMember.put("member_id", userID);
@@ -320,20 +341,20 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
             public void onSuccess(Void aVoid) {
                 Members.clear();
                 getMembers();
-                Toast.makeText(getApplicationContext(),"Welcome with us in "+clubName.getText().toString()+"!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Welcome with us in " + clubName.getText().toString() + "!", Toast.LENGTH_SHORT).show();
             }
         })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w("Error writing document", e);
-                        Toast.makeText(getApplicationContext(),"You Cannot writing This Empty!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "You Cannot writing This Empty!", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
 
-    private String getRandom(){
+    private String getRandom() {
 
         return UUID.randomUUID().toString();
     }
@@ -363,17 +384,17 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
                                 final User member = new User();
                                 numOfMember++;
                                 String member_id = document.get("member_id").toString();
-                                if(member_id.equalsIgnoreCase(userID)){
+                                if (member_id.equalsIgnoreCase(userID)) {
                                     joinBtn.setText("Leave Club");
                                 }
                                 member.setId(member_id);
 
-                                int random ;
-                                if(Math.random() < 0.5)
+                                int random;
+                                if (Math.random() < 0.5)
                                     random = 0;
                                 else random = 1;
 
-                                int member_image = sampleImages[random] ;
+                                int member_image = sampleImages[random];
                                 member.setImage(member_image);
 
                                 // Get members info from users collection
@@ -382,7 +403,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
                                     @Override
                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
-                                        if(task.isSuccessful()){
+                                        if (task.isSuccessful()) {
                                             DocumentSnapshot doc = task.getResult();
                                             member.setName(doc.get("name").toString());
                                             member.setEmail(doc.get("email").toString());
@@ -395,7 +416,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
                                 Members.add(member);
 
                                 Members_adapter.notifyDataSetChanged();
-                                membersNum.setText("Members ("+numOfMember+")");
+                                membersNum.setText("Members (" + numOfMember + ")");
 
                             }
 
@@ -441,19 +462,24 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
 
         Intent intent = getIntent();
         if (intent.getExtras() != null) {
-
-                clubID = intent.getExtras().getString("CLUB_ID");
-            if (intent.getExtras().getString("NAME") != null)
-                clubName.setText(intent.getExtras().getString("NAME"));
+            clubID = intent.getExtras().getString("CLUB_ID");
+            if (intent.getExtras().getString("NAME") != null) {
+                clubNameString = intent.getExtras().getString("NAME");
+                clubName.setText(clubNameString);
+            }
             if (intent.getExtras().getString("OWNER") != null)
                 clubOwner.setText(intent.getExtras().getString("OWNER"));
             if (intent.getExtras().getString("OWNER_ID") != null)
                 clubOwnerID = intent.getExtras().getString("OWNER_ID");
-            if (intent.getExtras().getString("DESCRIPTION") != null)
-                clubDescription.setText(intent.getExtras().getString("DESCRIPTION"));
-            if (intent.getExtras().getString("IMAGE") != null)
-                Glide.with(clubPage.this).load(intent.getExtras().getString("IMAGE")).into(clubImage);
+            if (intent.getExtras().getString("DESCRIPTION") != null) {
+                clubDesc = intent.getExtras().getString("DESCRIPTION");
+                clubDescription.setText(clubDesc);
+            }
+            if (intent.getExtras().getString("IMAGE") != null) {
+                clubImg = intent.getExtras().getString("IMAGE");
+                Glide.with(clubPage.this).load(clubImg).into(clubImage);
 
+            }
         }
     }
 
@@ -465,9 +491,37 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
 
 
     private void initToolBar() {
+        Intent intent = getIntent();
+        if (intent.getExtras() != null) {
+            setTitle(clubNameString);
+        }
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //
+        // Get members info from users collection
+        DocumentReference clubRef = dbSetUp.db.collection("clubs").document(clubID);
+        clubRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
-}
+                if (task.isSuccessful()) {
+                    DocumentSnapshot doc = task.getResult();
+                    clubNameString = doc.get("club_name").toString();
+                    clubName.setText(clubNameString);
+                    clubDesc = doc.get("club_description").toString();
+                    clubDescription.setText(clubDesc);
+                    setTitle(clubNameString);
+                    clubImg = doc.get("club_image").toString();
+                    Glide.with(clubPage.this).load(clubImg).into(clubImage);
+
+                }
+            }
+        });
+        //
+    }//end onResume()
+}//end class

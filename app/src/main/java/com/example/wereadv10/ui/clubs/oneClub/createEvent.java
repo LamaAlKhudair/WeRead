@@ -35,7 +35,7 @@ public class createEvent extends AppCompatActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_creat_event);
-        setTitle("Create Event");
+        setTitle("Add Event");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         create = findViewById(R.id.create_event_button);

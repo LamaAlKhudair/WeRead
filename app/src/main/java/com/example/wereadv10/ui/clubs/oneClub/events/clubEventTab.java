@@ -54,8 +54,7 @@ public class clubEventTab extends Fragment {
         rvEvents.setAdapter(rvEvents_adapter);
         dbSetUp = new dbSetUp();
 
-        AllEvents.clear();
-        getAllEvent();
+
 
         return root;
     }
@@ -63,12 +62,13 @@ public class clubEventTab extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-//        getAllEvent();
+        AllEvents.clear();
+        getAllEvent();
     }
 
     private List<Event> getAllEvent() {
-        AllEvents.clear();
 
+        System.out.println("In all events "+ AllEvents.isEmpty());
         final CollectionReference eventRef = dbSetUp.db.collection("events");
         eventRef.whereEqualTo("club_id", clubID).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

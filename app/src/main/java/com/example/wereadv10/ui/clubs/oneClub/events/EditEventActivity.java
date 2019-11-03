@@ -33,7 +33,7 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
     private int mYear, mMonth, mDay, mHour, mMinute;
     private EditText DateEt,eventTimeEt,EventNameEt,EventdesEt,eventLocationEt;
     private com.example.wereadv10.dbSetUp dbSetUp = new dbSetUp();
-    private String eventID ,am_pm = "";
+    private String clubID, eventID ,am_pm = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +137,9 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
             if (intent.getExtras().getString("EventID") != null ){
                 eventID = intent.getExtras().getString("EventID");
             }
+            if(intent.getExtras().getString("CLUB_ID")!=null)
+                clubID = intent.getExtras().getString("CLUB_ID");
+
         }
     }
     private void editEvent(){
@@ -158,6 +161,7 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
                     if (task.isSuccessful()) {
                         for (DocumentSnapshot document : task.getResult()) {
                             String id = document.getId();
+
                             dbSetUp.db
                                     .collection("events")
                                     .document(id).update(event);
@@ -170,8 +174,8 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
                     }
                 }
             });
-
             finish();
+
         }
         else{
             Toast.makeText(getApplicationContext(),"You Cannot Leave This Empty!",Toast.LENGTH_SHORT).show();
