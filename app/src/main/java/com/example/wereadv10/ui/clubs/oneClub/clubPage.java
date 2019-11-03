@@ -173,14 +173,15 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
     }
 
 
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.join_button:
-                if (joinBtn.getText().toString().equalsIgnoreCase("join club")) {
+                if (joinBtn.getText().toString().equalsIgnoreCase("Join club")){
                     joinClub();
                     joinBtn.setText("Leave club");
-                } else {
+                }else {
                     leaveClub();
                 }
                 break;
@@ -204,19 +205,21 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
                 break;
 
             case R.id.addVote_button:
-                //direct the user to add vote page
+                Intent intent = new Intent(this, createVote.class);
+                intent.putExtra("CLUB_ID",getIntent().getExtras().getString("CLUB_ID"));
+                startActivity(intent);
                 break;
             case R.id.club_settingImg:
-                Intent intent = new Intent(this, EditClubInfoActivity.class);
+                Intent intentEdit = new Intent(this, EditClubInfoActivity.class);
 
-                    intent.putExtra("CLUB_ID", getIntent().getExtras().getString("CLUB_ID"));
-                        intent.putExtra("NAME", getIntent().getExtras().getString("NAME"));
-                        intent.putExtra("OWNER", getIntent().getExtras().getString("OWNER"));
-                        intent.putExtra("OWNER_ID", getIntent().getExtras().getString("OWNER_ID"));
-                        intent.putExtra("DESCRIPTION", getIntent().getExtras().getString("DESCRIPTION"));
-                        intent.putExtra("IMAGE", getIntent().getExtras().getString("IMAGE"));
+                intentEdit.putExtra("CLUB_ID", getIntent().getExtras().getString("CLUB_ID"));
+                intentEdit.putExtra("NAME", getIntent().getExtras().getString("NAME"));
+                intentEdit.putExtra("OWNER", getIntent().getExtras().getString("OWNER"));
+                intentEdit.putExtra("OWNER_ID", getIntent().getExtras().getString("OWNER_ID"));
+                intentEdit.putExtra("DESCRIPTION", getIntent().getExtras().getString("DESCRIPTION"));
+                intentEdit.putExtra("IMAGE", getIntent().getExtras().getString("IMAGE"));
 
-                startActivity(intent);
+                startActivity(intentEdit);
                 break;
             default:
                 break;
@@ -282,8 +285,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
 
     }
 
-
-    private void leaveClub() {
+    private void leaveClub(){
         dbSetUp.db.collection("club_members")
                 .whereEqualTo("member_id", userID)
                 .whereEqualTo("club_id", clubID)
@@ -351,7 +353,9 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
     }
 
 
-    private String getRandom() {
+
+    private String getRandom(){
+
         return UUID.randomUUID().toString();
     }
 

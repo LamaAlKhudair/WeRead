@@ -51,18 +51,24 @@ public class clubEventTab extends Fragment {
         rvEvents_LayoutManager = new LinearLayoutManager(clubEventTab.this.getContext());
         rvEvents.setLayoutManager ( rvEvents_LayoutManager );
         rvEvents_adapter = new EventsAdapter(getContext(), AllEvents);
-
         rvEvents.setAdapter(rvEvents_adapter);
-
         dbSetUp = new dbSetUp();
 
-        getAllEvent();
+
 
         return root;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        AllEvents.clear();
+        getAllEvent();
+    }
+
     private List<Event> getAllEvent() {
 
+        System.out.println("In all events "+ AllEvents.isEmpty());
         final CollectionReference eventRef = dbSetUp.db.collection("events");
         eventRef.whereEqualTo("club_id", clubID).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -73,17 +79,21 @@ public class clubEventTab extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 final Event event = new Event();
 
+                                String event_id = document.get("event_id").toString();
                                 String event_name = document.get("event_name").toString();
                                 String event_date = document.get("event_date").toString();
                                 String event_desc = document.get("event_desc").toString();
                                 String event_location = document.get("event_location").toString();
                                 String event_time = document.get("event_time").toString();
 
+
+                                event.setEvent_id(event_id);
                                 event.setEvent_name(event_name);
                                 event.setEvent_date(event_date);
                                 event.setEvent_location(event_location);
                                 event.setEvent_time(event_time);
                                 event.setEvent_desc(event_desc);
+                                event.setClub_id(clubID);
 
                                 AllEvents.add(event);
 

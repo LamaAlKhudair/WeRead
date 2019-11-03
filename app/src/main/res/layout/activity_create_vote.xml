@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_gravity="center"
+    android:layout_marginTop="30dp"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/VoteName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="50dp"
+        android:text="Vote title:"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/VoteNameEt"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="130dp"
+        android:layout_marginTop="-30dp"
+        android:inputType="textPersonName"
+
+        />
+
+    <TextView
+        android:id="@+id/Votedes"
+        android:layout_width="132dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="30dp"
+        android:text="Vote description:"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/VotedesEt"
+        android:layout_width="250dp"
+        android:inputType="textMultiLine"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-5dp"
+        android:layout_marginLeft="30dp"
+        >
+
+    </EditText>
+
+
+    <TextView
+        android:id="@+id/voteOptions"
+        android:layout_width="169dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="-80dp"
+        android:layout_marginTop="50dp"
+        android:text="Vote options:"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/Option1"
+        android:layout_width="47dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="-120dp"
+        android:layout_marginTop="50dp"
+        android:text="1:"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/Option2"
+        android:layout_width="37dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="-120dp"
+        android:layout_marginTop="20dp"
+        android:text="2:"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/optionOneEt"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="-100dp"
+        android:layout_marginLeft="100dp"
+        android:inputType="textPersonName"/>
+
+    <EditText
+        android:id="@+id/optionTwoEt"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="100dp"
+        android:inputType="textPersonName">
+
+
+    </EditText>
+
+    <Button
+        android:id="@+id/create_vote_button"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_gravity="end"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="170dp"
+        android:background="@drawable/loging_rounded_button"
+        android:text="Add vote"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+
+</LinearLayout>

@@ -11,7 +11,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme">
+
         <activity android:name=".ui.clubs.EditClubInfoActivity"></activity>
+        <activity android:name=".ui.clubs.oneClub.events.EditEventActivity"></activity>
+        <activity android:name=".ui.clubs.oneClub.createVote"></activity>
+
+
         <activity android:name=".ui.clubs.oneClub.events.EventPage" />
         <activity android:name=".ui.clubs.oneClub.createEvent" />
         <activity android:name=".ui.clubs.CreateClub" />
@@ -56,5 +61,8 @@
             </intent-filter>
         </service>
     </application>
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

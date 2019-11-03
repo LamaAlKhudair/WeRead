@@ -52,13 +52,13 @@ public class CreateClub extends AppCompatActivity {
     private EditText clubName, clubDescription;
     private ImageView clubImage;
     private Button createClub, cancelClub;
+    private String clubId, ownerId;
     private  String image_url = "https://firebasestorage.googleapis.com/v0/b/we-read-a8fd8.appspot.com/o/clubs_images%2Flogo.png?alt=media&token=cdc06ad3-eed9-42e8-977c-32b425bcb98b";
 
     private static final int GALLERY = 1;
     private boolean ImgSet = false;
 
     private com.example.wereadv10.dbSetUp dbSetUp = new dbSetUp();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,51 +112,6 @@ public class CreateClub extends AppCompatActivity {
 
     }
 
-    private void uploadImage() {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        BitmapDrawable drawable = (BitmapDrawable) clubImage.getDrawable();
-        Bitmap bitmap = drawable.getBitmap();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
-        byte[] bytes = baos.toByteArray();
-        String base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
-        final StorageReference ref = dbSetUp.storageRef.child("/clubs_images/"+clubName.getText().toString());
-
-        final UploadTask uploadTask = ref.putBytes(bytes);
-        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(CreateClub.this, "Uploaded", Toast.LENGTH_SHORT).show();
-
-                uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                    @Override
-                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                        if (!task.isSuccessful()) {
-                            throw task.getException();
-                        }
-                        return ref.getDownloadUrl();
-                    }
-                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Uri> task) {
-
-                        if (task.isSuccessful()) {
-                            Uri downUri  = task.getResult();
-                            image_url = downUri .toString();
-                            Log.d("Final URL", "onComplete: Url: " + downUri.toString());
-                        }
-                    }
-                });
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(CreateClub.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
-    }
-
     private TextWatcher loginTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -176,7 +131,6 @@ public class CreateClub extends AppCompatActivity {
 
         }
     };
-
 
     private void showPictureDialog() {
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
@@ -209,8 +163,8 @@ public class CreateClub extends AppCompatActivity {
         if( !clubName.getText().toString().equals("") && !clubDescription.getText().toString().equals("") && (ImgSet == true) )
         {
 
-            String ownerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            final String clubId = getRandomID();
+            ownerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            clubId = getRandomID();
 
             final Map<String, Object> club = new HashMap<>();
             club.put("club_name", clubName.getText().toString());
@@ -252,7 +206,7 @@ public class CreateClub extends AppCompatActivity {
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
-                                                //Add club ID
+                                                addOwnerAsMember();
                                                 Toast.makeText(CreateClub.this, "Club Created Successfully", Toast.LENGTH_LONG).show();
 
                                             }
@@ -281,7 +235,27 @@ public class CreateClub extends AppCompatActivity {
         else{
             Toast.makeText(getApplicationContext(),"You Cannot Leave This Empty!",Toast.LENGTH_SHORT).show();
         }
+    }
 
+    private void addOwnerAsMember(){
+
+        final Map<String, Object> joinMember = new HashMap<>();
+        joinMember.put("member_id", ownerId);
+        joinMember.put("club_id", clubId);
+        dbSetUp.db.collection("club_members")
+                .document(getRandomID())
+                .set(joinMember).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Error writing document", e);
+                    }
+                });
 
     }
 
@@ -317,12 +291,12 @@ public class CreateClub extends AppCompatActivity {
 
         }
     }//end onActivityResult
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
-
 
     private void initToolBar() {
         setTitle("Create Club");
