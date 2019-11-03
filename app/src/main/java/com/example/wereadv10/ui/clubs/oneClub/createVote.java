@@ -53,13 +53,18 @@ public class createVote extends AppCompatActivity {
                 &&!optionTwoEt.getText().toString().equals(""))
         {
             final Map<String, Object> vote = new HashMap<>();
+            String vote_id = getRandom();
             vote.put("vote_title", VoteNameEt.getText().toString());
             vote.put("vote_desc", VotedesEt.getText().toString());
             vote.put("option_one", optionOneEt.getText().toString());
             vote.put("option_two", optionTwoEt.getText().toString());
             vote.put("club_id",getIntent().getExtras().getString("CLUB_ID"));
+            vote.put("vote_id", vote_id );
+            vote.put("counter_op1", 0 );
+            vote.put("counter_op2", 0 );
+            vote.put("counter_tot", 0 );
 
-            dbSetUp.db.collection("votes").document(getRandom())
+            dbSetUp.db.collection("votes").document(vote_id)
                     .set(vote)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override

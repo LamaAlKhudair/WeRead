@@ -9,6 +9,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +23,8 @@ import com.example.wereadv10.dbSetUp;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -30,8 +35,6 @@ import java.util.List;
 public class clubVotingTab extends Fragment {
     private static final String TAG = "Vote fragment";
 
-    private String clubID ;
-
     private RecyclerView rvVotes;
     private VotesAdapter rvVotes_adapter;
     private RecyclerView.LayoutManager rvVotes_LayoutManager;
@@ -39,6 +42,25 @@ public class clubVotingTab extends Fragment {
     private List<Vote> AllVotes = new ArrayList<>();
 
     private com.example.wereadv10.dbSetUp dbSetUp;
+    private String clubID ;
+
+
+/*    private TextView optionOne;
+    private TextView optionTwo;
+    private TextView voteTitle;
+    private TextView voteDesc;
+
+    private TextView voteOneRslt, voteOneRsltName;
+    private TextView voteTwoRslt, voteTwoRsltName;
+    private TextView totVotesrslt;
+    private Button voteOneBtn, voteTwoBtn;
+
+    int countTot;
+    int countO;
+    int countT;*/
+
+    private ProgressBar voteOnePrg, voteTwoPrg;
+
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -52,7 +74,7 @@ public class clubVotingTab extends Fragment {
         rvVotes_LayoutManager = new LinearLayoutManager(clubVotingTab.this.getContext());
         rvVotes.setLayoutManager ( rvVotes_LayoutManager );
 
-        rvVotes_adapter = new VotesAdapter(getContext(), AllVotes);
+        rvVotes_adapter = new VotesAdapter (getContext(), AllVotes);
 
         rvVotes.setAdapter(rvVotes_adapter);
 
@@ -80,7 +102,16 @@ public class clubVotingTab extends Fragment {
                                 String option_two = document.get("option_two").toString();
                                 String vote_desc = document.get("vote_desc").toString();
                                 String vote_title = document.get("vote_title").toString();
+                                String counter_op1 = document.get("counter_op1").toString();
+                                String counter_op2 = document.get("counter_op2").toString();
+                                String counter_tot = document.get("counter_tot").toString();
+                                String vote_id = document.get("vote_id").toString();
 
+
+                                vote.setVote_id(vote_id);
+                                vote.setCounter_tot(counter_tot);
+                                vote.setCounter_op1(counter_op1);
+                                vote.setCounter_op2(counter_op2);
                                 vote.setOption1(option_one);
                                 vote.setOption2(option_two);
                                 vote.setVote_desc(vote_desc);
@@ -97,4 +128,38 @@ public class clubVotingTab extends Fragment {
                 });
         return AllVotes;
     }
+
+
+    private void updateOpt1(){
+
+/*        String vote1Count;
+
+
+        countO = Integer.parseInt(vote1Count); //converting string into int
+        countO++;
+        countTot++;
+
+        if(countO == 1){
+            hideButtons();
+        }
+        // voteOnePrg.setMax(100);
+        updateVotesText();*/
+
+    }
+
+    private void updateVotesText() {
+/*        voteOneRslt.setText(String.valueOf(countO));
+        voteTwoRslt.setText(String.valueOf(countT));
+        totVotesrslt.setText(String.valueOf(countTot));
+        voteOnePrg.setProgress(countO);
+        voteTwoPrg.setProgress(countT);*/
+    }
+
+    private void hideButtons(){
+/*        voteOneBtn .setVisibility(View.GONE);
+        voteTwoBtn .setVisibility(View.GONE);*/
+
+    }
+
+
 }
