@@ -128,7 +128,7 @@ public class ClubsFragment extends Fragment implements View.OnClickListener{
     }
     private void getMyClubs(){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String userID = user.getUid();
+        final String userID = user.getUid();
 
          dbSetUp.db.collection("club_members")
                     .whereEqualTo("member_id", user.getUid()).get()
@@ -177,9 +177,11 @@ public class ClubsFragment extends Fragment implements View.OnClickListener{
                                                             club.setClub_name(club_name);
                                                             club.setClub_description(club_description);
                                                             club.setClub_image(club_image);
-
+                                                            if(userID.equalsIgnoreCase(club_owner));
+                                                            else{
                                                             myClubs.add(club);
                                                             rvClubs_adapter.notifyDataSetChanged();
+                                                            }
                                                         }
 
                                                     }
