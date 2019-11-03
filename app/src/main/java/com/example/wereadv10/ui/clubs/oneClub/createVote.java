@@ -28,7 +28,7 @@ public class createVote extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_vote);
-        setTitle("Create Vote");
+        setTitle("Add Vote");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         VoteNameEt = findViewById(R.id.VoteNameEt);
