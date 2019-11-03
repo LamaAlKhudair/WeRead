@@ -115,7 +115,7 @@
     </EditText>
 
     <Button
-        android:id="@+id/create_event_button"
+        android:id="@+id/edit_event_button"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:layout_gravity="end"
@@ -123,7 +123,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginEnd="170dp"
         android:background="@drawable/loging_rounded_button"
-        android:text="Create"
+        android:text="Edit"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:textSize="16sp"

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_content"
@@ -31,8 +30,7 @@
 
             <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/club_image"
@@ -44,98 +42,104 @@
                     android:scaleType="centerCrop"
                     app:layout_collapseMode="parallax" />
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp">
-
-
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="10dp">
+                    android:padding="5dp">
 
-                    <TextView
-                        android:id="@+id/club_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Club Name"
-                        android:textColor="@android:color/white"
-                        android:textSize="30sp"
-                        android:textStyle="bold" />
+                    <ImageView
+                        android:id="@+id/club_settingImg"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+                        android:src="@drawable/ic_settings_black_24dp" />
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        android:layout_gravity="center"
-                        android:gravity="center_horizontal"
-                        android:textAlignment="center">
-
-                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/club_owner"
-                        android:textColor="@android:color/white"
-                        android:textSize="15sp" />
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="10dp">
 
-                    <TextView
-                        android:id="@+id/club_owner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:textSize="15sp" />
+                        <TextView
+                            android:id="@+id/club_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Club Name"
+                            android:textColor="@android:color/white"
+                            android:textSize="30sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:gravity="center_horizontal"
+                            android:orientation="horizontal"
+                            android:textAlignment="center">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/club_owner"
+                                android:textColor="@android:color/white"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:id="@+id/club_owner"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@android:color/white"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/club_description"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/club_desc"
+                            android:textColor="@android:color/white"
+                            android:textSize="15sp" />
 
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/club_description"
+                    <ImageView
+                        android:id="@+id/shareIcon"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="5dp"
+                        android:clickable="true"
+                        android:onClick="onClick"
+                        app:srcCompat="@drawable/share_invite" />
+
+
+                    <Button
+                        android:id="@+id/join_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/club_desc"
-                        android:textColor="@android:color/white"
-                        android:textSize="15sp" />
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="160dp"
+                        android:layout_marginRight="5dp"
+                        android:elevation="5dp"
+                        android:padding="10dp"
+                        android:text="Join club"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="15dp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@color/colorPrimary" />
 
-                </LinearLayout>
-
-                <ImageView
-                    android:id="@+id/shareIcon"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginTop="5dp"
-                    android:clickable="true"
-                    android:onClick="onClick"
-                    app:srcCompat="@drawable/share_invite" />
-
-
-                <Button
-                    android:id="@+id/join_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="160dp"
-                    android:layout_marginRight="5dp"
-                    android:elevation="5dp"
-                    android:padding="10dp"
-                    android:text="Join club"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="15dp"
-                    android:textStyle="bold"
-                    app:backgroundTint="@color/colorPrimary" />
+                </RelativeLayout>
 
             </RelativeLayout>
-
-            </RelativeLayout>
-
-
 
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -143,9 +147,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
-    <include
-        layout="@layout/content_main"
-       />
+    <include layout="@layout/content_main" />
 
     <include
         layout="@layout/add_event_vote_buttons"

@@ -51,18 +51,24 @@ public class clubEventTab extends Fragment {
         rvEvents_LayoutManager = new LinearLayoutManager(clubEventTab.this.getContext());
         rvEvents.setLayoutManager ( rvEvents_LayoutManager );
         rvEvents_adapter = new EventsAdapter(getContext(), AllEvents);
-
         rvEvents.setAdapter(rvEvents_adapter);
-
         dbSetUp = new dbSetUp();
 
-        getAllEvent();
+
 
         return root;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        AllEvents.clear();
+        getAllEvent();
+    }
+
     private List<Event> getAllEvent() {
 
+        System.out.println("In all events "+ AllEvents.isEmpty());
         final CollectionReference eventRef = dbSetUp.db.collection("events");
         eventRef.whereEqualTo("club_id", clubID).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
