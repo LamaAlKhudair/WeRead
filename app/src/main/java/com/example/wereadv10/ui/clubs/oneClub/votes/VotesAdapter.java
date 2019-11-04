@@ -14,10 +14,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wereadv10.R;
 import com.example.wereadv10.dbSetUp;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class VotesAdapter extends RecyclerView.Adapter<VotesAdapter.ViewHolder> {
@@ -37,8 +43,9 @@ public class VotesAdapter extends RecyclerView.Adapter<VotesAdapter.ViewHolder> 
         private TextView voteTwoRsltName;
         private TextView totVotesrslt;
 
-        private ProgressBar voteOnePrg, voteTwoPrg;
+        private com.example.wereadv10.dbSetUp dbSetUp = new dbSetUp();
 
+        private ProgressBar voteOnePrg, voteTwoPrg;
 
 
         public ViewHolder(View itemView) {
@@ -63,6 +70,7 @@ public class VotesAdapter extends RecyclerView.Adapter<VotesAdapter.ViewHolder> 
 
         }
 
+
     }
 
 
@@ -79,32 +87,29 @@ public class VotesAdapter extends RecyclerView.Adapter<VotesAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull com.example.wereadv10.ui.clubs.oneClub.votes.VotesAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull VotesAdapter.ViewHolder holder, final int position) {
         Vote vote = VotesList.get(position);
 
-        holder.voteTitle.setText(vote.getVote_title());
-        holder.voteDesc.setText(vote.getVote_desc());
-        holder.voteOneBtn.setText(vote.getOption1());
-        holder.voteTwoBtn.setText(vote.getOption2());
-        holder.totVotesrslt.setText(vote.getCounter_tot());
-        holder.voteOneRsltName.setText(vote.getOption1());
-        holder.voteTwoRsltName.setText(vote.getOption2());
-        holder.voteOneRslt.setText(vote.getCounter_op1());
-        holder.voteTwoRslt.setText(vote.getCounter_op2());
+        holder.voteTitle.setText( vote.getVote_title() );
+        holder.voteDesc.setText( vote.getVote_desc() );
+        holder.voteOneBtn.setText( vote.getOption1() );
+        holder.voteTwoBtn.setText( vote.getOption2() );
+        holder.totVotesrslt.setText( vote.getCounter_tot() );
+        holder.voteOneRsltName.setText( vote.getOption1() );
+        holder.voteTwoRsltName.setText( vote.getOption2() );
+        holder.voteOneRslt.setText( vote.getCounter_op1() );
+        holder.voteTwoRslt.setText( vote.getCounter_op2() );
         holder.voteOnePrg.setMax( Integer.parseInt(vote.getCounter_tot()) );
         holder.voteTwoPrg.setMax( Integer.parseInt(vote.getCounter_tot()) );
         holder.voteOnePrg.setProgress( Integer.parseInt(vote.getCounter_op1()) );
         holder.voteTwoPrg.setProgress( Integer.parseInt(vote.getCounter_op2()) );
+
 
     }
 
     @Override
     public int getItemCount() {
         return VotesList.size();
-    }
-
-    public void clear(){
-        VotesList.clear();
     }
 
 }

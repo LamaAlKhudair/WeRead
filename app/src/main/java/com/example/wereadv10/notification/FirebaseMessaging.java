@@ -38,9 +38,9 @@ public class FirebaseMessaging extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
         //get user id form SharedPreferences
         SharedPreferences sp = getSharedPreferences(Constant.Keys.USER_DETAILS, Context.MODE_PRIVATE);
-String savedCurrentUser = sp.getString("CURRENT_USERID","None");
-String sent = remoteMessage.getData().get("sent");
-String user = remoteMessage.getData().get("user");
+        String savedCurrentUser = sp.getString("CURRENT_USERID","None");
+        String sent = remoteMessage.getData().get("sent");
+        String user = remoteMessage.getData().get("user");
         FirebaseUser  fUser = FirebaseAuth.getInstance().getCurrentUser();
         if (fUser !=null && sent.equals(fUser.getUid())){
             Log.d("notification","onResponse: ");
@@ -77,12 +77,14 @@ String user = remoteMessage.getData().get("user");
                 .setSound(defSoundUri)
                 .setContentIntent(pIntent);
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-        int j=0;
-        if (i>0){
-            j=0;
+        int j = 0;
+        if (i > 0){
+            j = 0;
         }
         notificationManager.notify(j,builder.build());
     }
+
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void sendOAndAboveNotification(RemoteMessage remoteMessage) {
         String user = remoteMessage.getData().get("user");
@@ -98,7 +100,7 @@ String user = remoteMessage.getData().get("user");
 
         Uri defSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-OreoAndAboveNotification notification1 =new OreoAndAboveNotification(this);
+        OreoAndAboveNotification notification1 =new OreoAndAboveNotification(this);
         Notification.Builder builder = notification1.getONotifications(title,body,pIntent,defSoundUri,icon);
 
         int j=0;
@@ -130,7 +132,7 @@ OreoAndAboveNotification notification1 =new OreoAndAboveNotification(this);
         Token mToken = new Token(s);
         final Map<String, Object> tokenh = new HashMap<>();
         tokenh.put("token",mToken.getToken());
-// Set the "isCapital" field of the city 'DC'
+        // Set the "isCapital" field of the city 'DC'
         userTokenDR
                 .update(tokenh)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
