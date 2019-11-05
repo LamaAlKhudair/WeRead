@@ -7,7 +7,7 @@ import com.google.firebase.storage.StorageReference;
 
 public class dbSetUp {
     public FirebaseAuth mAuth;
-    public FirebaseFirestore db ;
+    public static FirebaseFirestore db ;
     public FirebaseStorage storage ;
     public StorageReference storageRef ;
 

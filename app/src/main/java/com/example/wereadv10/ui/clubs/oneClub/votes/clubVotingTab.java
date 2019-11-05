@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class clubVotingTab extends Fragment {
+public class clubVotingTab extends Fragment{// implements VotesAdapter.OnButtonListener
     private static final String TAG = "Vote fragment";
 
     private RecyclerView rvVotes;
@@ -48,11 +48,11 @@ public class clubVotingTab extends Fragment {
     private com.example.wereadv10.dbSetUp dbSetUp;
     private String clubID ;
 
-    private Button voteOneBtn, voteTwoBtn;
+/*    private Button voteOneBtn, voteTwoBtn;
     private TextView voteOneRslt;
     private TextView voteTwoRslt;
     private ProgressBar voteOnePrg, voteTwoPrg;
-    private TextView totVotesrslt;
+    private TextView totVotesrslt;*/
 
 
 
@@ -67,7 +67,7 @@ public class clubVotingTab extends Fragment {
         rvVotes_LayoutManager = new LinearLayoutManager(clubVotingTab.this.getContext());
         rvVotes.setLayoutManager ( rvVotes_LayoutManager );
 
-        rvVotes_adapter = new VotesAdapter (getContext(), AllVotes);
+        rvVotes_adapter = new VotesAdapter (getContext(), AllVotes);//,this
 
         rvVotes.setAdapter(rvVotes_adapter);
 
@@ -75,13 +75,13 @@ public class clubVotingTab extends Fragment {
         dbSetUp = new dbSetUp();
 
 
-        voteOneBtn = root.findViewById(R.id.option_one_button);
+/*        voteOneBtn = root.findViewById(R.id.option_one_button);
         voteTwoBtn = root.findViewById(R.id.option_two_button);
         totVotesrslt = root.findViewById(R.id.tv_total_num);
         voteOneRslt = root.findViewById(R.id.tv_op1_count);
         voteTwoRslt = root.findViewById(R.id.tv_op2_count);
         voteOnePrg = root.findViewById(R.id.op1_PB);
-        voteTwoPrg = root.findViewById(R.id.op2_PB);
+        voteTwoPrg = root.findViewById(R.id.op2_PB);*/
 
 
         getAllVotes();
@@ -134,7 +134,7 @@ public class clubVotingTab extends Fragment {
     }
 
 
-    private void updateOpt1(){
+/*    private void updateOpt1(String voteId){
 
         String counter_op1, counter_tot;
         counter_op1 = voteOneRslt.getText().toString();
@@ -165,7 +165,7 @@ public class clubVotingTab extends Fragment {
 
         //in the next line I want to use the vote_id to edit the document
         //dbSetUp.db.collection("votes").whereEqualTo("vote_id", vote_id)
-        dbSetUp.db.collection("votes").whereEqualTo("vote_id", "**HERE**")
+        dbSetUp.db.collection("votes").whereEqualTo("vote_id", voteId)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -187,9 +187,9 @@ public class clubVotingTab extends Fragment {
 
         hideButtons();
 
-    }
+    }*/
 
-    private void updateOpt2(){
+/*    private void updateOpt2(){
 
         String counter_op2, counter_tot;
         counter_op2 = voteTwoRslt.getText().toString();
@@ -242,14 +242,20 @@ public class clubVotingTab extends Fragment {
 
         hideButtons();
 
-    }
+    }*/
 
 
-    private void hideButtons(){
+/*    private void hideButtons(){
         voteOneBtn.setVisibility(View.GONE);
         voteTwoBtn.setVisibility(View.GONE);
 
-    }
+    }*/
 
 
+/*    @Override
+    public void onButtonOneClick(String voteId,int position) {
+       updateOpt1(voteId);
+        Toast.makeText(getContext(), "vote Id is" + voteId + "!", Toast.LENGTH_SHORT).show();
+
+    }*/
 }

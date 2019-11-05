@@ -30,8 +30,9 @@ public class VotesAdapter extends RecyclerView.Adapter<VotesAdapter.ViewHolder> 
 
     private List<Vote> VotesList;
     private Context context;
+   // private OnButtonListener mOnButtonListener;
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder  {
 
         private TextView voteTitle;
         private TextView voteDesc;
@@ -42,13 +43,13 @@ public class VotesAdapter extends RecyclerView.Adapter<VotesAdapter.ViewHolder> 
         private TextView voteTwoRslt;
         private TextView voteTwoRsltName;
         private TextView totVotesrslt;
-
         private com.example.wereadv10.dbSetUp dbSetUp = new dbSetUp();
+     //    OnButtonListener onButtonListener;
 
         private ProgressBar voteOnePrg, voteTwoPrg;
 
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView) {//, final OnButtonListener onButtonListener
 
             super(itemView);
 
@@ -67,23 +68,154 @@ public class VotesAdapter extends RecyclerView.Adapter<VotesAdapter.ViewHolder> 
 
             voteOnePrg = itemView.findViewById(R.id.op1_PB);
             voteTwoPrg = itemView.findViewById(R.id.op2_PB);
+voteOneBtn.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+        updateOpt1(VotesList.get(getAdapterPosition()).getVote_id());
+    }
+});
+voteTwoBtn.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+        updateOpt2(VotesList.get(getAdapterPosition()).getVote_id());
+    }
+});
+/*            this.onButtonListener = onButtonListener;
+            voteOneBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onButtonListener.onButtonOneClick(VotesList.get(getAdapterPosition()).getVote_id(),getAdapterPosition());
+                }
+            });*/
+
 
         }
+        private void updateOpt1(String voteId){
 
+            String counter_op1, counter_tot;
+            counter_op1 = voteOneRslt.getText().toString();
+            counter_tot = totVotesrslt.getText().toString();
+
+
+            int op1, op2, tot;
+            op1 = Integer.parseInt(counter_op1);
+            tot = Integer.parseInt(counter_tot);
+
+
+            op1++;
+            counter_op1 = String.valueOf(op1);
+            voteOneRslt.setText(counter_op1);
+
+            tot++;
+            counter_tot = String.valueOf(tot);
+            totVotesrslt.setText(counter_tot);
+
+            voteOnePrg.setProgress(op1);
+            voteOnePrg.setMax(tot);
+            voteTwoPrg.setMax(tot);
+
+
+            final Map<String, Object> vote = new HashMap<>();
+            vote.put("counter_op1", counter_op1);
+            vote.put("counter_tot", counter_tot);
+
+            //in the next line I want to use the vote_id to edit the document
+            //dbSetUp.db.collection("votes").whereEqualTo("vote_id", vote_id)
+            dbSetUp.db.collection("votes").whereEqualTo("vote_id", voteId)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (DocumentSnapshot document : task.getResult()) {
+                                    String id = document.getId();
+
+                                    dbSetUp.db
+                                            .collection("votes")
+                                            .document(id).update(vote);
+                                }
+
+                            } else {
+                                System.out.println( "Error getting documents: ");
+                            }
+                        }
+                    });
+
+            hideButtons();
+        }
+        private void updateOpt2(String voteId){
+
+            String counter_op2, counter_tot;
+            counter_op2 = voteTwoRslt.getText().toString();
+            counter_tot = totVotesrslt.getText().toString();
+
+
+            int op2, tot;
+            op2 = Integer.parseInt(counter_op2);
+            tot = Integer.parseInt(counter_tot);
+
+
+            op2++;
+            counter_op2 = String.valueOf(op2);
+            voteTwoRslt.setText(counter_op2);
+
+            tot++;
+            counter_tot = String.valueOf(tot);
+            totVotesrslt.setText(counter_tot);
+
+            voteTwoPrg.setProgress(op2);
+            voteOnePrg.setMax(tot);
+            voteTwoPrg.setMax(tot);
+
+
+            final Map<String, Object> vote = new HashMap<>();
+            vote.put("counter_op2", counter_op2);
+            vote.put("counter_tot", counter_tot);
+
+            //in the next line I want to use the vote_id to edit the document
+            //dbSetUp.db.collection("votes").whereEqualTo("vote_id", vote_id)
+            dbSetUp.db.collection("votes").whereEqualTo("vote_id", voteId)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (DocumentSnapshot document : task.getResult()) {
+                                    String id = document.getId();
+
+                                    dbSetUp.db
+                                            .collection("votes")
+                                            .document(id).update(vote);
+                                }
+
+                            } else {
+                                System.out.println( "Error getting documents: ");
+                            }
+                        }
+                    });
+
+            hideButtons();
+
+        }
+        private void hideButtons() {
+            voteOneBtn.setVisibility(View.GONE);
+            voteTwoBtn.setVisibility(View.GONE);
+        }
 
     }
 
 
-    public VotesAdapter(Context context, List<Vote> listData) {
+    public VotesAdapter(Context context, List<Vote> listData ) {//,OnButtonListener onButtonListener
         this.context = context;
         this.VotesList = listData;
+        //this.mOnButtonListener = onButtonListener;
     }
 
     @NonNull
     @Override
     public VotesAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.voting_card,parent,false);
-        return new VotesAdapter.ViewHolder(view);
+        return new VotesAdapter.ViewHolder(view);//,mOnButtonListener
     }
 
     @Override
@@ -111,5 +243,8 @@ public class VotesAdapter extends RecyclerView.Adapter<VotesAdapter.ViewHolder> 
     public int getItemCount() {
         return VotesList.size();
     }
+/*    public interface OnButtonListener {
+        void onButtonOneClick(String voteId,int position);
+    }//end interface*/
 
 }
