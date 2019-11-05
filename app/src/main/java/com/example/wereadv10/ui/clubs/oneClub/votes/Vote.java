@@ -11,9 +11,11 @@ public class Vote {
     private String vote_id;
     private String counter_tot;
 
+    private String club_id;
+
     public Vote(){}
 
-    public Vote(String option1, String option2, String vote_desc, String vote_title, String counter_op1 , String counter_op2, String counter_tot) {
+    public Vote(String option1, String club_id, String option2, String vote_desc, String vote_title, String counter_op1 , String counter_op2, String counter_tot) {
         this.option1 = option1;
         this.option2 = option2;
         this.vote_desc = vote_desc;
@@ -21,8 +23,17 @@ public class Vote {
         this.counter_op1 = counter_op1;
         this.counter_op2 = counter_op2;
         this.counter_tot = counter_tot;
+        this.club_id = club_id;
     }
 
+
+    public String getClub_id() {
+        return club_id;
+    }
+
+    public void setClub_id(String club_id) {
+        this.club_id = club_id;
+    }
 
     public String getCounter_op1() {
         return counter_op1;

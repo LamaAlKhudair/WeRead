@@ -2,12 +2,14 @@ package com.example.wereadv10.ui.clubs.oneClub.votes;
 
 import android.content.Context;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,8 +17,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.wereadv10.R;
 import com.example.wereadv10.dbSetUp;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 
@@ -24,6 +33,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
+import static android.content.ContentValues.TAG;
 
 
 public class VotesAdapter extends RecyclerView.Adapter<VotesAdapter.ViewHolder> {
@@ -44,12 +56,11 @@ public class VotesAdapter extends RecyclerView.Adapter<VotesAdapter.ViewHolder> 
         private TextView voteTwoRsltName;
         private TextView totVotesrslt;
         private com.example.wereadv10.dbSetUp dbSetUp = new dbSetUp();
-     //    OnButtonListener onButtonListener;
 
         private ProgressBar voteOnePrg, voteTwoPrg;
 
 
-        public ViewHolder(View itemView) {//, final OnButtonListener onButtonListener
+        public ViewHolder(View itemView) {
 
             super(itemView);
 
@@ -68,18 +79,21 @@ public class VotesAdapter extends RecyclerView.Adapter<VotesAdapter.ViewHolder> 
 
             voteOnePrg = itemView.findViewById(R.id.op1_PB);
             voteTwoPrg = itemView.findViewById(R.id.op2_PB);
-voteOneBtn.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-        updateOpt1(VotesList.get(getAdapterPosition()).getVote_id());
-    }
-});
-voteTwoBtn.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-        updateOpt2(VotesList.get(getAdapterPosition()).getVote_id());
-    }
-});
+            voteOneBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    updateOpt1(VotesList.get(getAdapterPosition()).getVote_id());
+                }
+            });
+            voteTwoBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    updateOpt2(VotesList.get(getAdapterPosition()).getVote_id());
+                }
+            });
+
+//            hideButtonsWhenVoted(VotesList.get(getAdapterPosition()).getVote_id());
+
 /*            this.onButtonListener = onButtonListener;
             voteOneBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -88,19 +102,28 @@ voteTwoBtn.setOnClickListener(new View.OnClickListener() {
                 }
             });*/
 
-
         }
-        private void updateOpt1(String voteId){
+
+
+        private String getUserID() {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+            String userID="";
+            if (user != null) {
+                userID = user.getUid();
+            }
+            return userID;
+        }
+
+        private void updateOpt1(final String voteId){
 
             String counter_op1, counter_tot;
             counter_op1 = voteOneRslt.getText().toString();
             counter_tot = totVotesrslt.getText().toString();
 
-
-            int op1, op2, tot;
+            int op1, tot;
             op1 = Integer.parseInt(counter_op1);
             tot = Integer.parseInt(counter_tot);
-
 
             op1++;
             counter_op1 = String.valueOf(op1);
@@ -119,8 +142,6 @@ voteTwoBtn.setOnClickListener(new View.OnClickListener() {
             vote.put("counter_op1", counter_op1);
             vote.put("counter_tot", counter_tot);
 
-            //in the next line I want to use the vote_id to edit the document
-            //dbSetUp.db.collection("votes").whereEqualTo("vote_id", vote_id)
             dbSetUp.db.collection("votes").whereEqualTo("vote_id", voteId)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -140,9 +161,10 @@ voteTwoBtn.setOnClickListener(new View.OnClickListener() {
                             }
                         }
                     });
-
+            addVote(voteId);
             hideButtons();
         }
+
         private void updateOpt2(String voteId){
 
             String counter_op2, counter_tot;
@@ -172,8 +194,7 @@ voteTwoBtn.setOnClickListener(new View.OnClickListener() {
             vote.put("counter_op2", counter_op2);
             vote.put("counter_tot", counter_tot);
 
-            //in the next line I want to use the vote_id to edit the document
-            //dbSetUp.db.collection("votes").whereEqualTo("vote_id", vote_id)
+
             dbSetUp.db.collection("votes").whereEqualTo("vote_id", voteId)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -188,15 +209,45 @@ voteTwoBtn.setOnClickListener(new View.OnClickListener() {
                                             .document(id).update(vote);
                                 }
 
+
                             } else {
                                 System.out.println( "Error getting documents: ");
                             }
                         }
                     });
-
+            addVote(voteId);
             hideButtons();
 
         }
+
+        private void addVote(String voteId){
+
+            final Map<String, Object> addVote = new HashMap<>();
+            addVote.put("member_id", getUserID());
+            addVote.put("vote_id", voteId);
+
+            dbSetUp.db.collection("vote_participation")
+                    .document(getRandom())
+                    .set(addVote).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+
+                }
+            })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w("Error writing document", e);
+                        }
+                    });
+
+        }
+
+        private String getRandom() {
+
+            return UUID.randomUUID().toString();
+        }
+
         private void hideButtons() {
             voteOneBtn.setVisibility(View.GONE);
             voteTwoBtn.setVisibility(View.GONE);
@@ -219,7 +270,7 @@ voteTwoBtn.setOnClickListener(new View.OnClickListener() {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull VotesAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final VotesAdapter.ViewHolder holder, final int position) {
         Vote vote = VotesList.get(position);
 
         holder.voteTitle.setText( vote.getVote_title() );
@@ -236,15 +287,61 @@ voteTwoBtn.setOnClickListener(new View.OnClickListener() {
         holder.voteOnePrg.setProgress( Integer.parseInt(vote.getCounter_op1()) );
         holder.voteTwoPrg.setProgress( Integer.parseInt(vote.getCounter_op2()) );
 
+        // Hide option buttons when member already voted
+        CollectionReference VotePart = dbSetUp.db.collection("vote_participation");
+        VotePart.whereEqualTo("vote_id", VotesList.get(position).getVote_id()).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                String member_id = document.get("member_id").toString();
+                                if (member_id.equalsIgnoreCase(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                                    holder.voteOneBtn.setVisibility(View.GONE);
+                                    holder.voteTwoBtn.setVisibility(View.GONE);
+                                }
+                            }
+
+                        } else Log.w(TAG, "Error getting documents.", task.getException());
+
+                    }
+                });
+
+
+        holder.voteOneBtn.setVisibility(View.GONE);
+        holder.voteTwoBtn.setVisibility(View.GONE);
+
+        // Hide option buttons when not member in the club
+        CollectionReference clubMember = dbSetUp.db.collection("club_members");
+        clubMember.whereEqualTo("club_id", vote.getClub_id()).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String userNow = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                String member_id = document.get("member_id").toString();
+                                if (member_id.equalsIgnoreCase(userNow)) {
+                                    holder.voteOneBtn.setVisibility(View.VISIBLE);
+                                    holder.voteTwoBtn.setVisibility(View.VISIBLE);
+                                }
+                            }
+
+                        } else Log.w(TAG, "Error getting documents.", task.getException());
+
+                    }
+                });
 
     }
+
 
     @Override
     public int getItemCount() {
         return VotesList.size();
     }
-/*    public interface OnButtonListener {
-        void onButtonOneClick(String voteId,int position);
-    }//end interface*/
+
 
 }

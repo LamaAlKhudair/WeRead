@@ -24,6 +24,7 @@ import com.example.wereadv10.R;
 import com.example.wereadv10.dbSetUp;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -34,6 +35,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static android.content.ContentValues.TAG;
 
 
 public class clubVotingTab extends Fragment{// implements VotesAdapter.OnButtonListener
@@ -48,7 +51,9 @@ public class clubVotingTab extends Fragment{// implements VotesAdapter.OnButtonL
     private com.example.wereadv10.dbSetUp dbSetUp;
     private String clubID ;
 
-/*    private Button voteOneBtn, voteTwoBtn;
+    private Button voteOneBtn, voteTwoBtn;
+
+/*
     private TextView voteOneRslt;
     private TextView voteTwoRslt;
     private ProgressBar voteOnePrg, voteTwoPrg;
@@ -67,28 +72,35 @@ public class clubVotingTab extends Fragment{// implements VotesAdapter.OnButtonL
         rvVotes_LayoutManager = new LinearLayoutManager(clubVotingTab.this.getContext());
         rvVotes.setLayoutManager ( rvVotes_LayoutManager );
 
-        rvVotes_adapter = new VotesAdapter (getContext(), AllVotes);//,this
+        rvVotes_adapter = new VotesAdapter (getContext(), AllVotes);
 
         rvVotes.setAdapter(rvVotes_adapter);
 
 
         dbSetUp = new dbSetUp();
 
-
-/*        voteOneBtn = root.findViewById(R.id.option_one_button);
+        voteOneBtn = root.findViewById(R.id.option_one_button);
         voteTwoBtn = root.findViewById(R.id.option_two_button);
+
+/*
         totVotesrslt = root.findViewById(R.id.tv_total_num);
         voteOneRslt = root.findViewById(R.id.tv_op1_count);
         voteTwoRslt = root.findViewById(R.id.tv_op2_count);
         voteOnePrg = root.findViewById(R.id.op1_PB);
         voteTwoPrg = root.findViewById(R.id.op2_PB);*/
 
-
         getAllVotes();
 
         return root;
     }
 
+
+/*    @Override
+    public void onResume() {
+        super.onResume();
+        AllVotes.clear();
+        getAllVotes();
+    }*/
 
     private List<Vote> getAllVotes() {
 
@@ -110,8 +122,10 @@ public class clubVotingTab extends Fragment{// implements VotesAdapter.OnButtonL
                                 String counter_op2 = document.get("counter_op2").toString();
                                 String counter_tot = document.get("counter_tot").toString();
                                 String vote_id = document.get("vote_id").toString();
+                                String club_id = document.get("club_id").toString();
 
 
+                                vote.setClub_id(club_id);
                                 vote.setVote_id(vote_id);
                                 vote.setCounter_tot(counter_tot);
                                 vote.setCounter_op1(counter_op1);
@@ -134,128 +148,4 @@ public class clubVotingTab extends Fragment{// implements VotesAdapter.OnButtonL
     }
 
 
-/*    private void updateOpt1(String voteId){
-
-        String counter_op1, counter_tot;
-        counter_op1 = voteOneRslt.getText().toString();
-        counter_tot = totVotesrslt.getText().toString();
-
-
-        int op1, op2, tot;
-        op1 = Integer.parseInt(counter_op1);
-        tot = Integer.parseInt(counter_tot);
-
-
-        op1++;
-        counter_op1 = String.valueOf(op1);
-        voteOneRslt.setText(counter_op1);
-
-        tot++;
-        counter_tot = String.valueOf(tot);
-        totVotesrslt.setText(counter_tot);
-
-        voteOnePrg.setProgress(op1);
-        voteOnePrg.setMax(tot);
-        voteTwoPrg.setMax(tot);
-
-
-        final Map<String, Object> vote = new HashMap<>();
-        vote.put("counter_op1", counter_op1);
-        vote.put("counter_tot", counter_tot);
-
-        //in the next line I want to use the vote_id to edit the document
-        //dbSetUp.db.collection("votes").whereEqualTo("vote_id", vote_id)
-        dbSetUp.db.collection("votes").whereEqualTo("vote_id", voteId)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (DocumentSnapshot document : task.getResult()) {
-                                String id = document.getId();
-
-                                dbSetUp.db
-                                        .collection("votes")
-                                        .document(id).update(vote);
-                            }
-
-                        } else {
-                            System.out.println( "Error getting documents: ");
-                        }
-                    }
-                });
-
-        hideButtons();
-
-    }*/
-
-/*    private void updateOpt2(){
-
-        String counter_op2, counter_tot;
-        counter_op2 = voteTwoRslt.getText().toString();
-        counter_tot = totVotesrslt.getText().toString();
-
-
-        int op2, tot;
-        op2 = Integer.parseInt(counter_op2);
-        tot = Integer.parseInt(counter_tot);
-
-
-        op2++;
-        counter_op2 = String.valueOf(op2);
-        voteOneRslt.setText(counter_op2);
-
-        tot++;
-        counter_tot = String.valueOf(tot);
-        totVotesrslt.setText(counter_tot);
-
-        voteTwoPrg.setProgress(op2);
-        voteOnePrg.setMax(tot);
-        voteTwoPrg.setMax(tot);
-
-
-        final Map<String, Object> vote = new HashMap<>();
-        vote.put("counter_op2", counter_op2);
-        vote.put("counter_tot", counter_tot);
-
-        //in the next line I want to use the vote_id to edit the document
-        //dbSetUp.db.collection("votes").whereEqualTo("vote_id", vote_id)
-        dbSetUp.db.collection("votes").whereEqualTo("vote_id", "**HERE**")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (DocumentSnapshot document : task.getResult()) {
-                                String id = document.getId();
-
-                                dbSetUp.db
-                                        .collection("votes")
-                                        .document(id).update(vote);
-                            }
-
-                        } else {
-                            System.out.println( "Error getting documents: ");
-                        }
-                    }
-                });
-
-        hideButtons();
-
-    }*/
-
-
-/*    private void hideButtons(){
-        voteOneBtn.setVisibility(View.GONE);
-        voteTwoBtn.setVisibility(View.GONE);
-
-    }*/
-
-
-/*    @Override
-    public void onButtonOneClick(String voteId,int position) {
-       updateOpt1(voteId);
-        Toast.makeText(getContext(), "vote Id is" + voteId + "!", Toast.LENGTH_SHORT).show();
-
-    }*/
 }

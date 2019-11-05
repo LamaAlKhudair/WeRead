@@ -170,7 +170,6 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
             settingImg.setVisibility(View.GONE);
         }
 
-
     }
 
 
@@ -211,8 +210,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
                 break;
             case R.id.club_settingImg:
                 Intent intentEdit = new Intent(this, EditClubInfoActivity.class);
-//clubNameString, clubDesc,clubImg
-
+                //clubNameString, clubDesc,clubImg
                 intentEdit.putExtra("CLUB_ID", getIntent().getExtras().getString("CLUB_ID"));
                 intentEdit.putExtra("NAME", clubNameString);
                 intentEdit.putExtra("OWNER", getIntent().getExtras().getString("OWNER"));
