@@ -92,8 +92,6 @@ public class VotesAdapter extends RecyclerView.Adapter<VotesAdapter.ViewHolder> 
                 }
             });
 
-//            hideButtonsWhenVoted(VotesList.get(getAdapterPosition()).getVote_id());
-
 /*            this.onButtonListener = onButtonListener;
             voteOneBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -343,5 +341,8 @@ public class VotesAdapter extends RecyclerView.Adapter<VotesAdapter.ViewHolder> 
         return VotesList.size();
     }
 
+    public void clear(){
+        VotesList.clear();
+    }
 
 }

@@ -95,13 +95,6 @@ public class clubVotingTab extends Fragment{// implements VotesAdapter.OnButtonL
     }
 
 
-/*    @Override
-    public void onResume() {
-        super.onResume();
-        AllVotes.clear();
-        getAllVotes();
-    }*/
-
     private List<Vote> getAllVotes() {
 
         CollectionReference voteRef = dbSetUp.db.collection("votes");
