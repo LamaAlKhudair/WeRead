@@ -26,6 +26,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -44,6 +46,7 @@ public class categoryPage extends AppCompatActivity implements SearchView.OnQuer
     private RecyclerView recyclerView;
     private CategoryAdapter categoryAdapter;
     private static final String TAG = "categoryPage";
+    private String userEmail, userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +77,15 @@ public class categoryPage extends AppCompatActivity implements SearchView.OnQuer
             }
         }
     }
+    private void getUserEmail() {
+        //to display the name
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
+        if (user != null) {
+            userEmail = user.getEmail();
+            userID = user.getUid();
+        }
+    }
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -100,11 +111,18 @@ public class categoryPage extends AppCompatActivity implements SearchView.OnQuer
                                 String summary = document.get("summary").toString();
                                 String author = document.get("author").toString();
                                 String bookCover = document.get("book_cover").toString();
+                                String book_id = document.getString("bookID");
 
-                                book.setCover(bookCover);
+                                long rate = (long) document.get("book_rate");
+                                book.setRate(rate);
+
+                                book.setID(book_id);
+
                                 book.setBook_title(book_title);
                                 book.setSummary(summary);
                                 book.setAuthor(author);
+                                book.setCover(bookCover);
+
                                 DocumentReference doc = document.getDocumentReference("book_category");
                                 String path = doc.getPath();
                                 String col = path.substring(0, path.indexOf("/"));

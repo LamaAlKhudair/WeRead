@@ -208,7 +208,6 @@ public class ViewBooks extends AppCompatActivity implements SearchView.OnQueryTe
 
   }
 
-
   private void sortBooksBasedOnId(String id, int place){
 
     int pos =0;

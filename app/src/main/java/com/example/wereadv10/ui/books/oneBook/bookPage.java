@@ -501,8 +501,6 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
         return false;
     }
 
-    //complete_read_book
-    // EDIT complete
     private boolean addToComplate(){
         if (bookInCurrent){
             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(bookPage.this);
