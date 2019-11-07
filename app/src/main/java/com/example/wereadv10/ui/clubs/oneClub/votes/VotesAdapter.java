@@ -42,7 +42,6 @@ public class VotesAdapter extends RecyclerView.Adapter<VotesAdapter.ViewHolder> 
 
     private List<Vote> VotesList;
     private Context context;
-   // private OnButtonListener mOnButtonListener;
 
     public class ViewHolder extends RecyclerView.ViewHolder  {
 
@@ -58,6 +57,12 @@ public class VotesAdapter extends RecyclerView.Adapter<VotesAdapter.ViewHolder> 
         private com.example.wereadv10.dbSetUp dbSetUp = new dbSetUp();
 
         private ProgressBar voteOnePrg, voteTwoPrg;
+
+        private String counter_op1;
+        private String counter_op2;
+        private String counter_tot;
+
+        float op1, op2, tot;
 
 
         public ViewHolder(View itemView) {
@@ -79,12 +84,14 @@ public class VotesAdapter extends RecyclerView.Adapter<VotesAdapter.ViewHolder> 
 
             voteOnePrg = itemView.findViewById(R.id.op1_PB);
             voteTwoPrg = itemView.findViewById(R.id.op2_PB);
+
             voteOneBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     updateOpt1(VotesList.get(getAdapterPosition()).getVote_id());
                 }
             });
+
             voteTwoBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -92,13 +99,6 @@ public class VotesAdapter extends RecyclerView.Adapter<VotesAdapter.ViewHolder> 
                 }
             });
 
-/*            this.onButtonListener = onButtonListener;
-            voteOneBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onButtonListener.onButtonOneClick(VotesList.get(getAdapterPosition()).getVote_id(),getAdapterPosition());
-                }
-            });*/
 
         }
 
@@ -113,106 +113,155 @@ public class VotesAdapter extends RecyclerView.Adapter<VotesAdapter.ViewHolder> 
             return userID;
         }
 
-        private void updateOpt1(final String voteId){
+        private void updateOpt1(final String voteId ){
 
-            String counter_op1, counter_tot;
-            counter_op1 = voteOneRslt.getText().toString();
-            counter_tot = totVotesrslt.getText().toString();
-
-            int op1, tot;
-            op1 = Integer.parseInt(counter_op1);
-            tot = Integer.parseInt(counter_tot);
-
-            op1++;
-            counter_op1 = String.valueOf(op1);
-            voteOneRslt.setText(counter_op1);
-
-            tot++;
-            counter_tot = String.valueOf(tot);
-            totVotesrslt.setText(counter_tot);
-
-            voteOnePrg.setProgress(op1);
-            voteOnePrg.setMax(tot);
-            voteTwoPrg.setMax(tot);
-
-
-            final Map<String, Object> vote = new HashMap<>();
-            vote.put("counter_op1", counter_op1);
-            vote.put("counter_tot", counter_tot);
-
-            dbSetUp.db.collection("votes").whereEqualTo("vote_id", voteId)
-                    .get()
+            CollectionReference voteRef = dbSetUp.db.collection("votes");
+            voteRef.whereEqualTo("vote_id", voteId).get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
-                                for (DocumentSnapshot document : task.getResult()) {
-                                    String id = document.getId();
 
-                                    dbSetUp.db
-                                            .collection("votes")
-                                            .document(id).update(vote);
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    document.getData();
+
+                                    counter_op1 = document.get("counter_op1").toString();
+                                    counter_op2 = document.get("counter_op2").toString();
+                                    counter_tot = document.get("counter_tot").toString();
+
+                                    op1 = Float.parseFloat(counter_op1);
+                                    op2 = Float.parseFloat(counter_op2);
+                                    tot = Float.parseFloat(counter_tot);
+
+
+                                    tot++;
+                                    counter_tot = String.valueOf((int) tot);
+                                    totVotesrslt.setText(counter_tot);
+
+                                    //roundOffTo2DecPlaces();
+
+
+                                    op1++;
+                                    counter_op1 = String.valueOf(op1);
+                                    float op1_percentage = (op1/tot)*100.0f;
+                                    voteOneRslt.setText(String.valueOf(op1_percentage));
+
+                                    float op2_percentage = (op2/tot)*100.0f;
+                                    voteTwoRslt.setText(String.valueOf(op2_percentage));
+
+
+                                    voteOnePrg.setProgress(Math.round(op1));
+                                    voteOnePrg.setMax(Math.round(tot));
+                                    voteTwoPrg.setMax(Math.round(tot));
+
+
+                                    final Map<String, Object> vote = new HashMap<>();
+                                    vote.put("counter_op1", counter_op1);
+                                    vote.put("counter_tot", counter_tot);
+
+                                    dbSetUp.db.collection("votes").whereEqualTo("vote_id", voteId)
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        for (DocumentSnapshot document : task.getResult()) {
+                                                            String id = document.getId();
+
+                                                            dbSetUp.db
+                                                                    .collection("votes")
+                                                                    .document(id).update(vote);
+                                                        }
+
+                                                    } else {
+                                                        System.out.println( "Error getting documents: ");
+                                                    }
+                                                }
+                                            });
+
                                 }
 
-                            } else {
-                                System.out.println( "Error getting documents: ");
-                            }
+                            } else Log.w(TAG, "Error getting documents.", task.getException());
+
                         }
                     });
+
+
             addVote(voteId);
             hideButtons();
         }
 
-        private void updateOpt2(String voteId){
+        private void updateOpt2(final String voteId){
 
-            String counter_op2, counter_tot;
-            counter_op2 = voteTwoRslt.getText().toString();
-            counter_tot = totVotesrslt.getText().toString();
-
-
-            int op2, tot;
-            op2 = Integer.parseInt(counter_op2);
-            tot = Integer.parseInt(counter_tot);
-
-
-            op2++;
-            counter_op2 = String.valueOf(op2);
-            voteTwoRslt.setText(counter_op2);
-
-            tot++;
-            counter_tot = String.valueOf(tot);
-            totVotesrslt.setText(counter_tot);
-
-            voteTwoPrg.setProgress(op2);
-            voteOnePrg.setMax(tot);
-            voteTwoPrg.setMax(tot);
-
-
-            final Map<String, Object> vote = new HashMap<>();
-            vote.put("counter_op2", counter_op2);
-            vote.put("counter_tot", counter_tot);
-
-
-            dbSetUp.db.collection("votes").whereEqualTo("vote_id", voteId)
-                    .get()
+            CollectionReference voteRef = dbSetUp.db.collection("votes");
+            voteRef.whereEqualTo("vote_id", voteId).get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
-                                for (DocumentSnapshot document : task.getResult()) {
-                                    String id = document.getId();
 
-                                    dbSetUp.db
-                                            .collection("votes")
-                                            .document(id).update(vote);
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    document.getData();
+
+                                    counter_op1 = document.get("counter_op1").toString();
+                                    counter_op2 = document.get("counter_op2").toString();
+                                    counter_tot = document.get("counter_tot").toString();
+
+                                    op1 = Float.parseFloat(counter_op1);
+                                    op2 = Float.parseFloat(counter_op2);
+                                    tot = Float.parseFloat(counter_tot);
+
+
+                                    tot++;
+                                    counter_tot = String.valueOf((int) tot);
+                                    totVotesrslt.setText(counter_tot);
+
+                                    op2++;
+                                    counter_op2 = String.valueOf(op2);
+                                    float op2_percentage = (op2/tot)*100.0f;
+                                    voteTwoRslt.setText(roundOffTo2DecPlaces(op2_percentage));
+
+                                    float op1_percentage = (op1/tot)*100.0f;
+                                    voteOneRslt.setText(roundOffTo2DecPlaces(op1_percentage));
+
+                                    voteTwoPrg.setProgress(Math.round(op2));
+                                    voteOnePrg.setMax(Math.round(tot));
+                                    voteTwoPrg.setMax(Math.round(tot));
+
+                                    final Map<String, Object> vote = new HashMap<>();
+                                    vote.put("counter_op2", counter_op2);
+                                    vote.put("counter_tot", counter_tot);
+
+
+                                    dbSetUp.db.collection("votes").whereEqualTo("vote_id", voteId)
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        for (DocumentSnapshot document : task.getResult()) {
+                                                            String id = document.getId();
+
+                                                            dbSetUp.db
+                                                                    .collection("votes")
+                                                                    .document(id).update(vote);
+                                                        }
+
+                                                    } else {
+                                                        System.out.println( "Error getting documents: ");
+                                                    }
+                                                }
+                                            });
+
                                 }
 
-
-                            } else {
-                                System.out.println( "Error getting documents: ");
                             }
+                            else Log.w(TAG, "Error getting documents.", task.getException());
+
                         }
+
                     });
+
             addVote(voteId);
             hideButtons();
 
@@ -241,6 +290,11 @@ public class VotesAdapter extends RecyclerView.Adapter<VotesAdapter.ViewHolder> 
 
         }
 
+        private String roundOffTo2DecPlaces(float val)
+        {
+            return String.format("%.1f", val);
+        }
+
         private String getRandom() {
 
             return UUID.randomUUID().toString();
@@ -264,7 +318,7 @@ public class VotesAdapter extends RecyclerView.Adapter<VotesAdapter.ViewHolder> 
     @Override
     public VotesAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.voting_card,parent,false);
-        return new VotesAdapter.ViewHolder(view);//,mOnButtonListener
+        return new VotesAdapter.ViewHolder(view);
     }
 
     @Override
@@ -273,17 +327,32 @@ public class VotesAdapter extends RecyclerView.Adapter<VotesAdapter.ViewHolder> 
 
         holder.voteTitle.setText( vote.getVote_title() );
         holder.voteDesc.setText( vote.getVote_desc() );
+
         holder.voteOneBtn.setText( vote.getOption1() );
         holder.voteTwoBtn.setText( vote.getOption2() );
+
         holder.totVotesrslt.setText( vote.getCounter_tot() );
+
+        if(Float.parseFloat(vote.getCounter_tot()) != 0) {
+
+            float percentageOp1 = (Float.parseFloat(vote.getCounter_op1()) / Float.parseFloat(vote.getCounter_tot())) * 100.00f;
+            holder.voteOneRslt.setText( roundOffTo2DecPlaces(percentageOp1) );
+
+            float percentageOp2 = (Float.parseFloat(vote.getCounter_op2()) / Float.parseFloat(vote.getCounter_tot())) * 100.00f;
+            holder.voteTwoRslt.setText( roundOffTo2DecPlaces(percentageOp2) );
+
+        }else{
+            holder.voteOneRslt.setText("0");
+            holder.voteTwoRslt.setText("0");
+        }
+
         holder.voteOneRsltName.setText( vote.getOption1() );
         holder.voteTwoRsltName.setText( vote.getOption2() );
-        holder.voteOneRslt.setText( vote.getCounter_op1() );
-        holder.voteTwoRslt.setText( vote.getCounter_op2() );
-        holder.voteOnePrg.setMax( Integer.parseInt(vote.getCounter_tot()) );
-        holder.voteTwoPrg.setMax( Integer.parseInt(vote.getCounter_tot()) );
-        holder.voteOnePrg.setProgress( Integer.parseInt(vote.getCounter_op1()) );
-        holder.voteTwoPrg.setProgress( Integer.parseInt(vote.getCounter_op2()) );
+
+        holder.voteOnePrg.setMax( (int) Float.parseFloat(vote.getCounter_tot()) );
+        holder.voteTwoPrg.setMax( (int) Float.parseFloat(vote.getCounter_tot()) );
+        holder.voteOnePrg.setProgress( (int) Float.parseFloat(vote.getCounter_op1()) );
+        holder.voteTwoPrg.setProgress( (int) Float.parseFloat(vote.getCounter_op2()) );
 
         // Hide option buttons when member already voted
         CollectionReference VotePart = dbSetUp.db.collection("vote_participation");
@@ -333,6 +402,11 @@ public class VotesAdapter extends RecyclerView.Adapter<VotesAdapter.ViewHolder> 
                     }
                 });
 
+    }
+
+    private String roundOffTo2DecPlaces(float val)
+    {
+        return String.format("%.1f", val);
     }
 
 

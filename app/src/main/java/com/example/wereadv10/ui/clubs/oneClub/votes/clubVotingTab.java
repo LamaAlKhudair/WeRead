@@ -1,7 +1,5 @@
 package com.example.wereadv10.ui.clubs.oneClub.votes;
 
-
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,9 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,20 +19,12 @@ import com.example.wereadv10.R;
 import com.example.wereadv10.dbSetUp;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import static android.content.ContentValues.TAG;
-
 
 public class clubVotingTab extends Fragment{// implements VotesAdapter.OnButtonListener
     private static final String TAG = "Vote fragment";
@@ -52,13 +39,6 @@ public class clubVotingTab extends Fragment{// implements VotesAdapter.OnButtonL
     private String clubID ;
 
     private Button voteOneBtn, voteTwoBtn;
-
-/*
-    private TextView voteOneRslt;
-    private TextView voteTwoRslt;
-    private ProgressBar voteOnePrg, voteTwoPrg;
-    private TextView totVotesrslt;*/
-
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -76,18 +56,11 @@ public class clubVotingTab extends Fragment{// implements VotesAdapter.OnButtonL
 
         rvVotes.setAdapter(rvVotes_adapter);
 
-
         dbSetUp = new dbSetUp();
 
         voteOneBtn = root.findViewById(R.id.option_one_button);
         voteTwoBtn = root.findViewById(R.id.option_two_button);
 
-/*
-        totVotesrslt = root.findViewById(R.id.tv_total_num);
-        voteOneRslt = root.findViewById(R.id.tv_op1_count);
-        voteTwoRslt = root.findViewById(R.id.tv_op2_count);
-        voteOnePrg = root.findViewById(R.id.op1_PB);
-        voteTwoPrg = root.findViewById(R.id.op2_PB);*/
 
         getAllVotes();
 

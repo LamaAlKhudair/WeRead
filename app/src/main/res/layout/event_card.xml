@@ -28,7 +28,9 @@
                 android:layout_height="match_parent"
                 android:background="#F5F5F5"
                 android:orientation="vertical"
-                android:paddingBottom="5dp">
+                android:paddingBottom="5dp"
+                android:layout_weight="1"
+                >
 
                 <TextView
                     android:id="@+id/event_name"
@@ -72,6 +74,7 @@
             android:layout_height="match_parent"
             android:background="#F5F5F5"
             android:orientation="vertical"
+                android:layout_weight="15"
                 >
 
             <TextView
