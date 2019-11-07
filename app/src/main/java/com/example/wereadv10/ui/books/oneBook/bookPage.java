@@ -277,6 +277,7 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
+                    int count =0;
                     for (DocumentSnapshot document : task.getResult()) {
                         bookInToRead = true;
                         count++;
