@@ -3,10 +3,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_gravity="center"
-    android:layout_marginTop="30dp"
     android:layout_height="match_parent">
 
-    <TextView
+<!--    <TextView
         android:id="@+id/EventName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,9 +22,29 @@
         android:layout_marginTop="-30dp"
         android:inputType="textPersonName"
 
-        />
+        />-->
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight=".1"
+        android:layout_marginTop="20dp"
 
-    <TextView
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/EventNameEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:ems="10"
+            android:hint="Event name:"
+            android:textSize="15dp"
+            android:inputType="textPersonName"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+<!--    <TextView
         android:id="@+id/Eventdes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,59 +62,96 @@
         android:layout_marginLeft="30dp"
         >
 
-    </EditText>
+    </EditText>-->
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight=".4"
 
-    <Button
-        android:id="@+id/btn_date"
-        android:layout_width="wrap_content"
-        android:layout_height="25dp"
-        android:layout_marginTop="30dp"
-        android:layout_gravity="end"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="180dp"
-        android:background="@drawable/loging_rounded_button"
-        android:text="Select date"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:textSize="13sp"
-        android:textStyle="bold" />
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/EventdesEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:hint="Event description:"
+            android:maxLines="6"
+            android:minLines="1"
+            android:textSize="15sp"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+            <EditText
+                android:layout_weight="1"
+                android:id="@+id/eventTimeEt"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:ems="10"
+                android:inputType="time" />
+            <Button
+                android:id="@+id/btn_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/loging_rounded_button"
+                android:text="Select time"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="10dp"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
 
-    <EditText
-        android:id="@+id/DateEt"
-        android:layout_width="110dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="-40dp"
-        android:layout_marginLeft="30dp"
-        android:ems="10"
-        android:inputType="date" />
-
-    <Button
-        android:id="@+id/btn_time"
-        android:layout_width="wrap_content"
-        android:layout_height="25dp"
-        android:layout_gravity="end"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="180dp"
-        android:background="@drawable/loging_rounded_button"
-        android:text="Select time"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:textSize="13sp"
-        android:textStyle="bold" />
-
+        >
+        <EditText
+            android:id="@+id/DateEt"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:ems="10"
+            android:inputType="date" />
+        <Button
+            android:id="@+id/btn_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/loging_rounded_button"
+            android:text="Select date"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:layout_marginEnd="10dp"/>
 
 
-    <EditText
-        android:id="@+id/eventTimeEt"
-        android:layout_width="110dp"
-        android:layout_height="50dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="-50dp"
-        android:ems="10"
-        android:inputType="time" />
 
-    <TextView
+
+
+
+
+    </LinearLayout>
+
+
+<!--    <TextView
         android:id="@+id/eventLocation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -112,22 +168,42 @@
         android:layout_marginLeft="150dp"
         android:inputType="textPersonName">
 
-    </EditText>
+    </EditText>-->
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight=".5"
+        >
 
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/eventLocationEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:ems="10"
+            android:hint="Event location:"
+            android:textSize="15dp"
+            android:inputType="textPersonName"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
     <Button
         android:id="@+id/create_event_button"
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:layout_gravity="end"
-        android:layout_marginTop="40dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="170dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="80dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginBottom="10dp"
+
         android:background="@drawable/loging_rounded_button"
         android:text="Create"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:textSize="16sp"
         android:textStyle="bold" />
+
 
 
 </LinearLayout>
