@@ -70,7 +70,7 @@ public class ratingPage extends AppCompatActivity {
                     }else{
                         rateBook(num);
                     }
-                    finish();
+
                 }
 
             }
@@ -177,6 +177,7 @@ public class ratingPage extends AppCompatActivity {
                     rev1.put("book_rate",(ave/count));
                     dbSetUp.db
                             .collection("books").document(book_id).update(rev1);
+                    finish();
                 } else {
                     System.out.println( "Error getting documents: ");
                 }

@@ -630,11 +630,35 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
     private String getRandom(){
         return UUID.randomUUID().toString();
     }
+    private void updateBookRate(){
+        dbSetUp.db.collection("books").whereEqualTo("bookID", book_id)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String rate = document.get("book_rate")+"";
+                                totalRating.setText(rate+"/5");
+                                System.out.println(rate+"LOLO???");
+                            }
+                        } else {
+                            Log.w("Error getting documents.", task.getException());
+                        }
 
+                    }
+                });
+
+
+
+    }
     @Override
     protected void onResume() {
         super.onResume();
         getUserRate();
+        getTotalRater();
+        updateBookRate();
+
     }
 }
 
