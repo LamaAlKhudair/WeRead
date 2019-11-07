@@ -279,10 +279,16 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
                 if (task.isSuccessful()) {
                     for (DocumentSnapshot document : task.getResult()) {
                         bookInToRead = true;
+                        count++;
+
                     }
+                    if( count ==0 )
+                        bookInToRead = false;
                 } else {
+                    bookInToRead = false;
                     System.out.println( "Error getting documents: ");
                 }
+                Log.d("CheckBook", bookInToRead+" to read ");
             }
         });
         dbSetUp.db.collection("current_read_book")
@@ -292,12 +298,19 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
+                    int count2 =0;
                     for (DocumentSnapshot document : task.getResult()) {
                         bookInCurrent = true;
+                        count2++;
                     }
+                    if( count2 ==0 )
+                        bookInCurrent = false;
                 } else {
+                    bookInCurrent = false;
                     System.out.println( "Error getting documents: ");
                 }
+                Log.d("CheckBook", bookInCurrent+" current ");
+
             }
         });
         dbSetUp.db.collection("complete_read_book")
@@ -307,19 +320,26 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
+                    int count3 =0;
                     for (DocumentSnapshot document : task.getResult()) {
                         bookInComplate = true;
+                        count3++;
                     }
+                    if( count3 ==0 )
+                        bookInComplate = false;
                 } else {
+                    bookInComplate = false;
                     System.out.println( "Error getting documents: ");
                 }
+                Log.d("CheckBook", bookInComplate+" Complete ");
+
             }
         });
 
     }
 
 
-    // Edit not complete
+
     private boolean addToCurrent(){
         if (bookInCurrent){
              Toast.makeText(getApplicationContext(),"This book already in your current list",Toast.LENGTH_SHORT).show();
@@ -393,13 +413,14 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
                         }
                     });
             Toast.makeText(this, "The book has been added successfully", Toast.LENGTH_SHORT).show();
-
+            checkBook();
             return true;
         }
+        checkBook();
          return false;
     }
 
-    // Edit complete
+
     private boolean addToRead(){
         if (bookInCurrent){
             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(bookPage.this);
@@ -473,8 +494,10 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
                         }
                     });
             Toast.makeText(this, "The book has been added successfully", Toast.LENGTH_SHORT).show();
+            checkBook();
             return true;
         }
+        checkBook();
         return false;
     }
 
@@ -518,6 +541,7 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
                         public void onClick(DialogInterface dialog, int i) {
                             bookInToRead =false;
                             editBook("to_read_book", "complete_read_book");
+                            return;
                         }//end of OnClick
                     }//end of OnClickListener
             );//end setPositiveButton
@@ -553,9 +577,10 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
                         }
                     });
             Toast.makeText(this, "The book has been added successfully", Toast.LENGTH_SHORT).show();
-
+            checkBook();
             return true;
         }
+        checkBook();
         return false;
     }
 
@@ -590,7 +615,7 @@ public class bookPage extends AppCompatActivity implements View.OnClickListener 
                 else {
                     System.out.println( "Error getting documents: ");
                 }
-
+                checkBook();
             }
         });
     }
