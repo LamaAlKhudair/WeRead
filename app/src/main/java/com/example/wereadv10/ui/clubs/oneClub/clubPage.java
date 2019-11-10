@@ -497,10 +497,10 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    @Override
+    /*@Override
     protected void onResume() {
         super.onResume();
-        //
+        getExtras();
         // Get members info from users collection
         DocumentReference clubRef = dbSetUp.db.collection("clubs").document(clubID);
         clubRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -521,5 +521,5 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
             }
         });
         //
-    }//end onResume()
+    }//end onResume()*/
 }//end class
