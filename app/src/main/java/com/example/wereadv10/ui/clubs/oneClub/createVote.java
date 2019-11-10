@@ -41,10 +41,33 @@ public class createVote extends AppCompatActivity {
         addVoteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+               boolean done= true;
+                if (VoteNameEt.getText().toString().trim().equalsIgnoreCase("")) {
+                    VoteNameEt.setError("This field can not be blank");
+                    done= false;
+                }
+
+                if (VotedesEt.getText().toString().trim().equalsIgnoreCase("")) {
+                    VotedesEt.setError("This field can not be blank");
+                    done= false;
+                }
+
+                if (optionOneEt.getText().toString().trim().equalsIgnoreCase("")) {
+                    optionOneEt.setError("This field can not be blank");
+                    done= false;
+                }
+
+                if (optionTwoEt.getText().toString().trim().equalsIgnoreCase("")) {
+                    optionTwoEt.setError("This field can not be blank");
+                    done= false;
+                }
+                    if(done)
                 addVote();
             }
         });
-    }
+        }
+
+
 
 
 
