@@ -138,21 +138,20 @@ public class VotesAdapter extends RecyclerView.Adapter<VotesAdapter.ViewHolder> 
                                     counter_tot = String.valueOf((int) tot);
                                     totVotesrslt.setText(counter_tot);
 
-                                    //roundOffTo2DecPlaces();
-
 
                                     op1++;
-                                    counter_op1 = String.valueOf(op1);
-                                    float op1_percentage = (op1/tot)*100.0f;
-                                    voteOneRslt.setText(String.valueOf(op1_percentage));
+                                    counter_op1 = String.valueOf((int) op1);
+                                    float op1_percentage = (op1/tot)*100;
+                                    voteOneRslt.setText(roundOffTo2DecPlaces(op1_percentage));
 
-                                    float op2_percentage = (op2/tot)*100.0f;
-                                    voteTwoRslt.setText(String.valueOf(op2_percentage));
+                                    float op2_percentage = (op2/tot)*100;
+                                    voteTwoRslt.setText(roundOffTo2DecPlaces(op2_percentage));
 
 
-                                    voteOnePrg.setProgress(Math.round(op1));
-                                    voteOnePrg.setMax(Math.round(tot));
-                                    voteTwoPrg.setMax(Math.round(tot));
+                                    voteOnePrg.setMax((int) tot);
+                                    voteTwoPrg.setMax((int) tot);
+                                    voteOnePrg.setProgress((int) op1);
+
 
 
                                     final Map<String, Object> vote = new HashMap<>();
@@ -217,16 +216,17 @@ public class VotesAdapter extends RecyclerView.Adapter<VotesAdapter.ViewHolder> 
                                     totVotesrslt.setText(counter_tot);
 
                                     op2++;
-                                    counter_op2 = String.valueOf(op2);
-                                    float op2_percentage = (op2/tot)*100.0f;
+                                    counter_op2 = String.valueOf((int) op2);
+                                    float op2_percentage = (op2/tot)*100;
                                     voteTwoRslt.setText(roundOffTo2DecPlaces(op2_percentage));
 
-                                    float op1_percentage = (op1/tot)*100.0f;
+                                    float op1_percentage = (op1/tot)*100;
                                     voteOneRslt.setText(roundOffTo2DecPlaces(op1_percentage));
 
-                                    voteTwoPrg.setProgress(Math.round(op2));
-                                    voteOnePrg.setMax(Math.round(tot));
-                                    voteTwoPrg.setMax(Math.round(tot));
+                                    voteOnePrg.setMax((int) tot );
+                                    voteTwoPrg.setMax((int) tot );
+                                    voteTwoPrg.setProgress((int) op2);
+
 
                                     final Map<String, Object> vote = new HashMap<>();
                                     vote.put("counter_op2", counter_op2);
@@ -322,7 +322,7 @@ public class VotesAdapter extends RecyclerView.Adapter<VotesAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final VotesAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         Vote vote = VotesList.get(position);
 
         holder.voteTitle.setText( vote.getVote_title() );
@@ -331,14 +331,18 @@ public class VotesAdapter extends RecyclerView.Adapter<VotesAdapter.ViewHolder> 
         holder.voteOneBtn.setText( vote.getOption1() );
         holder.voteTwoBtn.setText( vote.getOption2() );
 
+        //Visibility
+        holder.voteOneBtn.setVisibility(View.GONE);
+        holder.voteTwoBtn.setVisibility(View.GONE);
+
         holder.totVotesrslt.setText( vote.getCounter_tot() );
 
-        if(Float.parseFloat(vote.getCounter_tot()) != 0) {
+        if(Integer.parseInt(vote.getCounter_tot()) != 0) {
 
-            float percentageOp1 = (Float.parseFloat(vote.getCounter_op1()) / Float.parseFloat(vote.getCounter_tot())) * 100.00f;
+            float percentageOp1 = (Float.parseFloat(vote.getCounter_op1()) / Float.parseFloat(vote.getCounter_tot())) * 100;
             holder.voteOneRslt.setText( roundOffTo2DecPlaces(percentageOp1) );
 
-            float percentageOp2 = (Float.parseFloat(vote.getCounter_op2()) / Float.parseFloat(vote.getCounter_tot())) * 100.00f;
+            float percentageOp2 = (Float.parseFloat(vote.getCounter_op2()) / Float.parseFloat(vote.getCounter_tot())) * 100;
             holder.voteTwoRslt.setText( roundOffTo2DecPlaces(percentageOp2) );
 
         }else{
@@ -354,33 +358,8 @@ public class VotesAdapter extends RecyclerView.Adapter<VotesAdapter.ViewHolder> 
         holder.voteOnePrg.setProgress( (int) Float.parseFloat(vote.getCounter_op1()) );
         holder.voteTwoPrg.setProgress( (int) Float.parseFloat(vote.getCounter_op2()) );
 
-        // Hide option buttons when member already voted
-        CollectionReference VotePart = dbSetUp.db.collection("vote_participation");
-        VotePart.whereEqualTo("vote_id", VotesList.get(position).getVote_id()).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
 
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-
-                                String member_id = document.get("member_id").toString();
-                                if (member_id.equalsIgnoreCase(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                                    holder.voteOneBtn.setVisibility(View.GONE);
-                                    holder.voteTwoBtn.setVisibility(View.GONE);
-                                }
-                            }
-
-                        } else Log.w(TAG, "Error getting documents.", task.getException());
-
-                    }
-                });
-
-
-        holder.voteOneBtn.setVisibility(View.GONE);
-        holder.voteTwoBtn.setVisibility(View.GONE);
-
-        // Hide option buttons when not member in the club
+        // show option buttons when user member in the club
         CollectionReference clubMember = dbSetUp.db.collection("club_members");
         clubMember.whereEqualTo("club_id", vote.getClub_id()).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -388,14 +367,42 @@ public class VotesAdapter extends RecyclerView.Adapter<VotesAdapter.ViewHolder> 
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
 
+                            String userNow = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                            boolean member = false;
+
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                String userNow = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
                                 String member_id = document.get("member_id").toString();
                                 if (member_id.equalsIgnoreCase(userNow)) {
                                     holder.voteOneBtn.setVisibility(View.VISIBLE);
                                     holder.voteTwoBtn.setVisibility(View.VISIBLE);
+                                    member = true;
+                                    break;
                                 }
                             }
+                            if(member){ //is member
+
+                                // hide option buttons when member already voted
+                                CollectionReference VotePart = dbSetUp.db.collection("vote_participation");
+                                VotePart.whereEqualTo("vote_id", VotesList.get(position).getVote_id()).get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                                        String member_id = document.get("member_id").toString();
+                                                        if (member_id.equalsIgnoreCase(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                                                            holder.voteOneBtn.setVisibility(View.GONE);
+                                                            holder.voteTwoBtn.setVisibility(View.GONE);                                }
+                                                    }
+
+
+                                                } else Log.w(TAG, "Error getting documents.", task.getException());
+                                            }
+                                        });
+
+                            }//end if member
 
                         } else Log.w(TAG, "Error getting documents.", task.getException());
 
