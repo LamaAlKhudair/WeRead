@@ -88,7 +88,7 @@ public class createEvent extends AppCompatActivity implements View.OnClickListen
                             }
                         }, mYear, mMonth, mDay);
                 datePickerDialog.getDatePicker().setMinDate(new Date().getTime());
-                c.add(Calendar.MONTH, 12);
+                c.add(Calendar.MONTH, 6);
                 datePickerDialog.getDatePicker().setMaxDate(c.getTimeInMillis());
 
                 datePickerDialog.show();

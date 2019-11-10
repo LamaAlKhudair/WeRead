@@ -107,7 +107,7 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
                         }, mYear, mMonth, mDay);
                 c.add(Calendar.MONTH, -1);
                 datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
-                c.add(Calendar.MONTH, 13);
+                c.add(Calendar.MONTH, 7);
                 datePickerDialog.getDatePicker().setMaxDate(c.getTimeInMillis());
                 datePickerDialog.show();
                 break;
