@@ -500,7 +500,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
     @Override
     protected void onResume() {
         super.onResume();
-        //
+
         // Get members info from users collection
         DocumentReference clubRef = dbSetUp.db.collection("clubs").document(clubID);
         clubRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -520,6 +520,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
                 }
             }
         });
+
         //
     }//end onResume()
 }//end class
