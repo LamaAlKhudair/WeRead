@@ -517,30 +517,6 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
             Glide.with(clubPage.this).load(clubImg).into(clubImage);
             MySharedPreference.clearValue(clubPage.this,"clubImg");
         }
-/*
-        getExtras();
 
-        // Get members info from users collection
-        DocumentReference clubRef = dbSetUp.db.collection("clubs").document(clubID);
-        clubRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-
-                if (task.isSuccessful()) {
-                    DocumentSnapshot doc = task.getResult();
-                    clubNameString = doc.get("club_name").toString();
-                    clubName.setText(clubNameString);
-                    clubDesc = doc.get("club_description").toString();
-                    clubDescription.setText(clubDesc);
-                    setTitle(clubNameString);
-                    clubImg = doc.get("club_image").toString();
-                    Glide.with(clubPage.this).load(clubImg).into(clubImage);
-
-                }
-            }
-        });
-*/
-
-        //
     }//end onResume()
 }//end class
