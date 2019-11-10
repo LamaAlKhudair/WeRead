@@ -133,7 +133,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
 
 
         // Members recycler view
-        sampleImages[0] = R.drawable.man;
+        //sampleImages[0] = R.drawable.man;
         sampleImages[1] = R.drawable.girl;
         rvMembers = findViewById(R.id.rvMembers);
 
@@ -389,9 +389,9 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
                                 member.setId(member_id);
 
                                 int random;
-                                if (Math.random() < 0.5)
-                                    random = 0;
-                                else random = 1;
+                                //if (Math.random() < 0.5)
+                                    random = 1;
+                                //else random = 1;
 
                                 int member_image = sampleImages[random];
                                 member.setImage(member_image);
