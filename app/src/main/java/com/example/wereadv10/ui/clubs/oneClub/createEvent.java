@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -86,6 +87,10 @@ public class createEvent extends AppCompatActivity implements View.OnClickListen
 
                             }
                         }, mYear, mMonth, mDay);
+                datePickerDialog.getDatePicker().setMinDate(new Date().getTime());
+                c.add(Calendar.MONTH, 12);
+                datePickerDialog.getDatePicker().setMaxDate(c.getTimeInMillis());
+
                 datePickerDialog.show();
                 break;
 
