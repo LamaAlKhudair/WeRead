@@ -58,6 +58,7 @@ public class OtherProfileActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_other_profile);
+        setContentView(R.layout.activity_other_profile);
         getExtras();
         userF= FirebaseAuth.getInstance().getCurrentUser();
 
