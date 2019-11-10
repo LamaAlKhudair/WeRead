@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.wereadv10.MySharedPreference;
 import com.example.wereadv10.R;
 import com.example.wereadv10.dbSetUp;
 import com.example.wereadv10.ui.clubs.EditClubInfoActivity;
@@ -497,10 +498,28 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    /*@Override
+    @Override
     protected void onResume() {
         super.onResume();
+        //get information from MySharedPreference after edit information
+        if (!MySharedPreference.getString(clubPage.this,"clubName","").equals("")) {
+            clubNameString= MySharedPreference.getString(clubPage.this, "clubName", "");
+            clubName.setText(clubNameString);
+            MySharedPreference.clearValue(clubPage.this,"clubName");
+        }
+        if (!MySharedPreference.getString(clubPage.this,"clubDescription","").equals("")) {
+            clubDesc= MySharedPreference.getString(clubPage.this, "clubDescription", "");
+            clubDescription.setText(clubDesc);
+            MySharedPreference.clearValue(clubPage.this,"clubDescription");
+        }
+        if (!MySharedPreference.getString(clubPage.this,"clubImg","").equals("")) {
+            clubImg= MySharedPreference.getString(clubPage.this, "clubImg", "");
+            Glide.with(clubPage.this).load(clubImg).into(clubImage);
+            MySharedPreference.clearValue(clubPage.this,"clubImg");
+        }
+/*
         getExtras();
+
         // Get members info from users collection
         DocumentReference clubRef = dbSetUp.db.collection("clubs").document(clubID);
         clubRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -520,6 +539,8 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
                 }
             }
         });
+*/
+
         //
-    }//end onResume()*/
+    }//end onResume()
 }//end class
