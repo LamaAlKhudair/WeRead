@@ -62,7 +62,7 @@ public class clubVotingTab extends Fragment{// implements VotesAdapter.OnButtonL
         voteTwoBtn = root.findViewById(R.id.option_two_button);
 
 
-        getAllVotes();
+        //getAllVotes();
 
         return root;
     }
