@@ -5,24 +5,6 @@
     android:layout_gravity="center"
     android:layout_height="match_parent">
 
-<!--    <TextView
-        android:id="@+id/EventName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="50dp"
-        android:text="Event name:"
-        android:textStyle="bold" />
-
-    <EditText
-        android:id="@+id/EventNameEt"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="130dp"
-        android:layout_marginTop="-30dp"
-        android:inputType="textPersonName"
-
-        />-->
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,25 +26,7 @@
             />
 
     </com.google.android.material.textfield.TextInputLayout>
-<!--    <TextView
-        android:id="@+id/Eventdes"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:textStyle="bold"
-        android:layout_marginTop="30dp"
-        android:text="Event description:" />
 
-    <EditText
-        android:id="@+id/EventdesEt"
-        android:layout_width="250dp"
-        android:inputType="textMultiLine"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="-5dp"
-        android:layout_marginLeft="30dp"
-        >
-
-    </EditText>-->
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -99,6 +63,16 @@
                 android:layout_marginLeft="10dp"
                 android:ems="10"
                 android:inputType="time" />
+
+<!--            <TextView-->
+<!--                android:layout_weight="1"-->
+<!--                android:id="@+id/eventTimeEt"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="50dp"-->
+<!--                android:layout_marginLeft="10dp"-->
+<!--                android:ems="10"-->
+<!--                android:inputType="time"/>-->
+
             <Button
                 android:id="@+id/btn_time"
                 android:layout_width="wrap_content"
@@ -150,25 +124,6 @@
 
     </LinearLayout>
 
-
-<!--    <TextView
-        android:id="@+id/eventLocation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="50dp"
-        android:textStyle="bold"
-        android:text="Event location:" />
-
-    <EditText
-        android:id="@+id/eventLocationEt"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="-50dp"
-        android:layout_marginLeft="150dp"
-        android:inputType="textPersonName">
-
-    </EditText>-->
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
