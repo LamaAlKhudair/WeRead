@@ -73,7 +73,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         fragmentAdapter = new FragmentAdapter(getFragmentManager(), tabLayout.getTabCount());
         fragmentAdapter.addFragment(bookTabFragment, "My Library");
         fragmentAdapter.addFragment(followingTabFragment, "Following");
-        fragmentAdapter.addFragment(comingEventsFragment, "coming events");
+        fragmentAdapter.addFragment(comingEventsFragment, "upcoming events");
 
         //
         viewPager.setAdapter(fragmentAdapter);
