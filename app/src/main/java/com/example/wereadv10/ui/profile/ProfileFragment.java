@@ -41,6 +41,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private ViewPager viewPager;
     private BookTabFragment bookTabFragment;
     private FollowingTabFragment followingTabFragment;
+    private eventsTabFragment comingEventsFragment;
     FragmentAdapter fragmentAdapter;
     private ImageView profileSettingImg;
     private FirebaseAuth mAuth;
@@ -62,14 +63,17 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         TabLayout tabLayout = root.findViewById(R.id.profile_tab_layout);
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
+        tabLayout.addTab(tabLayout.newTab());
+
 // creating and adding the fragment to the book_tab_card
 
         bookTabFragment = new BookTabFragment();
         followingTabFragment = new FollowingTabFragment();
-
+        comingEventsFragment = new eventsTabFragment();
         fragmentAdapter = new FragmentAdapter(getFragmentManager(), tabLayout.getTabCount());
         fragmentAdapter.addFragment(bookTabFragment, "My Library");
         fragmentAdapter.addFragment(followingTabFragment, "Following");
+        fragmentAdapter.addFragment(comingEventsFragment, "coming events");
 
         //
         viewPager.setAdapter(fragmentAdapter);

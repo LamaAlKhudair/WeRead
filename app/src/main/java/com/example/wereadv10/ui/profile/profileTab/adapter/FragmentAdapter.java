@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
+import com.example.wereadv10.ui.profile.eventsTabFragment;
 import com.example.wereadv10.ui.profile.profileTab.BookTabFragment;
 import com.example.wereadv10.ui.profile.profileTab.FollowingTabFragment;
 
@@ -36,6 +37,9 @@ public class FragmentAdapter extends FragmentStatePagerAdapter {
             case 1:
                 FollowingTabFragment following_fragment = new FollowingTabFragment();
                 return following_fragment;
+            case 2:
+                eventsTabFragment events_fragment = new eventsTabFragment();
+                return events_fragment;
             default:
                 return null;
         } //switch
