@@ -6,11 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import com.example.wereadv10.dbSetUp;
@@ -23,13 +26,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class createEvent extends AppCompatActivity implements View.OnClickListener {
+public class createEvent extends AppCompatActivity implements View.OnClickListener{
 
     private Button create,selectTime,selectDate;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private EditText DateEt,eventTimeEt,EventNameEt,EventdesEt,eventLocationEt;
     private com.example.wereadv10.dbSetUp dbSetUp = new dbSetUp();
     private String am_pm = "";
+    boolean done=true;
+    boolean  timefiiled;
+    boolean  datefiiled;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +57,8 @@ public class createEvent extends AppCompatActivity implements View.OnClickListen
         create.setOnClickListener(this);
         selectTime.setOnClickListener(this);
         selectDate.setOnClickListener(this);
-
+        timefiiled=false;
+        datefiiled=false;
 
     }
 
@@ -64,26 +73,20 @@ public class createEvent extends AppCompatActivity implements View.OnClickListen
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-
-            case R.id.create_event_button:
-                addEvent();
-                break;
-
-
             case R.id.btn_date:
                 final Calendar c = Calendar.getInstance();
                 mYear = c.get(Calendar.YEAR);
                 mMonth = c.get(Calendar.MONTH);
                 mDay = c.get(Calendar.DAY_OF_MONTH);
+
                 DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                         new DatePickerDialog.OnDateSetListener() {
 
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
-
-                                DateEt.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-
+                                                String s=dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+                                DateEt.setText(s);
                             }
                         }, mYear, mMonth, mDay);
                 datePickerDialog.show();
@@ -107,20 +110,48 @@ public class createEvent extends AppCompatActivity implements View.OnClickListen
                                     am_pm = "AM";
                                 else if (datetime.get(Calendar.AM_PM) == Calendar.PM)
                                     am_pm = "PM";
-                                eventTimeEt.setText(hourOfDay + ":" + minute +" " + am_pm );
+                                eventTimeEt.setText(hourOfDay + ":" + minute +" " + am_pm);
                             }
                         }, mHour, mMinute, false);
+                            timefiiled= true;
                 timePickerDialog.show();
-
-
                 break;
 
-                default: break;
+            case R.id.create_event_button:
+
+                if (TextUtils.isEmpty(DateEt.getText().toString())){
+                    DateEt.setError("This field can not be blank");
+                    done=false;
+                }
+                if (!timefiiled) {
+                    eventTimeEt.setError("This field can not be blank");
+                    done=false;
+                }
+                if (EventNameEt.getText().toString().trim().equalsIgnoreCase("")) {
+                    EventNameEt.setError("This field can not be blank");
+                    done=false;
+                }
+                if (EventdesEt.getText().toString().trim().equalsIgnoreCase("")) {
+                    EventdesEt.setError("This field can not be blank");
+                    done=false;
+                }
+
+                if (eventLocationEt.getText().toString().trim().equalsIgnoreCase("")) {
+                    eventLocationEt.setError("This field can not be blank");
+                    done=false;
+                }
+
+                if(done)
+                    addEvent();
+                break;
+
+            default: break;
 
         }
     }
 
     private void addEvent() {
+
         if(!EventNameEt.getText().toString().equals("")&&!EventdesEt.getText().toString().equals("")&&!DateEt.getText().toString().equals("")
         &&!eventTimeEt.getText().toString().equals("")&&!eventLocationEt.getText().toString().equals(""))
         {
@@ -163,5 +194,9 @@ public class createEvent extends AppCompatActivity implements View.OnClickListen
     }
 
 
+//    @Override
+//    public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
+//        datefiiled=true;
+//    }
 }
 
