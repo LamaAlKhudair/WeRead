@@ -82,7 +82,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:background="@drawable/loging_rounded_button"
-                android:enabled="false"
                 android:padding="5dp"
                 android:text="Create Club"
                 android:textAllCaps="false"

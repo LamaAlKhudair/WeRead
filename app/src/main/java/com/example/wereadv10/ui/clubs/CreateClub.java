@@ -24,7 +24,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.wereadv10.LoginActivity;
 import com.example.wereadv10.R;
+import com.example.wereadv10.SignUp;
 import com.example.wereadv10.dbSetUp;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -54,7 +56,7 @@ public class CreateClub extends AppCompatActivity {
     private Button createClub, cancelClub;
     private String clubId, ownerId;
     private  String image_url = "https://firebasestorage.googleapis.com/v0/b/we-read-a8fd8.appspot.com/o/clubs_images%2Flogo.png?alt=media&token=cdc06ad3-eed9-42e8-977c-32b425bcb98b";
-
+private boolean done=true;
     private static final int GALLERY = 1;
     private boolean ImgSet = false;
 
@@ -71,12 +73,13 @@ public class CreateClub extends AppCompatActivity {
         createClub = findViewById(R.id.createClub);
         cancelClub = findViewById(R.id.cancelCreate);
 
-        clubName.addTextChangedListener(loginTextWatcher);
-        clubDescription.addTextChangedListener(loginTextWatcher);
+ //       clubName.addTextChangedListener(loginTextWatcher);
+  //      clubDescription.addTextChangedListener(loginTextWatcher);
 
         clubImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 showPictureDialog();
 
             }
@@ -85,7 +88,21 @@ public class CreateClub extends AppCompatActivity {
         createClub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addClub();
+                if (clubName.getText().toString().trim().equalsIgnoreCase("")) {
+                    clubName.setError("This field can not be blank");
+                    done=false;
+                }
+                if (clubDescription.getText().toString().trim().equalsIgnoreCase("")) {
+                    clubDescription.setError("This field can not be blank");
+                    done=false;
+                }
+                if (!ImgSet){
+                    showDialog("you need to chose picture");
+                    done=false;
+                }
+                if (done)
+                    addClub();
+
             }
         });
         initToolBar();
@@ -110,8 +127,10 @@ public class CreateClub extends AppCompatActivity {
             }
         });
 
-    }
+    }//end onCreate()
 
+
+/*
     private TextWatcher loginTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -131,6 +150,7 @@ public class CreateClub extends AppCompatActivity {
 
         }
     };
+*/
 
     private void showPictureDialog() {
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
@@ -232,9 +252,9 @@ public class CreateClub extends AppCompatActivity {
 
 
         }
-        else{
+/*        else{
             Toast.makeText(getApplicationContext(),"You Cannot Leave This Empty!",Toast.LENGTH_SHORT).show();
-        }
+        }*/
     }
 
     private void addOwnerAsMember(){
@@ -303,5 +323,10 @@ public class CreateClub extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-
+    public void showDialog(String msg) {
+        androidx.appcompat.app.AlertDialog.Builder alertDialog = new AlertDialog.Builder(CreateClub.this);
+        alertDialog.setMessage(msg);
+        alertDialog.setPositiveButton("OK",null);
+        alertDialog.show();
+    }//end showDialog()
 }

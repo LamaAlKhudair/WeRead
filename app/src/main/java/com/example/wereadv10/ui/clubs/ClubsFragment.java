@@ -207,6 +207,7 @@ public class ClubsFragment extends Fragment implements View.OnClickListener{
         super.onResume();
         myClubs.clear();
         myOwnClubs.clear();
+
         getMyClubs();
         getMyOwnClubs();
     }

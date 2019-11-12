@@ -43,7 +43,7 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/clubEvent_viewPager"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="wrap_content"
         >
 
         <com.google.android.material.tabs.TabLayout
