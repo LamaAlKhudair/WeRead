@@ -58,6 +58,7 @@ public class EditClubInfoActivity extends AppCompatActivity implements View.OnCl
     private FirebaseAuth mAuth;
     private String TAG = EditClubInfoActivity.class.getSimpleName();
     private com.example.wereadv10.dbSetUp dbSetUp = new dbSetUp();
+    private boolean done=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +71,8 @@ public class EditClubInfoActivity extends AppCompatActivity implements View.OnCl
         editClubBtn = findViewById(R.id.edit_club_editClub);
         cancelClubBtn = findViewById(R.id.edit_club_cancelCreate);
 
-        clubNameET.addTextChangedListener(EditTextWatcher);
-        clubDescriptionET.addTextChangedListener(EditTextWatcher);
+  //      clubNameET.addTextChangedListener(EditTextWatcher);
+ //       clubDescriptionET.addTextChangedListener(EditTextWatcher);
 
         clubImage.setOnClickListener(this);
         editClubBtn.setOnClickListener(this);
@@ -79,25 +80,7 @@ public class EditClubInfoActivity extends AppCompatActivity implements View.OnCl
         getExtras();
     }//end onCreate()
 
-    private TextWatcher EditTextWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-        }
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            String clubNameS = clubNameET.getText().toString().trim();
-            String clubDescriptionS = clubDescriptionET.getText().toString().trim();
-
-            editClubBtn.setEnabled(!clubNameS.equals("") && !clubDescriptionS.equals(""));
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-
-        }
-    };
 
     private void showPictureDialog() {
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
@@ -175,6 +158,17 @@ public class EditClubInfoActivity extends AppCompatActivity implements View.OnCl
                 break;
 
             case R.id.edit_club_editClub:
+                done=true;
+                if (clubNameET.getText().toString().trim().equalsIgnoreCase("")) {
+                    clubNameET.setError("This field can not be blank");
+                    done=false;
+                }
+                if (clubDescriptionET.getText().toString().trim().equalsIgnoreCase("")) {
+                    clubDescriptionET.setError("This field can not be blank");
+                    done=false;
+                }
+
+                if (done)
                 updateClubInfo();
                 break;
             case R.id.edit_club_cancelCreate:

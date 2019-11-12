@@ -73,8 +73,7 @@ private boolean done=true;
         createClub = findViewById(R.id.createClub);
         cancelClub = findViewById(R.id.cancelCreate);
 
- //       clubName.addTextChangedListener(loginTextWatcher);
-  //      clubDescription.addTextChangedListener(loginTextWatcher);
+
 
         clubImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +87,7 @@ private boolean done=true;
         createClub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                done=true;
                 if (clubName.getText().toString().trim().equalsIgnoreCase("")) {
                     clubName.setError("This field can not be blank");
                     done=false;
