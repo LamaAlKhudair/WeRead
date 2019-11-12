@@ -76,4 +76,9 @@ public class Event {
     public void setEvent_desc(String event_desc) {
         this.event_desc = event_desc;
     }
+    @Override
+    public String toString() {
+
+        return event_id+" "+event_name+" "+event_date+" "+event_time+" "+event_desc+" "+event_location+" "+club_id;
+    }
 }
