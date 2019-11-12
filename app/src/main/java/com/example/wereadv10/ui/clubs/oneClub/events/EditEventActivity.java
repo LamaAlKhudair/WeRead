@@ -101,7 +101,7 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
 
-                                DateEt.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                                DateEt.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
 
                             }
                         }, mYear, mMonth, mDay);
