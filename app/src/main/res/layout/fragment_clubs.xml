@@ -22,6 +22,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
             <TextView
                 android:id="@+id/My_club"
@@ -57,13 +58,14 @@
         <!--recycler view for vertical listing-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="230dp"
+            android:orientation="vertical"
+            >
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv2Vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:orientation="vertical"
@@ -82,6 +84,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
             <TextView
                 android:id="@+id/clubs_title"
@@ -89,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:text="Clubs"
+                android:text="Joined Clubs"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
@@ -104,7 +107,7 @@
         <!--recycler view for vertical listing-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="230dp"
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView

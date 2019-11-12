@@ -62,12 +62,17 @@ public class clubVotingTab extends Fragment{// implements VotesAdapter.OnButtonL
         voteTwoBtn = root.findViewById(R.id.option_two_button);
 
 
-        getAllVotes();
+        //getAllVotes();
 
         return root;
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        AllVotes.clear();
+        getAllVotes();
+    }
     private List<Vote> getAllVotes() {
 
         CollectionReference voteRef = dbSetUp.db.collection("votes");

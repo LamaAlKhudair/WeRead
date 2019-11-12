@@ -24,7 +24,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -72,7 +75,22 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
 
 
             case R.id.btn_date:
-                final Calendar c = Calendar.getInstance();
+/*                final Calendar c = Calendar.getInstance();
+               // mYear = c.get(Calendar.YEAR);
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);*/
+                String dateStr = DateEt.getText().toString();
+
+                SimpleDateFormat curFormater = new SimpleDateFormat("dd-MM-yyyy");
+                Date dateObj = null;
+                try {
+                    dateObj = curFormater.parse(dateStr);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Calendar c = Calendar.getInstance();
+                c .setTime(dateObj);
                 mYear = c.get(Calendar.YEAR);
                 mMonth = c.get(Calendar.MONTH);
                 mDay = c.get(Calendar.DAY_OF_MONTH);
@@ -83,10 +101,14 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
 
-                                DateEt.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                                DateEt.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
 
                             }
                         }, mYear, mMonth, mDay);
+                c.add(Calendar.MONTH, -1);
+                datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
+                c.add(Calendar.MONTH, 7);
+                datePickerDialog.getDatePicker().setMaxDate(c.getTimeInMillis());
                 datePickerDialog.show();
                 break;
 

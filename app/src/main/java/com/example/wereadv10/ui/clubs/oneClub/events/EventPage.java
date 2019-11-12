@@ -1,6 +1,7 @@
 package com.example.wereadv10.ui.clubs.oneClub.events;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -21,7 +22,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -68,6 +72,66 @@ public class EventPage extends AppCompatActivity implements View.OnClickListener
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        System.out.println(event_id+" \t EVEEENT");
+        final DocumentReference docRef = dbSetUp.db.collection("events").document(event_id);
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                System.out.println("In addSnapshotListener");
+                if (e != null) {
+                    Log.w("Listen failed.", e);
+                    return;
+                }
+
+                if (snapshot != null && snapshot.exists()) {
+                    Log.d("Event Page", "Current data: " + snapshot.getData());
+                    updateEvent(event_id);
+                } else {
+                    System.out.println("LAMA in elese ;// ");
+
+                }
+            }
+
+
+        });
+    }
+    private void updateEvent(String id){
+        final CollectionReference eventRef = dbSetUp.db.collection("events");
+        eventRef.whereEqualTo("event_id", id).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                final Event event = new Event();
+
+                                String updateEvent_name = document.get("event_name").toString();
+                                String updateEvent_date = document.get("event_date").toString();
+                                String updateEvent_desc = document.get("event_desc").toString();
+                                String updateEvent_location = document.get("event_location").toString();
+                                String updateEvent_time = document.get("event_time").toString();
+
+                                event_name.setText(updateEvent_name);
+                                event_date.setText(updateEvent_date);
+                                event_time.setText(updateEvent_time);
+                                event_desc.setText(updateEvent_desc);
+                                event_location.setText(updateEvent_location);
+
+
+
+                            }
+
+                        } else ;
+
+                    }
+                });
+
+    }
     private void memberView() {
 
         CollectionReference MemberRef = dbSetUp.db.collection("club_members");

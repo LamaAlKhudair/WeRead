@@ -276,7 +276,7 @@ public class EditClubInfoActivity extends AppCompatActivity implements View.OnCl
 
     }// updateClubInfo()
 
-    private void update(Map<String, Object> club) {
+    private void update(final Map<String, Object> club) {
         DocumentReference userClubInfo = dbSetUp.db.collection("clubs").document(clubID);
 
         userClubInfo
@@ -286,7 +286,14 @@ public class EditClubInfoActivity extends AppCompatActivity implements View.OnCl
                     public void onSuccess(Void aVoid) {
 
                         Toast.makeText(getApplicationContext(), "the club information has been update successfully  ", Toast.LENGTH_SHORT).show();
+                        MySharedPreference.putString(EditClubInfoActivity.this,"clubName",club.get("club_name").toString());
+                        MySharedPreference.putString(EditClubInfoActivity.this,"clubDescription",club.get("club_description").toString());
+                        if (club.get("club_image")!=null)//intent.getExtras().getString("IMAGE")
+                        MySharedPreference.putString(EditClubInfoActivity.this,"clubImg",club.get("club_image").toString());
+                        else {
+                            MySharedPreference.putString(EditClubInfoActivity.this,"clubImg",getIntent().getExtras().getString("IMAGE"));
 
+                        }
                         Log.d(TAG, "DocumentSnapshot successfully updated!");
                         finish();
                     }

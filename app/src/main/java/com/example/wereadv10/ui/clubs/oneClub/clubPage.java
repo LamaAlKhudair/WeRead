@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.wereadv10.MySharedPreference;
 import com.example.wereadv10.R;
 import com.example.wereadv10.dbSetUp;
 import com.example.wereadv10.ui.clubs.EditClubInfoActivity;
@@ -132,7 +133,7 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
 
 
         // Members recycler view
-        sampleImages[0] = R.drawable.man;
+        //sampleImages[0] = R.drawable.man;
         sampleImages[1] = R.drawable.girl;
         rvMembers = findViewById(R.id.rvMembers);
 
@@ -388,9 +389,9 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
                                 member.setId(member_id);
 
                                 int random;
-                                if (Math.random() < 0.5)
-                                    random = 0;
-                                else random = 1;
+                                //if (Math.random() < 0.5)
+                                    random = 1;
+                                //else random = 1;
 
                                 int member_image = sampleImages[random];
                                 member.setImage(member_image);
@@ -500,26 +501,22 @@ public class clubPage extends AppCompatActivity implements View.OnClickListener 
     @Override
     protected void onResume() {
         super.onResume();
-        //
-        // Get members info from users collection
-        DocumentReference clubRef = dbSetUp.db.collection("clubs").document(clubID);
-        clubRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+        //get information from MySharedPreference after edit information
+        if (!MySharedPreference.getString(clubPage.this,"clubName","").equals("")) {
+            clubNameString= MySharedPreference.getString(clubPage.this, "clubName", "");
+            clubName.setText(clubNameString);
+            MySharedPreference.clearValue(clubPage.this,"clubName");
+        }
+        if (!MySharedPreference.getString(clubPage.this,"clubDescription","").equals("")) {
+            clubDesc= MySharedPreference.getString(clubPage.this, "clubDescription", "");
+            clubDescription.setText(clubDesc);
+            MySharedPreference.clearValue(clubPage.this,"clubDescription");
+        }
+        if (!MySharedPreference.getString(clubPage.this,"clubImg","").equals("")) {
+            clubImg= MySharedPreference.getString(clubPage.this, "clubImg", "");
+            Glide.with(clubPage.this).load(clubImg).into(clubImage);
+            MySharedPreference.clearValue(clubPage.this,"clubImg");
+        }
 
-                if (task.isSuccessful()) {
-                    DocumentSnapshot doc = task.getResult();
-                    clubNameString = doc.get("club_name").toString();
-                    clubName.setText(clubNameString);
-                    clubDesc = doc.get("club_description").toString();
-                    clubDescription.setText(clubDesc);
-                    setTitle(clubNameString);
-                    clubImg = doc.get("club_image").toString();
-                    Glide.with(clubPage.this).load(clubImg).into(clubImage);
-
-                }
-            }
-        });
-        //
     }//end onResume()
 }//end class
