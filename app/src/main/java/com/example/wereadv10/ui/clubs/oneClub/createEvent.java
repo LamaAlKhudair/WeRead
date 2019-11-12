@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -59,8 +61,51 @@ public class createEvent extends AppCompatActivity implements View.OnClickListen
         selectDate.setOnClickListener(this);
         timefiiled=false;
         datefiiled=false;
+        //to set error message for time filed
+        eventTimeEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-    }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (eventTimeEt.getText().toString().length() >0) {
+                    eventTimeEt.setError(null);
+                    timefiiled= true;
+                }else{
+                   // eventTimeEt.setError("This field can not be blank");
+                    timefiiled= false;
+                }
+            }
+
+
+            public void afterTextChanged(Editable edt) {
+            }
+        });
+//to set error message for date filed
+        DateEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (DateEt.getText().toString().length() >0) {
+                    DateEt.setError(null);
+                    datefiiled=true;
+                }else{
+                   // DateEt.setError("This field can not be blank");
+                    datefiiled=false;
+                }
+            }
+
+
+            public void afterTextChanged(Editable edt) {
+            }
+        });
+    }//end onCreate()
 
 
     @Override
@@ -113,13 +158,13 @@ public class createEvent extends AppCompatActivity implements View.OnClickListen
                                 eventTimeEt.setText(hourOfDay + ":" + minute +" " + am_pm);
                             }
                         }, mHour, mMinute, false);
-                            timefiiled= true;
+
                 timePickerDialog.show();
                 break;
 
             case R.id.create_event_button:
 
-                if (TextUtils.isEmpty(DateEt.getText().toString())){
+                if (!datefiiled){
                     DateEt.setError("This field can not be blank");
                     done=false;
                 }
