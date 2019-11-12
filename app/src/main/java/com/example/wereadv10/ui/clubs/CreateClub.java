@@ -130,27 +130,6 @@ private boolean done=true;
     }//end onCreate()
 
 
-/*
-    private TextWatcher loginTextWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            String clubNameS = clubName.getText().toString().trim();
-            String clubDescriptionS = clubDescription.getText().toString().trim();
-
-            createClub.setEnabled(!clubNameS.equals("") && !clubDescriptionS.equals("") && (ImgSet == true) );
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-
-        }
-    };
-*/
 
     private void showPictureDialog() {
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
@@ -252,9 +231,7 @@ private boolean done=true;
 
 
         }
-/*        else{
-            Toast.makeText(getApplicationContext(),"You Cannot Leave This Empty!",Toast.LENGTH_SHORT).show();
-        }*/
+
     }
 
     private void addOwnerAsMember(){
