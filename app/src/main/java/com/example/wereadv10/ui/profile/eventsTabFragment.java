@@ -28,6 +28,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -126,7 +128,7 @@ public class eventsTabFragment extends Fragment {
                                                 }
 
                                             } else ;
-
+                                            sortFunc();
                                             eventsAdapter.notifyDataSetChanged();
                                         }
 
@@ -140,6 +142,15 @@ public class eventsTabFragment extends Fragment {
                 }
 
             });
-}
-
+    }
+    private void sortFunc(){
+        Collections.sort(AllEvent, new Comparator<Event>() {
+            @Override
+            public int compare(Event eventDate, Event t1) {
+                Date idea1 = new Date(eventDate.getEvent_date());// here pass rating value.
+                Date idea2 = new Date(t1.getEvent_date());// here pass rating value.
+                return idea1.compareTo(idea2);
+            }
+        });
+    }
 }
