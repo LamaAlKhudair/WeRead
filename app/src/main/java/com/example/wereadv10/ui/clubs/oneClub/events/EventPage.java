@@ -75,7 +75,6 @@ public class EventPage extends AppCompatActivity implements View.OnClickListener
     @Override
     protected void onResume() {
         super.onResume();
-        System.out.println(event_id+" \t EVEEENT");
         final DocumentReference docRef = dbSetUp.db.collection("events").document(event_id);
         docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
@@ -91,7 +90,6 @@ public class EventPage extends AppCompatActivity implements View.OnClickListener
                     Log.d("Event Page", "Current data: " + snapshot.getData());
                     updateEvent(event_id);
                 } else {
-                    System.out.println("LAMA in elese ;// ");
 
                 }
             }
