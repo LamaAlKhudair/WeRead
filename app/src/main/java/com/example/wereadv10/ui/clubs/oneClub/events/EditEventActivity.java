@@ -200,7 +200,7 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
 
         }
         else{
-            Toast.makeText(getApplicationContext(),"You Cannot Leave This Empty!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"All fields are mandatory",Toast.LENGTH_SHORT).show();
         }
     }
 }
