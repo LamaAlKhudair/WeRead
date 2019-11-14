@@ -82,7 +82,7 @@ public class EditEventActivity extends AppCompatActivity implements View.OnClick
                 mDay = c.get(Calendar.DAY_OF_MONTH);*/
                 String dateStr = DateEt.getText().toString();
 
-                SimpleDateFormat curFormater = new SimpleDateFormat("dd-MM-yyyy");
+                SimpleDateFormat curFormater = new SimpleDateFormat("dd/MM/yyyy");
                 Date dateObj = null;
                 try {
                     dateObj = curFormater.parse(dateStr);
