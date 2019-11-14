@@ -113,7 +113,7 @@ public class ProfileSettingActivity extends AppCompatActivity implements View.On
         }//end switch
     }//end onClick
 //after you logout and login in again use this method and delete the other one
-   /* public void signOut() {
+ public void signOut() {
         // to delete the token after logout to not send him notification if he is logout
         DocumentReference userTokenDR = FirebaseFirestore.getInstance().collection("Tokens").document(mAuth.getUid());
         Token mToken = new Token("");
@@ -145,9 +145,9 @@ public class ProfileSettingActivity extends AppCompatActivity implements View.On
                     }
                 });
 
-    }*/
+    }
    //delete this one here
-   public void signOut() {
+/*   public void signOut() {
        // [START auth_sign_out]
        mAuth.signOut();
        if (mAuth.getCurrentUser() == null) {
@@ -156,7 +156,7 @@ public class ProfileSettingActivity extends AppCompatActivity implements View.On
            finish();
        }
    }
-       // [END auth_sign_out]
+       // [END auth_sign_out]*/
     public void logoutDialog() {
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(ProfileSettingActivity.this);
         //set dialog msg

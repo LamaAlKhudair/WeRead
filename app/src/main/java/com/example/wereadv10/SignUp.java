@@ -159,7 +159,7 @@ public class SignUp extends AppCompatActivity {
                                             // Add a new document with a generated ID
                                             db.collection("Tokens")
                                                     .document(mAuth.getUid())
-                                                    .set(mToken.getToken())
+                                                    .set(mToken)
                                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                         @Override
                                                         public void onSuccess(Void aVoid) {
