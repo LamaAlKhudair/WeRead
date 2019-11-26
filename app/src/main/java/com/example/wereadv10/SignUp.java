@@ -180,21 +180,6 @@ public class SignUp extends AppCompatActivity {
                                             Log.w(TAG, "Error writing document", e);
                                         }
                                     });
-/*                            db.collection("users")
-                                   .document(mAuth.getUid())
-                                    .set(user)*/
-/*                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                        @Override
-                                        public void onSuccess(DocumentReference documentReference) {
-                                            Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.w(TAG, "Error adding document", e);
-                                        }
-                                    });*/
 
                             sendVerificationEmail();
 

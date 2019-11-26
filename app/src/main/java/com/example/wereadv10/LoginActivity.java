@@ -108,7 +108,7 @@ private TextInputLayout emailIL;
         Token mToken = new Token(token);
         final Map<String, Object> tokenh = new HashMap<>();
         tokenh.put("token",mToken.getToken());
-// Set the "isCapital" field of the city 'DC'
+        // Set the "isCapital" field of the city 'DC'
         //
         userTokenDR
                 .update(tokenh)

@@ -70,24 +70,26 @@ public class OtherProfileActivity extends AppCompatActivity  {
         //to display the name
         displayName();
         initToolBar();
-//for tabs
+
+        //for tabs
         viewPager = findViewById(R.id.other_profile_viewPager);
         TabLayout tabLayout = findViewById(R.id.other_profile_tab_layout);
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
-// creating and adding the fragment to the book_tab_card
+
+        // creating and adding the fragment to the book_tab_card
 
         bookTabFragment = new OtherProfileBookTabFragment();
         followingTabFragment = new OtherProfileFollowingTabFragment();
 
         fragmentAdapter = new OtherProfileFragmentAdapter(this.getSupportFragmentManager(), tabLayout.getTabCount());
         fragmentAdapter.addFragment(bookTabFragment, name + " Library");
-        fragmentAdapter.addFragment(followingTabFragment, "Following");
+        fragmentAdapter.addFragment(followingTabFragment, "Followers/Following");
 
         //
         viewPager.setAdapter(fragmentAdapter);
         tabLayout.setupWithViewPager(viewPager);
-//
+
         followBtn = findViewById(R.id.other_profile_followBtn);
         if (userF.getUid().equals(otherUserID)){
             followBtn.setVisibility(View.GONE);

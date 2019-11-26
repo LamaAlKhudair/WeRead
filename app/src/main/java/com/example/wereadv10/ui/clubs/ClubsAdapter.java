@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.wereadv10.R;
-import com.example.wereadv10.dbSetUp;
 import com.example.wereadv10.ui.clubs.oneClub.clubPage;
 
 import java.util.ArrayList;

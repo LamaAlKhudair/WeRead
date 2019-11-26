@@ -239,9 +239,5 @@ public class createEvent extends AppCompatActivity implements View.OnClickListen
     }
 
 
-//    @Override
-//    public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
-//        datefiiled=true;
-//    }
 }
 

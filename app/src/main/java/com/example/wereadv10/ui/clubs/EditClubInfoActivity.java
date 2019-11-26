@@ -58,7 +58,7 @@ public class EditClubInfoActivity extends AppCompatActivity implements View.OnCl
     private FirebaseAuth mAuth;
     private String TAG = EditClubInfoActivity.class.getSimpleName();
     private com.example.wereadv10.dbSetUp dbSetUp = new dbSetUp();
-    private boolean done=true;
+    private boolean done = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +70,6 @@ public class EditClubInfoActivity extends AppCompatActivity implements View.OnCl
         clubImage = findViewById(R.id.edit_club_ClubImage);
         editClubBtn = findViewById(R.id.edit_club_editClub);
         cancelClubBtn = findViewById(R.id.edit_club_cancelCreate);
-
-  //      clubNameET.addTextChangedListener(EditTextWatcher);
- //       clubDescriptionET.addTextChangedListener(EditTextWatcher);
 
         clubImage.setOnClickListener(this);
         editClubBtn.setOnClickListener(this);

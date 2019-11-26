@@ -269,7 +269,6 @@ public class OtherProfileFollowingTabFragment extends Fragment {
                         Followers.clear();
                         getFollowers();
 
-                        //           followingTabFragment.updateFollowersList(otherUserID);
 
                     }
                 })
@@ -301,7 +300,6 @@ public class OtherProfileFollowingTabFragment extends Fragment {
 
                                 getUsersFollowings(followedByID);
                             }
-//                            followingNumTV.setText(Followings.size());
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }

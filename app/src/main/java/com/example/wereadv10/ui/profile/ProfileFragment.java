@@ -58,22 +58,22 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         //to display the name
         //displayName();
 
-//for tabs
+        //for tabs
         viewPager = root.findViewById(R.id.profile_viewPager);
         TabLayout tabLayout = root.findViewById(R.id.profile_tab_layout);
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
 
-// creating and adding the fragment to the book_tab_card
+        // creating and adding the fragment to the book_tab_card
 
         bookTabFragment = new BookTabFragment();
         followingTabFragment = new FollowingTabFragment();
         comingEventsFragment = new eventsTabFragment();
         fragmentAdapter = new FragmentAdapter(getFragmentManager(), tabLayout.getTabCount());
         fragmentAdapter.addFragment(bookTabFragment, "My Library");
-        fragmentAdapter.addFragment(followingTabFragment, "Following");
-        fragmentAdapter.addFragment(comingEventsFragment, "upcoming events");
+        fragmentAdapter.addFragment(followingTabFragment, "Followers/Following");
+        fragmentAdapter.addFragment(comingEventsFragment, "Upcoming Events");
 
         //
         viewPager.setAdapter(fragmentAdapter);
@@ -104,23 +104,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
         }//end if
 
-/*        final DocumentReference docRef = db.collection("users").document(mAuth.getUid());
-        Source source = Source.CACHE;
-// Get the document, forcing the SDK to use the offline cache
-        docRef.get(source).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    // Document found in the offline cache
-                    DocumentSnapshot document = task.getResult();
-                    String name = document.get("name").toString();
-                    nameTV.setText(name);
-                    Log.d(TAG, "Cached document data: " + document.getData());
-                } else {
-                    Log.d(TAG, "Cached get failed: ", task.getException());
-                }
-            }
-        });*/
     }
 
 

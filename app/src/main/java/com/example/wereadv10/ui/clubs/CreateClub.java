@@ -56,7 +56,7 @@ public class CreateClub extends AppCompatActivity {
     private Button createClub, cancelClub;
     private String clubId, ownerId;
     private  String image_url = "https://firebasestorage.googleapis.com/v0/b/we-read-a8fd8.appspot.com/o/clubs_images%2Flogo.png?alt=media&token=cdc06ad3-eed9-42e8-977c-32b425bcb98b";
-private boolean done=true;
+    private boolean done = true;
     private static final int GALLERY = 1;
     private boolean ImgSet = false;
 

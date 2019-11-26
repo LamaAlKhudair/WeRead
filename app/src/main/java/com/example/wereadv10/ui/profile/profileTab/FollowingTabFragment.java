@@ -37,9 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FollowingTabFragment extends Fragment {
-    /*    private List<User> listData;
-        private RecyclerView rv;
-        private FollowingAdapter adapter;*/
+
     private int[] sampleImages = new int[5];
 
     private com.example.wereadv10.dbSetUp dbSetUp;
@@ -67,8 +65,10 @@ public class FollowingTabFragment extends Fragment {
         user = FirebaseAuth.getInstance().getCurrentUser();
         followersNumTV = view.findViewById(R.id.profile_followers_num);
         followingNumTV = view.findViewById(R.id.profile_following_num);
+
         sampleImages[0] = R.drawable.man;
         sampleImages[1] = R.drawable.girl;
+
         //followers
         rvFollowers = view.findViewById(R.id.profile_followers_recyclerview);
         Followers_LayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -78,16 +78,12 @@ public class FollowingTabFragment extends Fragment {
         rvFollowing = view.findViewById(R.id.profile_followings_recyclerview);
         Following_LayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         rvFollowing.setLayoutManager(Following_LayoutManager);
-//        getFollowings();
-//
-//        getFollowers();
-
 
         return view;
 
     }
 
-private void getFollowers() {
+    private void getFollowers() {
 
     final FirebaseUser userF = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -113,7 +109,8 @@ private void getFollowers() {
 
                 }
             });
-}
+    }
+
     private void getUsers(String followedByID) {
         final DocumentReference docRef = dbSetUp.db.collection("users").document(followedByID);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -162,7 +159,7 @@ private void getFollowers() {
 
                     }
                 });
-        ////
+
 
     }//end getFollowings()
 
@@ -196,7 +193,7 @@ private void getFollowers() {
         super.onResume();
         Followings.clear();
         getFollowings();
-Followers.clear();
+        Followers.clear();
         getFollowers();
     }
 }

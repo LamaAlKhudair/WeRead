@@ -44,8 +44,6 @@ public class OtherProfileBookTabFragment extends Fragment implements View.OnClic
 
 
 
-
-
     private ShadowTransformer mFragmentCardShadowTransformer;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
